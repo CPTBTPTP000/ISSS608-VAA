@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS608-VAA",
+    "section": "",
+    "text": "This is ISSS608 Visual Analytics and Application\nHere is my coursework preparation"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
     "objectID": "Hands-on Exercise/Hands-on_Ex01/Hands-on_EX01.html",
     "href": "Hands-on Exercise/Hands-on_Ex01/Hands-on_EX01.html",
     "title": "Hands-on Exercise 1",
