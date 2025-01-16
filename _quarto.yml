@@ -16,7 +16,7 @@ website:
 
 format:
   html:
-    theme: solar
+    theme: Yeti
     css: styles.css
     toc: true
 
