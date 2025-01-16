@@ -38,3 +38,87 @@ ggplot(data=exam_data,
   geom_histogram()
 
 ```
+
+# Colouring
+
+```{r}
+
+ggplot(data=exam_data, aes(x= MATHS)) + geom_histogram(bins=20,
+color="black",
+fill="lightyellow")
+```
+
+# Combine geom objects
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(y = MATHS, 
+           x= GENDER)) +
+  geom_boxplot() +                    
+  geom_point(position="jitter", 
+             size = 0.5) +
+  stat_summary(geom = "point",       
+               fun = "mean",         
+               colour ="pink",        
+               size=4)  
+
+```
+
+# Using geom_violin
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = ENGLISH, 
+           x= GENDER)) +
+  geom_violin()
+
+```
+
+# Scatterplot with a best fit curve
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(x= MATHS, y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm,
+              linewidth=0.5) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))
+```
+
+# Using facet_wrap
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(x= MATHS)) +
+  geom_histogram(bins=20) +
+    facet_wrap(~ CLASS) +
+    theme_light()
+```
+
+# Using facet_grid
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(x= SCIENCE)) +
+  geom_histogram(bins=20) +
+    facet_grid(~ CLASS) +
+    theme_light()
+```
+
+# Using Theme
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_light() +
+  theme_minimal()
+```
+
+\`\`\`
