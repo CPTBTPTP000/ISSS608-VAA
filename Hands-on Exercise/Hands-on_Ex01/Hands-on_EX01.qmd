@@ -28,3 +28,13 @@ ggplot(data = exam_data,
   geom_bar()
     
 ```
+
+# Using geom_histogram
+
+```{r}
+
+ggplot(data=exam_data,
+       aes(x = MATHS)) +
+  geom_histogram()
+
+```
