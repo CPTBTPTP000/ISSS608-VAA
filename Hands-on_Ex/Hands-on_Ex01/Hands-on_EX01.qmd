@@ -35,7 +35,8 @@ ggplot(data = exam_data,
 
 ggplot(data=exam_data,
        aes(x = MATHS)) +
-  geom_histogram()
+  geom_histogram()+
+   theme_light()
 
 ```
 
@@ -45,7 +46,8 @@ ggplot(data=exam_data,
 
 ggplot(data=exam_data, aes(x= MATHS)) + geom_histogram(bins=20,
 color="black",
-fill="lightyellow")
+fill="lightyellow")+
+ theme_light()
 ```
 
 # Combine geom objects
@@ -61,7 +63,8 @@ ggplot(data=exam_data,
   stat_summary(geom = "point",       
                fun = "mean",         
                colour ="pink",        
-               size=4)  
+               size=4)  +
+   theme_light()
 
 ```
 
@@ -85,7 +88,8 @@ ggplot(data=exam_data,
   geom_smooth(method=lm,
               linewidth=0.5) +
   coord_cartesian(xlim=c(0,100),
-                  ylim=c(0,100))
+                  ylim=c(0,100))+
+   theme_light()
 ```
 
 # Using facet_wrap
