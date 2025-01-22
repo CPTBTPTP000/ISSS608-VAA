@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "ISSS608-VAA",
     "section": "",
-    "text": "My coursework preparation for\nISSS608 Visual Analytics and Application\nGood Morning🌞 Good Afternoon☕ Good Evening🌃"
+    "text": "My coursework preparation for\n\nISSS608 Visual Analytics and Application\nGood Morning🌞 Good Afternoon☕ Good Evening🌃"
   },
   {
     "objectID": "Hands-on_Ex/Hands-on_Ex01/Hands-on_EX01.html",
@@ -40,5 +40,12 @@
     "title": "Testing",
     "section": "",
     "text": "12345 上山打老虎"
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on Ex02.html",
+    "href": "Hands-on_Ex/Hands-on Ex02.html",
+    "title": "Hands-on Exercise 2",
+    "section": "",
+    "text": "Beyond ggplot2 Fundamentals"
   }
 ]
