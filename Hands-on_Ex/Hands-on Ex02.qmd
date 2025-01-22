@@ -1,0 +1,6 @@
+---
+title: "Hands-on Exercise 2"
+author: "Lin Xinyue"
+---
+
+# **Beyond ggplot2 Fundamentals**
