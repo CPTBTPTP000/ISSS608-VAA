@@ -1,0 +1,6 @@
+---
+title: "Take home exercise 01"
+author: "Lin Xinyue"
+date: "February 1, 2025"
+date-modified: "last-modified"
+---
