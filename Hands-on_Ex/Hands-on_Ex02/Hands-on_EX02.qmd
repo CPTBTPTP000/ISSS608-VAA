@@ -1,0 +1,203 @@
+---
+title: "Hands-on Exercise 2"
+author: "Lin Xinyue"
+---
+
+# **2. Beyond ggplot2 Fundamentals**
+
+## **2.1 Getting started**
+
+Installing and loading the required libraries
+
+```{r}
+pacman:: p_load(tidyverse)
+```
+
+```{r}
+pacman::p_load(ggrepel, patchwork, 
+               ggthemes, hrbrthemes,
+               tidyverse) 
+```
+
+## 2.2 Importing data
+
+```{r}
+exam_data <- read_csv("Exam_data.csv", col_types = cols(
+  ID = col_character(),
+  CLASS = col_character(),
+  GENDER = col_character(),
+  RACE = col_character(),
+  ENGLISH = col_double(),
+  MATHS = col_double(),
+  SCIENCE = col_double()
+))
+```
+
+## 2.3 Beyand ggplot2 Annotation: ggrepel
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              size=0.5) +  
+  geom_label(aes(label = ID), 
+             hjust = .5, 
+             vjust = -.5) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+
+### 2.3.1 working with ggrepel
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x= MATHS, 
+           y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              size=0.5) +  
+  geom_label_repel(aes(label = ID), 
+                   fontface = "bold") +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+
+## 2.4 Beyond ggplot2 Themes
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  theme_gray() +
+  ggtitle("Distribution of Maths scores") 
+```
+
+### 2.4.1 Working with ggthems package
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores") +
+  theme_economist()
+```
+
+### 2.4.2 Working with hrbthems package
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores") +
+  theme_classic()
+```
+
+```{r}
+ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Maths scores") +
+  theme_minimal(base_size = 15) + 
+  theme(axis.title = element_text(size = 18), 
+        axis.text = element_text(size = 15),  
+        panel.grid.major.y = element_line(),  
+        panel.grid.minor.y = element_blank())
+
+```
+
+## 2.5 Beyond Single Graph
+
+```{r}
+p1 <- ggplot(data=exam_data, 
+             aes(x = MATHS)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") + 
+  coord_cartesian(xlim=c(0,100)) +
+  ggtitle("Distribution of Maths scores")
+
+```
+
+```{r}
+p2 <- ggplot(data=exam_data, 
+             aes(x = ENGLISH)) +
+  geom_histogram(bins=20, 
+                 boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  coord_cartesian(xlim=c(0,100)) +
+  ggtitle("Distribution of English scores")
+```
+
+```{r}
+p3 <- ggplot(data=exam_data, 
+             aes(x= MATHS, 
+                 y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm, 
+              size=0.5) +  
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100)) +
+  ggtitle("English scores versus Maths scores for Primary 3")
+```
+
+### 2.5.1 About pathwork methods The general syntax that combines:
+
+-   Two-Column Layout using the Plus Sign +
+
+-   Parenthesis () to create a subplot group
+
+-   Two-Row Layout using the Division Sign /
+
+### 2.5.2 **Combining two ggplot2 graphs**
+
+```{r}
+p1 + p2
+```
+
+### 2.5.3 **Combining three ggplot2 graphs**
+
+```{r}
+(p1 / p2) | p3
+```
+
+### 2.5.4 **Creating a composite figure with tag**
+
+```{r}
+((p1 / p2) | p3) + 
+  plot_annotation(tag_levels = 'I')
+```
+
+### 2.5.5 **Creating figure with insert**
+
+```{r}
+p3 + inset_element(p2, 
+                   left = 0.02, 
+                   bottom = 0.7, 
+                   right = 0.5, 
+                   top = 1)
+```
+
+### 2.5.6 **Creating a composite figure by using patchwork and ggtheme**
+
+```{r}
+patchwork <- (p1 / p2) | p3
+patchwork & theme_economist()
+```

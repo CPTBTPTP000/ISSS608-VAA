@@ -1,0 +1,128 @@
+---
+title: "Hands-on Exercise 1"
+author: "Lin Xinyue"
+---
+
+# Getting Started
+
+## Install and launch R packages
+
+The code chunk below uses p_load()of pacman package to check if tidyverse packages are installed in the computer. If they are, then they will be launched into R.
+
+```{r}
+pacman:: p_load(tidyverse)
+```
+
+## Importing the data
+
+```{r}
+exam_data <- read_csv("Exam_data.csv")
+```
+
+# Plotting a simple bar chart
+
+```{r}
+
+ggplot(data = exam_data,
+       aes(x = RACE)) +
+  geom_bar()
+    
+```
+
+# Using geom_histogram
+
+```{r}
+
+ggplot(data=exam_data,
+       aes(x = MATHS)) +
+  geom_histogram()+
+   theme_light()
+
+```
+
+# Colouring
+
+```{r}
+
+ggplot(data=exam_data, aes(x= MATHS)) + geom_histogram(bins=20,
+color="black",
+fill="lightyellow")+
+ theme_light()
+```
+
+# Combine geom objects
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(y = MATHS, 
+           x= GENDER)) +
+  geom_boxplot() +                    
+  geom_point(position="jitter", 
+             size = 0.5) +
+  stat_summary(geom = "point",       
+               fun = "mean",         
+               colour ="pink",        
+               size=4)  +
+   theme_light()
+
+```
+
+# Using geom_violin
+
+```{r}
+ggplot(data=exam_data, 
+       aes(y = ENGLISH, 
+           x= GENDER)) +
+  geom_violin()
+
+```
+
+# Scatterplot with a best fit curve
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(x= MATHS, y=ENGLISH)) +
+  geom_point() +
+  geom_smooth(method=lm,
+              linewidth=0.5) +
+  coord_cartesian(xlim=c(0,100),
+                  ylim=c(0,100))+
+   theme_light()
+```
+
+# Using facet_wrap
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(x= MATHS)) +
+  geom_histogram(bins=20) +
+    facet_wrap(~ CLASS) +
+    theme_light()
+```
+
+# Using facet_grid
+
+```{r}
+
+ggplot(data=exam_data, 
+       aes(x= SCIENCE)) +
+  geom_histogram(bins=20) +
+    facet_grid(~ CLASS) +
+    theme_light()
+```
+
+# Using Theme
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x=RACE)) +
+  geom_bar() +
+  coord_flip() +
+  theme_light() +
+  theme_minimal()
+```
+
+\`\`\`
