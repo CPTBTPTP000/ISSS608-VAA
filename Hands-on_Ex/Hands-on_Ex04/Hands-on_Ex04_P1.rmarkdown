@@ -1,0 +1,40 @@
+---
+title: "Hands-on_Ex04_P1"
+author: "Lin Xinyue"
+---
+
+
+
+1.  Preparing Data
+
+1.2 Installing and loading the packages
+
+The following R packages will be used in the following exercise
+
+-   ggridges
+
+-   ggdist
+
+-   tidyverse
+
+-   ggthemes
+
+-   colorspace
+
+Load the R packages into RStudion environment 
+
+
+```{r}
+pacman::p_load(ggdist, ggridges, ggthemes,
+colorspace, tidyverse)
+```
+
+
+
+1.3 Importing Data
+
+
+```{r}
+exam <- read_csv("Exam_data.csv")
+```
+

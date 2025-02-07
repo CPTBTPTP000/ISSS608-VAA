@@ -7,7 +7,7 @@ website:
     left:
     - text: "Hands-on Exercises"
       menu:
-        - text: "Hands-on Exercise 1111"
+        - text: "Hands-on Exercise 1"
           href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_EX01.html"
       
         - text: "Hands-on Exercise 2"
@@ -21,6 +21,10 @@ website:
         - text: "Hands-on Exercise 3 Part 2 "
   
           href: "Hands-on_Ex/Hands-on_Ex03/Hands-on_EX03_P2.html"
+          
+        - text: "Hands-on Exercise 4 Part 1 "
+  
+          href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_EX04_P1.html"
 
           
     - text: "Take-home Exercises"
