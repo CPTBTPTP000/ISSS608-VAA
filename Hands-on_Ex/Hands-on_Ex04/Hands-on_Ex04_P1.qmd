@@ -9,8 +9,6 @@ author: "Lin Xinyue"
 
 <hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
 
-<hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
-
 The following R packages will be used in the following exercise
 
 -   ggridges
