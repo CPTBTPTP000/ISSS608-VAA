@@ -41,8 +41,11 @@ website:
 format:
   html:
     theme: Yeti
-    css: styles.css
+    css:
+    - styles.css
+    - box.css
     toc: true
+    
 
 editor: visual
 

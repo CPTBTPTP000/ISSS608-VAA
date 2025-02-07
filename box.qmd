@@ -1,0 +1,29 @@
+---
+title: "Box example"
+---
+<style>
+.info-box {
+    border: 2px solid #007acc;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 20px 0;
+}
+
+.info-box h4 {
+    margin-top: 0;
+    color: #007acc;
+}
+</style>
+
+## Example of an Information Box
+
+<div class="info-box">
+    <h4>Note</h4>
+    <ul>
+        <li>This is an inline CSS example for a Quarto document.</li>
+        <li>Use this approach for one-time styling.</li>
+    </ul>
+</div>
