@@ -5,22 +5,21 @@ author: "Lin Xinyue"
 
 1.  Preparing Data
 
-1.2 Installing and loading the packages
-Load the R packages into RStudion environment
+### 1.2 Installing and loading the packages Load the R packages into RStudion environment
 
 ```{r}
 pacman::p_load(ggdist, ggridges, ggthemes,
 colorspace, tidyverse)
 ```
 
-1.3 Importing Data
+### 1.3 Importing Data
+
 ```{r}
 exam_data <- read_csv("Exam_data.csv")
 ```
 
+2.  Compare different graphs 2.1 By using box plot
 
-2. Compare different graphs
-2.1 By using box plot
 ```{r}
 ggplot(data=exam_data, 
        aes(y = CLASS,       
