@@ -76,7 +76,7 @@ ggplot(exam,
     name = "English grades",
     expand = c(0, 0)
     ) +
-  scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +
+  scale_y_discrete(name = NULL, expand = expansion(add = c(.2, 2.6))) +
   theme_ridges()
 ```
 2.3 Varying fill colors along the x axis
@@ -136,7 +136,7 @@ ggplot(exam,
 ```
 
 specify quantiles by cut points such as 2.5% and 97.5% tails
-···{r}
+```{r}
 ggplot(exam,
        aes(x = ENGLISH, 
            y = CLASS, 
@@ -170,7 +170,9 @@ ggplot(exam,
                justification = -0.2,
                .width = 0,
                point_colour = NA)
+
 ```
+
 
 3.2 Adding the boxplot: geom_boxplot()
 ```{r}
@@ -183,7 +185,9 @@ ggplot(exam,
                point_colour = NA) +
   geom_boxplot(width = .20,
                outlier.shape = NA)
+
 ```
+
 
 3.3 Adding the Dot Plots： stat_dots()
 ```{r}
@@ -201,6 +205,7 @@ ggplot(exam,
             binwidth = .5,
             dotsize = 2)
 ```
+
 
 3.4 Finishing touch
  coord_flip():Flip the raincloud chart horizontally to give it the raincloud appearance.
@@ -222,8 +227,9 @@ ggplot(exam,
             binwidth = .5,
             dotsize = 1.5) +
   coord_flip() +
-  theme_economist()
+  theme_wsj()
 ```
+
 
 
 
