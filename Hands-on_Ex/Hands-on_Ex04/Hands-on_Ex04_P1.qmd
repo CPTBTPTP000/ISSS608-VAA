@@ -34,8 +34,7 @@ colorspace, tidyverse)
 exam <- read_csv("Exam_data.csv")
 ```
 
-2.  Visualising Distribution with Ridgeline Plot 
-2.1 What is Ridgeline plot
+2.  Visualising Distribution with Ridgeline Plot 2.1 What is Ridgeline plot
 
     Ridgeline(Joyplot) is a data visualisation technique for **revealing the distribution of a numeric value for several groups.**
 
@@ -46,13 +45,13 @@ exam <- read_csv("Exam_data.csv")
 
 <ul>
 
-  <li>Ridgeline plots make sense when the number of group to represent is medium to high.</li>
+<li>Ridgeline plots make sense when the number of group to represent is medium to high.</li>
 
-  <li>If you have less than 5 groups, dealing with other distribution plots is probably better.</li>
+<li>If you have less than 5 groups, dealing with other distribution plots is probably better.</li>
 
-  <li>It works well when there is a clear pattern in the result, like if there is an obvious ranking in groups.For example, the score ranking among 6 classessss. </li>
+<li>It works well when there is a clear pattern in the result, like if there is an obvious ranking in groups.For example, the score ranking among 6 classessss.</li>
 
-</ul> 
+</ul>
 :::
 
 2.2 Plotting ridgeline graph: ggridges method
@@ -79,10 +78,11 @@ ggplot(exam,
   scale_y_discrete(name = NULL, expand = expansion(add = c(.2, 2.6))) +
   theme_ridges()
 ```
+
 2.3 Varying fill colors along the x axis
 
-geom_ridgeline_gradient() or geom_density_ridges_gradient() : coloring vary in some form along the x axis
-we can have changing fill colors or transparency but not both
+geom_ridgeline_gradient() or geom_density_ridges_gradient() : coloring vary in some form along the x axis we can have changing fill colors or transparency but not both
+
 ```{r}
 ggplot(exam, 
        aes(x = ENGLISH, 
@@ -100,8 +100,9 @@ ggplot(exam,
   scale_y_discrete(name = NULL, expand = expansion(add = c(0.2, 2.6))) +
   theme_ridges()
 ```
-2.4 Mapping the probabilities directly onto colour
-stat_density_ridges() can replaces stat_density() of ggplot2
+
+2.4 Mapping the probabilities directly onto colour stat_density_ridges() can replaces stat_density() of ggplot2
+
 ```{r}
 ggplot(exam,
        aes(x = ENGLISH, 
@@ -118,8 +119,8 @@ ggplot(exam,
 It is important include the argument calc_ecdf = TRUE in stat_density_ridges().
 :::
 
-2.5 Ridgeline plots with quantile lines
-By using geom_density_ridges_gradient(), we can colour the ridgeline plot by quantile, via the calculated stat(quantile)
+2.5 Ridgeline plots with quantile lines By using geom_density_ridges_gradient(), we can colour the ridgeline plot by quantile, via the calculated stat(quantile)
+
 ```{r}
 ggplot(exam,
        aes(x = ENGLISH, 
@@ -136,6 +137,7 @@ ggplot(exam,
 ```
 
 specify quantiles by cut points such as 2.5% and 97.5% tails
+
 ```{r}
 ggplot(exam,
        aes(x = ENGLISH, 
@@ -154,14 +156,13 @@ ggplot(exam,
   ) +
   theme_ridges()
 ```
+
 3.Visualising Distribution with Raincloud Plot
 
-Raincloud Plot is a data visualisation techniques that produces a half-density to a distribution plot.
-The raincloud (half-density) plot enhances the traditional box-plot by highlighting multiple modalities.
-Can show where densities are clustered.
+Raincloud Plot is a data visualisation techniques that produces a half-density to a distribution plot. The raincloud (half-density) plot enhances the traditional box-plot by highlighting multiple modalities. Can show where densities are clustered.
 
-3.1 Plotting a Half Eye graph: stat_halfeye()
-It contains a half-density and a slab-interval
+3.1 Plotting a Half Eye graph: stat_halfeye() It contains a half-density and a slab-interval
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -173,8 +174,8 @@ ggplot(exam,
 
 ```
 
-
 3.2 Adding the boxplot: geom_boxplot()
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -188,8 +189,8 @@ ggplot(exam,
 
 ```
 
-
 3.3 Adding the Dot Plots： stat_dots()
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -206,12 +207,10 @@ ggplot(exam,
             dotsize = 2)
 ```
 
+3.4 Finishing touch coord_flip():Flip the raincloud chart horizontally to give it the raincloud appearance.
 
-3.4 Finishing touch
- coord_flip():Flip the raincloud chart horizontally to give it the raincloud appearance.
- 
- theme_economist():Give the raincloud chart a professional publishing standard look.
- 
+theme_economist():Give the raincloud chart a professional publishing standard look.
+
 ```{r}
 ggplot(exam, 
        aes(x = RACE, 
@@ -229,7 +228,3 @@ ggplot(exam,
   coord_flip() +
   theme_wsj()
 ```
-
-
-
-

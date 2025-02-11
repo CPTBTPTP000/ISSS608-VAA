@@ -14,3 +14,100 @@ pacman::p_load(GGally, parallelPlot, tidyverse)
 ```{r}
 pop_data <- read_csv("WHData-2018.csv") 
 ```
+
+2.Plotting Static Parallel Coordinates Plot
+To plot a basic static parallel coordinates plot by using ggparcoord().
+```{r}
+ggparcoord(data = wh, 
+           columns = c(7:12))
+```
+
+2.1 Plotting a parallel coordinates with boxplot
+
+```{r}
+ggparcoord(data = wh, 
+           columns = c(7:12), 
+           groupColumn = 2,
+           scale = "uniminmax",
+           alphaLines = 0.2,
+           boxplot = TRUE, 
+           title = "Parallel Coordinates Plot of World Happines Variables")
+```
+
+2.2 Parallel coordinates with facet
+```{r}
+ggparcoord(data = wh, 
+           columns = c(7:12), 
+           groupColumn = 2,
+           scale = "uniminmax",
+           alphaLines = 0.2,
+           boxplot = TRUE, 
+           title = "Multiple Parallel Coordinates Plots of World Happines Variables by Region") +
+  facet_wrap(~ Region)
+```
+
+2.3 Rotating x-axis text label
+```{r}
+ggparcoord(data = wh, 
+           columns = c(7:12), 
+           groupColumn = 2,
+           scale = "uniminmax",
+           alphaLines = 0.2,
+           boxplot = TRUE, 
+           title = "Multiple Parallel Coordinates Plots of World Happines Variables by Region") +
+  facet_wrap(~ Region) + 
+  theme(axis.text.x = element_text(angle = 30))
+```
+2.4 Adjusting the rotated x-axis text label
+```{r}
+ggparcoord(data = wh, 
+           columns = c(7:12), 
+           groupColumn = 2,
+           scale = "uniminmax",
+           alphaLines = 0.2,
+           boxplot = TRUE, 
+           title = "Multiple Parallel Coordinates Plots of World Happines Variables by Region") +
+  facet_wrap(~ Region) + 
+  theme(axis.text.x = element_text(angle = 30, hjust=1))
+```
+
+3. Plotting Interactive Parallel Coordinates Plot: parallelPlot methods
+3.1 The basic plot
+
+```{r}
+wh <- wh %>%
+  dplyr:::select.data.frame(., "Happiness.score", 7:12)
+
+parallelPlot(wh,
+             width = 320,
+             height = 250)
+```
+
+3.2 Rotate axis label
+```{r}
+parallelPlot(wh,
+             rotateTitle = TRUE)
+```
+
+3.3 Changing the colour scheme
+```{r}
+parallelPlot(wh,
+             continuousCS = "YlOrRd",
+             rotateTitle = TRUE)
+```
+
+3.4 Parallel coordinates plot with histogram
+```{r}
+histoVisibility <- rep(TRUE, ncol(wh))
+parallelPlot(wh,
+             rotateTitle = TRUE,
+             histoVisibility = histoVisibility)
+```
+
+             
+
+
+
+
+
+
