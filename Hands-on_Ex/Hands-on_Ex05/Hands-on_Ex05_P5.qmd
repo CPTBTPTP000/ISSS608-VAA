@@ -18,27 +18,34 @@ realis2018 <- read_csv("realis2018.csv")
 
 2. Grouped summaries without the Pipe
 ```{r}
+realis2018_grouped <- realis2018 %>% 
+  group_by(`Project Name`, `Planning Region`, 
+           `Planning Area`, `Property Type`, 
+           `Type of Sale`) 
+
+
 realis2018_summarised <- realis2018_grouped %>%
-  summarise(
-    `Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE),
-    `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),
-    `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),
-    `Median Transacted Price ($)` = median(`Transacted Price ($)`, na.rm = TRUE),
-    .groups = "drop"
-  )
+  summarise(`Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE), 
+            `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),
+            `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),
+            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE),
+            .groups = "drop")  
+
 
 ```
 
 3. Grouped summaries with the pipe
 ```{r}
 realis2018_summarised <- realis2018 %>% 
-  group_by(`Project Name`,`Planning Region`, 
+  group_by(`Project Name`, `Planning Region`, 
            `Planning Area`, `Property Type`, 
            `Type of Sale`) %>%
   summarise(`Total Unit Sold` = sum(`No. of Units`, na.rm = TRUE), 
             `Total Area` = sum(`Area (sqm)`, na.rm = TRUE),
             `Median Unit Price ($ psm)` = median(`Unit Price ($ psm)`, na.rm = TRUE),
-            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE))
+            `Median Transacted Price` = median(`Transacted Price ($)`, na.rm = TRUE),
+            .groups = "drop")  
+
 ```
 4. Designing Treemap with treemap Package
 4.1 Designing a static treemap
