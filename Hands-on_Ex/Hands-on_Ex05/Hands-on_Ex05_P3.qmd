@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Exercise_P3"
+title: "Hands-on Ex05_P3"
 author: "Lin Xinyue"
 ---
 1.  Preparing Data

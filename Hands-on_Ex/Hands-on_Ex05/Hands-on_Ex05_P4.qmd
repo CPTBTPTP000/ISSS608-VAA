@@ -1,0 +1,16 @@
+---
+title: "Hands-on Ex05_P4"
+author: "Lin Xinyue"
+---
+1.  Preparing Data
+
+1.2 Installing and loading the packages
+
+```{R}
+pacman::p_load(GGally, parallelPlot, tidyverse)
+```
+
+1.3 Data Preparation
+```{r}
+pop_data <- read_csv("WHData-2018.csv") 
+```
