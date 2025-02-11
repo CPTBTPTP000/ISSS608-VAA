@@ -47,7 +47,7 @@ website:
 
 format:
   html:
-    theme: Yeti
+    theme: "#88C1D0"
     css:
     - styles.css
     - box.css
