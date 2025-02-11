@@ -1,0 +1,195 @@
+---
+title: "Hands-on Exercise_P3"
+author: "Lin Xinyue"
+---
+1.  Preparing Data
+
+1.2 Installing and loading the packages
+
+```{R}
+pacman::p_load(seriation, dendextend, heatmaply, tidyverse)
+```
+
+1.3 Data Preparation
+```{r}
+pop_data <- read_csv("WHData-2018.csv") 
+```
+
+1.4 Preparing the data
+```{r}
+wh <- read.csv("WHData-2018.csv", header = TRUE)
+
+row.names(wh) <- wh$Country
+```
+
+2. Transforming the data frame into a matrix
+Transfer data frame to data matrix to make your heatmap
+```{r}
+wh1 <- dplyr::select(wh, c(3, 7:12))
+wh_matrix <- data.matrix(wh)
+```
+
+3. Static Heatmap 
+3.1 heatmap() of R Stats
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      Rowv=NA, Colv=NA)
+```
+
+
+```{r}
+wh_heatmap <- heatmap(wh_matrix)
+```
+```{r}
+wh_heatmap <- heatmap(wh_matrix,
+                      scale="column",
+                      cexRow = 0.6, 
+                      cexCol = 0.8,
+                      margins = c(10, 4))
+```
+4. Creating Interactive Heatmap
+```{r}
+heatmaply(mtcars)
+```
+
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)])
+```
+
+5. Data trasformation
+Three main data transformation methods are supported by heatmaply(), namely: 
+ scale, normalise and percentilse.
+
+5.1 Scaling method
+It would bring them all close to the standard normal distribution.
+The scale argument in heatmaply() supports column and row scaling.
+```{r}
+heatmaply(wh_matrix[, -c(1, 2, 4, 5)],
+          scale = "column")
+```
+
+5.2 Normalising method
+
+It can be used to bring data to the 0 to 1 scale by subtracting the minimum and dividing by the maximum of all observations.
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+5.3 Percentising method
+
+```{r}
+heatmaply(percentize(wh_matrix[, -c(1, 2, 4, 5)]))
+```
+
+6. Clustering algorithm
+6.1 Manual approach
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "ward.D")
+```
+6.2 Statistical approach
+dend_expend() will be used to determine the recommended clustering method to be used.
+```{r}
+wh_d <- dist(normalize(wh_matrix[, -c(1, 2, 4, 5)]), method = "euclidean")
+dend_expend(wh_d)[[3]]
+```
+
+find_k() is used to determine the optimal number of cluster.
+```{r}
+wh_clust <- hclust(wh_d, method = "average")
+num_k <- find_k(wh_clust)
+plot(num_k)
+```
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          dist_method = "euclidean",
+          hclust_method = "average",
+          k_row = 3)
+```
+
+7. Seriation
+
+Optimal Leaf Ordering (OLO)
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "OLO")
+```
+
+Gruvaeus and Wainer(GW)
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "GW")
+```
+
+
+The option “mean” gives the output we would get by default from heatmap functions in other packages such as gplots::heatmap.2.
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "mean")
+```
+
+“none” gives us the dendrograms without any rotation that is based on the data matrix.
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none")
+```
+
+8. Working with colour palettes
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          seriate = "none",
+          colors = Blues)
+```
+
+9. Interactive heatmap
+
+```{r}
+heatmaply(normalize(wh_matrix[, -c(1, 2, 4, 5)]),
+          Colv=NA,
+          seriate = "none",
+          colors = Blues,
+          k_row = 5,
+          margins = c(NA,200,60,NA),
+          fontsize_row = 4,
+          fontsize_col = 5,
+          main="World Happiness Score and Variables by Country, 2018 \nDataTransformation using Normalise Method",
+          xlab = "World Happiness Indicators",
+          ylab = "World Countries"
+          )
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
