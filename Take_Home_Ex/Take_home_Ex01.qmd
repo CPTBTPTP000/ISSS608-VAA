@@ -19,7 +19,13 @@ pacman::p_load(dplyr,lubridate,
 shipperformance <- read_csv("Ship_Performance_Dataset.csv")
 ```
 
-1.4 Cheek the missing value
+1.4 check the data type
+```{r}
+str(shipperformance) 
+```
+---all the data type are correct
+
+1.5 Cheek the missing value
 ```{r}
 # Identify character (categorical) and numeric columns
 char_cols <- sapply(shipperformance, is.character)
@@ -40,13 +46,11 @@ missing_summary <- data.frame(
 
 print(missing_summary)
 ```
+---under 5%
 
-1.5 Rename the Date column
+1.5 Rename the column
+rename the "Date" colunm to shown as quarter
 ```{r}
-
-# Ensure date is in proper format
-library(dplyr)
-
 # Ensure date is in proper format and transform it
 shipperformance <- shipperformance %>%
   mutate(Date = as.Date(Date, format="%Y-%m-%d"),  # Adjust format if needed
@@ -63,10 +67,27 @@ head(shipperformance)
 
 ```
 
+1.6 Add Colunm
+```{r}
+shipperformance <- shipperformance %>%
+  mutate(Profit_per_Voyage = Revenue_per_Voyage_USD - Operational_Cost_USD)
+```
+
+```{r}
+shipperformance <- shipperformance %>%
+  Efficiency_Ratio = Distance_Traveled_nm / Engine_Power_kW
+```
+
+```{r}
+shipperformance <- shipperformance %>%
+  mutate(Cargo_Utilization = Average_Load_Percentage * Cargo_Weight_tons)
+```
 
 
-
-
+1.7 Summary Data
+```{r}
+summary(shipperformance)
+```
 
 
 
