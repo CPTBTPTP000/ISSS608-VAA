@@ -187,6 +187,12 @@ ggplot(data=realis2018_selected,
 ```
 9. Designing Interactive Treemap using d3treeR
 9.1 Installing d3treeR package
+
+utils::install.packages("devtools")
+utils::contrib.url(repos, "source")
+
+
+
 ```{R}
 install.packages("devtools")
 ```

@@ -4,3 +4,77 @@ author: "Lin Xinyue"
 date: "February 1, 2025"
 date-modified: "last-modified"
 ---
+
+1. 1.  Preparing Data
+
+1.2 Installing and loading the packages
+
+```{r}
+pacman::p_load(dplyr,lubridate,
+               treemap, treemapify, tidyverse) 
+```
+
+1.3 Data Preparation
+```{r}
+shipperformance <- read_csv("Ship_Performance_Dataset.csv")
+```
+
+1.4 Cheek the missing value
+```{r}
+# Identify character (categorical) and numeric columns
+char_cols <- sapply(shipperformance, is.character)
+num_cols <- sapply(shipperformance, is.numeric)
+
+# Count "None" values in categorical columns
+none_count <- colSums(shipperformance[, char_cols] == "None")
+
+# Count NA values in numerical columns
+na_count <- colSums(is.na(shipperformance[, num_cols]))
+
+# Combine results into a dataframe
+missing_summary <- data.frame(
+  Column = c(names(none_count), names(na_count)),
+  Missing_Values = c(none_count, na_count),
+  Percentage = c(none_count / nrow(shipperformance) * 100, na_count / nrow(shipperformance) * 100)
+)
+
+print(missing_summary)
+```
+
+1.5 Rename the Date column
+```{r}
+
+# Ensure date is in proper format
+library(dplyr)
+
+# Ensure date is in proper format and transform it
+shipperformance <- shipperformance %>%
+  mutate(Date = as.Date(Date, format="%Y-%m-%d"),  # Adjust format if needed
+         Quarter = paste0("Q", quarter(Date)),   # Extract quarter (Q1, Q2, Q3, Q4)
+         Year = year(Date),                      # Extract year
+         Quarter_Year = paste0(Year, "-", Quarter))  # Combine Year + Quarter
+
+# Remove Date and Year, keeping only Quarter_Year
+shipperformance <- shipperformance %>%
+  select(-Date, -Year)
+
+# Check the first few rows
+head(shipperformance)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
