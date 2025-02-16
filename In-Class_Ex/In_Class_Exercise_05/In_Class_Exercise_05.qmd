@@ -27,7 +27,7 @@ cols <- c("Mfg_Month", "HP_Bin", "CC_bin","Doors","Gears",
 "Airbag_2","Airco","Automatic_airco","Airbag_2","Boardcomputer''CD_Player","central_Lock","powered_windows", "power_steering","Radio","stlamps","Backseat_Divider","Metallic_Rim",
 "sport_ Model","Radio cassette","Tow Bar")
 
-car_reasle <- read_xls("ToyotaCorolla.xls","data")
+car_resale <- read_xls("ToyotaCorolla.xls","data")
 
 ```
 
@@ -71,14 +71,14 @@ car_resale %>%
 ```{r}
 model <- lm(Price ~ Age_08_04 + Mfg_Year + KM +
               Weight + Guarantee_Period, data = 
-car_reasle)
+car_resale)
 model
 ```
 
 ```{r}
 
 model1 <-lm(Price ~ Age_08_04 +KM +
-             Weight + Guarantee_Period, data =car_reasle)
+             Weight + Guarantee_Period, data =car_resale)
 check_normality(model1)           
 ```
 ```{r}

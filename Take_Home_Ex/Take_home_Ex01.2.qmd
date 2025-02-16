@@ -14,7 +14,8 @@ date-modified: "last-modified"
 ```{r}
 pacman::p_load(tidyverse, treemap, ggridges,
                ggcorrplot, ggstatsplot, GGally,
-               treemapify) 
+               treemapify, readxl,SmartEDA, easystats, gtsummary, ggstatsplot,
+               ggExtra, ggiraph) 
 ```
 
 1.3 Data Preparation
@@ -69,123 +70,177 @@ head(shipperformance)
 
 ```
 
-1.6 Add Colunm
 
+
+1.6 Validate Data
 ```{r}
-shipperformance <- shipperformance %>%
-  mutate(Profit_per_Voyage = Revenue_per_Voyage_USD - Operational_Cost_USD)
+shipperformance %>%
+  ExpData(type = 1)
 ```
-
 ```{r}
-shipperformance <- shipperformance %>%
-  mutate(Cargo_Utilization = Average_Load_Percentage * Cargo_Weight_tons)
+shipperformance %>%
+  ExpData(type = 2)
 ```
+---
+no zero variance variable and % of variables
 
-1.7 Summary Data
-
-```{r}
-summary(shipperformance)
-```
 
 2.  EDA
 
 2.1 Check for the outliers
 
+
+```{r}
+shipperformance %>%
+ExpNumViz(
+  target = NULL,
+  nlim = 10,
+  Page = c(2,2))  
+
+
+```
+---
+
+Check Outliers
 ```{r}
 
 boxplot_data <- shipperformance %>%
-  select(Revenue_per_Voyage_USD, Operational_Cost_USD, Efficiency_nm_per_kWh, Cargo_Utilization) %>%
+  select(Revenue_per_Voyage_USD, Operational_Cost_USD, Efficiency_nm_per_kWh, Operational_Cost_USD,Turnaround_Time_hours) %>%
   pivot_longer(cols = everything(), names_to = "Metric", values_to = "Value")
 
 ggplot(boxplot_data, aes(x = Metric, y = Value, fill = Metric)) + 
   geom_boxplot(outlier.colour = "red", outlier.shape = 16, alpha=0.6) +
-  labs(title = "Boxplots of Key Metrics", x = "Metric", y = "Value") +
   theme_light() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
-2.2
 
+3. Visual Analysis
+
+3.1 Quarterly Revenue Trend Analysis
 ```{r}
-
-ggplot(shipperformance, aes(x = Maintenance_Status, y = Efficiency_nm_per_kWh, fill = Maintenance_Status)) +
-  geom_boxplot(outlier.colour = "red", outlier.shape = 16, alpha=0.6) +
-  labs(title = "Efficiency vs. Maintenance Status",
-       x = "Maintenance Status",
-       y = "Efficiency (nm per kWh)") +
-  theme_minimal()
-
-
-```
-
-2.3 corelationship
-
-```{r}
-
-cor_matrix <- cor(shipperformance %>% select_if(is.numeric), use = "complete.obs")
-
-ggcorrplot(cor_matrix, method = "circle", type = "lower",
-           lab = TRUE, lab_size = 3, colors = c("blue", "white", "red")) +
-  labs(title = "Correlation Heatmap of Ship Performance Data")
-```
-
-```{R}
-
-ggplot(shipperformance, aes(x = Average_Load_Percentage, y = Ship_Type, fill = Ship_Type)) +
-  geom_density_ridges(alpha = 0.6) +
-  labs(title = "Distribution of Cargo Load Across Ship Types",
-       x = "Average Load Percentage",
-       y = "Ship Type") +
-  theme_minimal()
-
+ggplot(shipperformance, aes(x = Quarter_Year, y = Revenue_per_Voyage_USD, group = Ship_Type, color = Ship_Type)) +
+  geom_line(stat="summary", fun="mean", size=1) +
+  geom_point(stat="summary", fun="mean", size=2) +
+  labs(title = "Quarterly Revenue Trend by Ship Type",
+       x = "Quarter-Year",
+       y = "Average Revenue per Voyage (USD)") +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold", size = 18, color = "darkblue"))
 ```
 
 ```{r}
+avg_revenue <- mean(shipperformance$Revenue_per_Voyage_USD, na.rm = TRUE)  # Calculate global average
 
-ggplot(shipperformance, aes(x = Seasonal_Impact_Score, 
-                            y = Efficiency_nm_per_kWh, 
-                            color = Profit_per_Voyage)) +
-  geom_point(alpha = 0.7, size = 3) + 
-  facet_wrap(~ Quarter_Year) +
-  scale_color_gradient(low = "blue", high = "red") +  
-  labs(title = "Seasonal Impact vs Efficiency & Profitability",
-       x = "Seasonal Impact Score",
-       y = "Efficiency (Nautical Miles per kWh)",
-       color = "Profit per Voyage") +
-  theme_minimal()
+ggplot(shipperformance, aes(x = Quarter_Year, y = Revenue_per_Voyage_USD, 
+                            group = Ship_Type, color = Ship_Type)) +
+  geom_smooth(stat = "summary", fun = "mean", method = "loess", se = TRUE, size = 1.2, alpha = 0.3) +  
+  geom_point(stat = "summary", fun = "mean", size = 3, alpha = 0.7) +  
+  geom_line(stat = "summary", fun = "mean", size = 1.5) +  
+  geom_hline(yintercept = avg_revenue, linetype = "dashed", color = "darkgrey", size = 1) +  # Reference Line
+  facet_wrap(~ Weather_Condition, scales = "free_y") +  
+  labs(title = "Quarterly Revenue Trends with Reference Line",
+       
+       x = "Quarter-Year",
+       y = "Average Revenue per Voyage (USD)",
+       color = "Ship Type") +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(face = "bold", size = 18, color = "darkblue"),
+        axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 1))
+```
+
+
+3.2 Two-sample Test
+
+H0:There is no significant difference in the average fuel efficiency (nm per kWh) among different engine types.
+
+H1:At least one engine type has significantly different fuel efficiency compared to the others.
+
+```{r}
+ggbetweenstats(
+  data = shipperformance, 
+  x = Engine_Type, 
+  y = Efficiency_nm_per_kWh,
+  type = "p" 
+ )
+```
+
+3.3 ANOVA Test
+
+H0:There is no significant difference in Average_Load_Percentage across different Maintenance_Status categories.
+
+H1:There is a significant difference in Average_Load_Percentage across different Maintenance_Status categories.
+
+```{r}
+ggbetweenstats(
+  data = shipperformance,
+  x = Maintenance_Status,   
+  y = Average_Load_Percentage, 
+  type = "p",  
+  pairwise.display = "s", 
+  bf.message = TRUE 
+)
+```
+
+
+3.4 Significant Test of Association (Depedence)
+```{r}
+ggbarstats(
+  data = shipperformance,  
+  x = Ship_Type,           
+  y = Route_Type,         
+  title = "Association Between Ship Type and Route Type"
+)
+```
+
+3.5 Regression Model
+```{r}
+model <- lm(Efficiency_nm_per_kWh ~ Maintenance_Status +           Average_Load_Percentage + Turnaround_Time_hours + Engine_Power_kW, 
+             data = shipperformance)
+            
+
+check_normality(model)  
+
 ```
 
 ```{r}
-
-ggplot(shipperformance, aes(area = Profit_per_Voyage, fill = Cargo_Weight_tons, label = Cargo_Weight_tons)) +
-  geom_treemap() +
-  geom_treemap_text(colour = "white", place = "center", grow = TRUE) +
-  labs(title = "Profit Contribution by Ship Type") +
-  theme_minimal()
-
+summary(model)
+```
+```{r}
+check_collinearity(model)
+```
+```{r}
+#| fig-width:12
+#| fig-height:8
+check_model(model)
 ```
 
 ```{r}
-
-cluster_data <- shipperformance %>%
-  select(Efficiency_nm_per_kWh, Profit_per_Voyage, Operational_Cost_USD)
-
-
-cluster_data <- as.data.frame(lapply(cluster_data, function(x) (x - min(x)) / (max(x) - min(x))))
-
-
-set.seed(123)
-kmeans_result <- kmeans(cluster_data, centers = 3)
-
-shipperformance$Cluster <- as.factor(kmeans_result$cluster)
-
-ggplot(shipperformance, aes(x = Efficiency_nm_per_kWh, y = Profit_per_Voyage, color = Cluster)) +
-  geom_point(alpha = 0.6) +
-  labs(title = "K-Means Clustering of Ship Performance",
-       x = "Efficiency (nm/kWh)",
-       y = "Profit per Voyage",
-       color = "Cluster") +
-  theme_minimal()
-
+tbl_regression (model1,
+                intercept = TRUE)
 ```
+
+
+```{r}
+p_model <- parameters(model)
+```
+
+```{r}
+plot(parameters(model))
+```
+
+```{r}
+ggcoefstats(model,
+            output = "plot")
+```
+
+
+
+
+
+
+
+
+
+
