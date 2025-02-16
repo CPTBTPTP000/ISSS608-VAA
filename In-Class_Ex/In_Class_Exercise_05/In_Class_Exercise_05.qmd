@@ -3,9 +3,14 @@ title: "In-class_Ex05a"
 author: "Lin Xinyue"
 ---
 
+```{r}
+if (!dir.exists("In_Class_Exercise_05_files/figure-html")) {
+    dir.create("In_Class_Exercise_05_files/figure-html", recursive = TRUE)
+}
+```
 
 ```{r}
-pacman::p_load(tidyverse, readxl,SmartEDA, easystats, gtsummary, ggstatsplot)
+pacman::p_load(tidyverse, readxl,SmartEDA, easystats, gtsummary, ggstatsplot,broom)
 ```
 
 ```{R}
@@ -50,8 +55,7 @@ car_resale %>%
 
 Bar chart for all categro variables
 ```{r}
-#| fig-width:12
-#| fig-height:10
+
 
 car_resale %>%
   ExpCatViz(
@@ -102,8 +106,7 @@ plot(check_c)
 ```
 
 ```{r}
-#| fig-width:12
-#| fig-height:8
+
 check_model(model1)
 ```
 
@@ -115,19 +118,11 @@ summary(model1)
 creat the table for professional looking
 ```{r}
 tbl_regression (model1,
-                intercept = True)
+                intercept = TRUE)
 ```
 
 Can select the data want to add
-```{r}
-tbl_regression(model1,
-               intercept =True) %>%
-  agg_glance_source_note(
-    label = list(sigma ~ "\U03C3"), #calculate sigma value
-    include = c(r.squared, adj.r.squared,
-                AIC, statistic,
-                p.value,sigma))
-```
+
 
 
 ```{r}
