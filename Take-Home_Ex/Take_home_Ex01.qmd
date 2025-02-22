@@ -54,15 +54,11 @@ pacman::p_load(tidyverse,
 
 -   ggstatsplot : Integrate statistical details, facilitating enriched data exploration
 
-```         
-<hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
-```
+    <hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
 
 -   ggExtra : For adding marginal plots to ggplot2
 
-```         
-<hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
-```
+    <hr style="border:none; border-top:1px solid #ddd; margin:20px 0;">
 
 ## 2.2 Import Data
 
