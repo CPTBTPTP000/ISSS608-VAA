@@ -3,9 +3,7 @@ title: "Hands-on Exercise 05_P5"
 author: "Lin Xinyue"
 ---
 
-1.  
-
-    1.  Preparing Data
+1.  Preparing Data
 
 1.2 Installing and loading the packages
 

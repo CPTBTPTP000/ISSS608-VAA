@@ -5,14 +5,15 @@ date: "February 1, 2025"
 date-modified: "last-modified"
 ---
 
-
 # 1.Introduction
 
-    The transport industry plays an increasingly important role in globalization and has a significant impact on sustainable development. One major challenge is finding ways to adjust various factors to improve maritime transportation efficiency while maximizing profits.
+```         
+The transport industry plays an increasingly important role in globalization and has a significant impact on sustainable development. One major challenge is finding ways to adjust various factors to improve maritime transportation efficiency while maximizing profits.
 
-    The transport industry plays an increasingly important role in globalization and has a significant impact on sustainable development. One major challenge is finding ways to adjust various factors to improve maritime transportation efficiency while maximizing profits.This dataset is designed for maritime analytics, allowing researchers and industry professionals to explore clustering, predictive modeling, and optimization strategies. It includes key variables such as shipping route type, total operational cost per voyage, and maintenance status, providing insights into ship performance under different conditions.
+The transport industry plays an increasingly important role in globalization and has a significant impact on sustainable development. One major challenge is finding ways to adjust various factors to improve maritime transportation efficiency while maximizing profits.This dataset is designed for maritime analytics, allowing researchers and industry professionals to explore clustering, predictive modeling, and optimization strategies. It includes key variables such as shipping route type, total operational cost per voyage, and maintenance status, providing insights into ship performance under different conditions.
 
-    By analyzing ship performance, this dataset helps identify important factors affecting efficiency and supports better fleet management decisions. Understanding these relationships can contribute to reducing costs, improving fuel efficiency, and making maritime operations more sustainable.
+By analyzing ship performance, this dataset helps identify important factors affecting efficiency and supports better fleet management decisions. Understanding these relationships can contribute to reducing costs, improving fuel efficiency, and making maritime operations more sustainable.
+```
 
 # 2.Prepare Data
 
@@ -204,16 +205,12 @@ ggbetweenstats(
  )
 ```
 
-:::::: info-box
+::: info-box
 <h4>
 
 </h4>
 
-<ul>
-
-Welch’s ANOVA (F = 3.92, p = 0.0087) shows significant efficiency differences (nm/kWh) among engines. Steam turbines are slightly better but not significant. The effect size (9.09e-03) suggests other factors matter which reminder alternative engines but also need to consider overall factors.
-</ul>
-
+<ul>Welch’s ANOVA (F = 3.92, p = 0.0087) shows significant efficiency differences (nm/kWh) among engines. Steam turbines are slightly better but not significant. The effect size (9.09e-03) suggests other factors matter which reminder alternative engines but also need to consider overall factors.</ul>
 :::
 
 ## 4.3 Relationship Between Maintenance Status and Cargo Load
@@ -238,9 +235,7 @@ ggbetweenstats(
 
 </h4>
 
-<ul>
-The ANOVA test is evaluate whether Average Load Percentage varies significantly across different Maintenance Status categories.The results (F = 1.29, p = 0.28) indicates that there is no significant differences in average load percentage across maintenance statuses. Therefore, improve maintenance alone may not enhance cargo load efficiency.
-</ul>
+<ul>The ANOVA test is evaluate whether Average Load Percentage varies significantly across different Maintenance Status categories.The results (F = 1.29, p = 0.28) indicates that there is no significant differences in average load percentage across maintenance statuses. Therefore, improve maintenance alone may not enhance cargo load efficiency.</ul>
 :::
 
 ## 4.4 Association Between Ship Type and Route Type
@@ -259,8 +254,7 @@ ggbarstats(
 
 </h4>
 
-<ul>
-A stacked bar chart showed consistent proportions of ship types (Bulk Carriers, Container Ships, etc.) across route types.p-value is 0.79 in Chi-square test indicates there is no significant relationship between Ship Type and Route Type. As the result, ship types are viable across all route types and the company has the flexibility to adjust the ship types according to different needs.</ul>
+<ul>A stacked bar chart showed consistent proportions of ship types (Bulk Carriers, Container Ships, etc.) across route types.p-value is 0.79 in Chi-square test indicates there is no significant relationship between Ship Type and Route Type. As the result, ship types are viable across all route types and the company has the flexibility to adjust the ship types according to different needs.</ul>
 :::
 
 ## 4.5 Regression Analysis of Efficiency Determinants
@@ -313,7 +307,5 @@ ggcoefstats(model,
 
 </h4>
 
-<ul>
-A regression model tested the impact of Maintenance Status, Average Load Percentage, Turnaround Time, and Engine Power on efficiency (nm/kWh). None of the variables showed significant effects (p \> 0.05) and the R-squared value is 0.00176 indicating poor model fit. For better predictions in the future, other factors for example operation cost may need to consider.</ul>
+<ul>A regression model tested the impact of Maintenance Status, Average Load Percentage, Turnaround Time, and Engine Power on efficiency (nm/kWh). None of the variables showed significant effects (p \> 0.05) and the R-squared value is 0.00176 indicating poor model fit. For better predictions in the future, other factors for example operation cost may need to consider.</ul>
 :::
-
