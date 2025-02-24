@@ -5,7 +5,7 @@ date: "February 1, 2025"
 date-modified: "last-modified"
 ---
 
-# 1.Introduction 
+# 1.Introduction
 
 ```         
 The transport industry plays an increasingly important role in globalization and has a significant impact on sustainable development. One major challenge is finding ways to adjust various factors to improve maritime transportation efficiency while maximizing profits.
