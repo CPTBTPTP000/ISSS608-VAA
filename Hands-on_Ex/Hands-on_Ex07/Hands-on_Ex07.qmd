@@ -2,6 +2,7 @@
 title: "Hands-on Exercise 07"
 author: "Lin Xinyue"
 ---
+
 1.  Preparing Data
 
 1.2 Installing and loading the packages
@@ -16,15 +17,14 @@ pacman::p_load(scales, viridis, lubridate, ggthemes, gridExtra, readxl, knitr, d
 attacks <- read.csv("eventlog.csv")
 ```
 
-1.4 Examining the data structure
-Using kable() to review the structure of the imported data frame
+1.4 Examining the data structure Using kable() to review the structure of the imported data frame
+
 ```{r}
 kable(head(attacks))
 ```
 
-2. Data Preparation
-Step 1: Deriving weekday and hour of day fields
-Two new fields namely wkday and hour need to be derived
+2.  Data Preparation Step 1: Deriving weekday and hour of day fields Two new fields namely wkday and hour need to be derived
+
 ```{r}
 make_hr_wkday <- function(ts, sc, tz) {
   real_times <- ymd_hms(ts, 
@@ -36,7 +36,9 @@ make_hr_wkday <- function(ts, sc, tz) {
   return(dt)
 }
 ```
+
 Step 2: Deriving the attacks tibble data frame
+
 ```{r}
 wkday_levels <- c('Saturday', 'Friday', 
                   'Thursday', 'Wednesday', 
@@ -54,11 +56,13 @@ attacks <- attacks %>%
     hour  = factor(
       hour, levels = 0:23))
 ```
+
 ```{r}
 kable(head(attacks))
 ```
 
-3. Building the Calendar Heatmaps
+3.  Building the Calendar Heatmaps
+
 ```{r}
 grouped <- attacks %>% 
   count(wkday, hour) %>% 
@@ -85,8 +89,8 @@ theme(axis.ticks = element_blank(),
       legend.text = element_text(size = 6) )
 ```
 
-4.Building Multiple Calendar Heatmaps
-Step 1: Deriving attack by country objecT
+4.Building Multiple Calendar Heatmaps Step 1: Deriving attack by country objecT
+
 ```{R}
 attacks_by_country <- count(
   attacks, source_country) %>%
@@ -95,6 +99,7 @@ attacks_by_country <- count(
 ```
 
 Step 2: Preparing the tidy data frame
+
 ```{R}
 top4 <- attacks_by_country$source_country[1:4]
 top4_attacks <- attacks %>%
@@ -107,6 +112,7 @@ top4_attacks <- attacks %>%
 ```
 
 Step 3: Plotting the Multiple Calender Heatmap by using ggplot2 package.
+
 ```{r}
 ggplot(top4_attacks, 
        aes(hour, 
@@ -128,14 +134,17 @@ ggplot(top4_attacks,
         legend.title = element_text(size = 8),
         legend.text = element_text(size = 6) )
 ```
-5. Plotting Cycle Plot
-Can show the time-series patterns and trend of visitor arrivals from Vietnam programmatically
+
+5.  Plotting Cycle Plot Can show the time-series patterns and trend of visitor arrivals from Vietnam programmatically
 
 5.1 Import the data
+
 ```{r}
 air <- read_excel("arrivals_by_air.xlsx")
 ```
+
 5.2 Month and year are derived from Month-Year field
+
 ```{r}
 air$month <- factor(month(air$`Month-Year`), 
                     levels=1:12, 
@@ -143,7 +152,9 @@ air$month <- factor(month(air$`Month-Year`),
                     ordered=TRUE) 
 air$year <- year(ymd(air$`Month-Year`))
 ```
+
 5.3 Extracting the target country
+
 ```{r}
 Vietnam <- air %>% 
   select(`Vietnam`, 
@@ -151,13 +162,17 @@ Vietnam <- air %>%
          year) %>%
   filter(year >= 2010)
 ```
+
 5.4 Computing year average arrivals by month
+
 ```{r}
 hline.data <- Vietnam %>% 
   group_by(month) %>%
   summarise(avgvalue = mean(`Vietnam`))
 ```
+
 5.5 Plotting the cycle plot
+
 ```{r}
 ggplot() + 
   geom_line(data=Vietnam,
@@ -178,13 +193,16 @@ ggplot() +
   theme_tufte(base_family = "Helvetica")
 ```
 
-6. Plotting Slopegraph
+6.  Plotting Slopegraph
 
 6.1 Import Data
+
 ```{r}
 rice <- read_csv("rice.csv")
 ```
+
 6.2 Plotting the slopegraph
+
 ```{r}
 rice %>% 
   mutate(Year = factor(Year)) %>%
@@ -194,6 +212,3 @@ rice %>%
                 SubTitle = "1961-1980",
                 Caption = "Prepared by: Dr. Kam Tin Seong")
 ```
-
-
-
