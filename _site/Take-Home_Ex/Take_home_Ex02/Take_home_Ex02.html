@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Lin Xinyue">
+<meta name="dcterms.date" content="2025-03-03">
+
+<title>Take-Home Exercise 02 – ISSS608-VAA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../box.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ISSS608-VAA</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercises" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Hands-on Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercises">    
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX01/Hands-on_EX01.html">
+ <span class="dropdown-text">Hands-on Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX02/Hands-on_EX02.html">
+ <span class="dropdown-text">Hands-on Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX03/Hands-on_EX03_P1.html">
+ <span class="dropdown-text">Hands-on Exercise 3 Part 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX03/Hands-on_EX03_P2.html">
+ <span class="dropdown-text">Hands-on Exercise 3 Part 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX04/Hands-on_Ex04_P1.html">
+ <span class="dropdown-text">Hands-on Exercise 4 Part 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX04/Hands-on_Ex04_P2.html">
+ <span class="dropdown-text">Hands-on Exercise 4 Part 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX04/Hands-on_Ex04_P3.html">
+ <span class="dropdown-text">Hands-on Exercise 4 Part 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_EX04/Hands-on_Ex04_P4.html">
+ <span class="dropdown-text">Hands-on Exercise 4 Part 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_P1.html">
+ <span class="dropdown-text">Hands-on Exercise 5 Part 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_P2.html">
+ <span class="dropdown-text">Hands-on Exercise 5 Part 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_P3.html">
+ <span class="dropdown-text">Hands-on Exercise 5 Part 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_P4.html">
+ <span class="dropdown-text">Hands-on Exercise 5 Part 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05_P5.html">
+ <span class="dropdown-text">Hands-on Exercise 5 Part 5</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07.html">
+ <span class="dropdown-text">Hands-on Exercise 7</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercises" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-home Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercises">    
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take_home_Ex01.html">
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take_home_Ex02/Take_home_Ex02.html">
+ <span class="dropdown-text">Take-home Exercise 2</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercises" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-Class Exercises</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercises">    
+        <li>
+    <a class="dropdown-item" href="../../In-Class_Ex/In_Class_Exercise_04/In_Class_Exercise_04.html">
+ <span class="dropdown-text">In-class Exercise 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-Class_Ex/In_Class_Exercise_05/In_Class_Exercise_05.html">
+ <span class="dropdown-text">In-class Exercise 5</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take-Home Exercise 02</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Lin Xinyue </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 3, 2025</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">March 8, 2025</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>1.Data Preparation</p>
+<p>1.1 Installing R pacakges</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(readxl, gifski, gapminder,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               plotly, gganimate, lubridate,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               scales, viridis, lubridate, ggthemes,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               gridExtra, readxl, knitr, data.table,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               CGPfunctions, ggHoriPlot, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>1.2 Importing the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>merchandisetrade <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Total_Merchandise_Trade_201525.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>servicetrade <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Trade_Exp_Imp_by_Services_201525.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>手动去掉了文字解释后</p>
+<p>1.3 Examining the data structure</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(merchandisetrade))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+<col style="width: 0%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Data Series</th>
+<th style="text-align: right;">2025 Jan</th>
+<th style="text-align: right;">2024 Dec</th>
+<th style="text-align: right;">2024 Nov</th>
+<th style="text-align: right;">2024 Oct</th>
+<th style="text-align: right;">2024 Sep</th>
+<th style="text-align: right;">2024 Aug</th>
+<th style="text-align: right;">2024 Jul</th>
+<th style="text-align: right;">2024 Jun</th>
+<th style="text-align: right;">2024 May</th>
+<th style="text-align: right;">2024 Apr</th>
+<th style="text-align: right;">2024 Mar</th>
+<th style="text-align: right;">2024 Feb</th>
+<th style="text-align: right;">2024 Jan</th>
+<th style="text-align: right;">2023 Dec</th>
+<th style="text-align: right;">2023 Nov</th>
+<th style="text-align: right;">2023 Oct</th>
+<th style="text-align: right;">2023 Sep</th>
+<th style="text-align: right;">2023 Aug</th>
+<th style="text-align: right;">2023 Jul</th>
+<th style="text-align: right;">2023 Jun</th>
+<th style="text-align: right;">2023 May</th>
+<th style="text-align: right;">2023 Apr</th>
+<th style="text-align: right;">2023 Mar</th>
+<th style="text-align: right;">2023 Feb</th>
+<th style="text-align: right;">2023 Jan</th>
+<th style="text-align: right;">2022 Dec</th>
+<th style="text-align: right;">2022 Nov</th>
+<th style="text-align: right;">2022 Oct</th>
+<th style="text-align: right;">2022 Sep</th>
+<th style="text-align: right;">2022 Aug</th>
+<th style="text-align: right;">2022 Jul</th>
+<th style="text-align: right;">2022 Jun</th>
+<th style="text-align: right;">2022 May</th>
+<th style="text-align: right;">2022 Apr</th>
+<th style="text-align: right;">2022 Mar</th>
+<th style="text-align: right;">2022 Feb</th>
+<th style="text-align: right;">2022 Jan</th>
+<th style="text-align: right;">2021 Dec</th>
+<th style="text-align: right;">2021 Nov</th>
+<th style="text-align: right;">2021 Oct</th>
+<th style="text-align: right;">2021 Sep</th>
+<th style="text-align: right;">2021 Aug</th>
+<th style="text-align: right;">2021 Jul</th>
+<th style="text-align: right;">2021 Jun</th>
+<th style="text-align: right;">2021 May</th>
+<th style="text-align: right;">2021 Apr</th>
+<th style="text-align: right;">2021 Mar</th>
+<th style="text-align: right;">2021 Feb</th>
+<th style="text-align: right;">2021 Jan</th>
+<th style="text-align: right;">2020 Dec</th>
+<th style="text-align: right;">2020 Nov</th>
+<th style="text-align: right;">2020 Oct</th>
+<th style="text-align: right;">2020 Sep</th>
+<th style="text-align: right;">2020 Aug</th>
+<th style="text-align: right;">2020 Jul</th>
+<th style="text-align: right;">2020 Jun</th>
+<th style="text-align: right;">2020 May</th>
+<th style="text-align: right;">2020 Apr</th>
+<th style="text-align: right;">2020 Mar</th>
+<th style="text-align: right;">2020 Feb</th>
+<th style="text-align: right;">2020 Jan</th>
+<th style="text-align: right;">2019 Dec</th>
+<th style="text-align: right;">2019 Nov</th>
+<th style="text-align: right;">2019 Oct</th>
+<th style="text-align: right;">2019 Sep</th>
+<th style="text-align: right;">2019 Aug</th>
+<th style="text-align: right;">2019 Jul</th>
+<th style="text-align: right;">2019 Jun</th>
+<th style="text-align: right;">2019 May</th>
+<th style="text-align: right;">2019 Apr</th>
+<th style="text-align: right;">2019 Mar</th>
+<th style="text-align: right;">2019 Feb</th>
+<th style="text-align: right;">2019 Jan</th>
+<th style="text-align: right;">2018 Dec</th>
+<th style="text-align: right;">2018 Nov</th>
+<th style="text-align: right;">2018 Oct</th>
+<th style="text-align: right;">2018 Sep</th>
+<th style="text-align: right;">2018 Aug</th>
+<th style="text-align: right;">2018 Jul</th>
+<th style="text-align: right;">2018 Jun</th>
+<th style="text-align: right;">2018 May</th>
+<th style="text-align: right;">2018 Apr</th>
+<th style="text-align: right;">2018 Mar</th>
+<th style="text-align: right;">2018 Feb</th>
+<th style="text-align: right;">2018 Jan</th>
+<th style="text-align: right;">2017 Dec</th>
+<th style="text-align: right;">2017 Nov</th>
+<th style="text-align: right;">2017 Oct</th>
+<th style="text-align: right;">2017 Sep</th>
+<th style="text-align: right;">2017 Aug</th>
+<th style="text-align: right;">2017 Jul</th>
+<th style="text-align: right;">2017 Jun</th>
+<th style="text-align: right;">2017 May</th>
+<th style="text-align: right;">2017 Apr</th>
+<th style="text-align: right;">2017 Mar</th>
+<th style="text-align: right;">2017 Feb</th>
+<th style="text-align: right;">2017 Jan</th>
+<th style="text-align: right;">2016 Dec</th>
+<th style="text-align: right;">2016 Nov</th>
+<th style="text-align: right;">2016 Oct</th>
+<th style="text-align: right;">2016 Sep</th>
+<th style="text-align: right;">2016 Aug</th>
+<th style="text-align: right;">2016 Jul</th>
+<th style="text-align: right;">2016 Jun</th>
+<th style="text-align: right;">2016 May</th>
+<th style="text-align: right;">2016 Apr</th>
+<th style="text-align: right;">2016 Mar</th>
+<th style="text-align: right;">2016 Feb</th>
+<th style="text-align: right;">2016 Jan</th>
+<th style="text-align: right;">2015 Dec</th>
+<th style="text-align: right;">2015 Nov</th>
+<th style="text-align: right;">2015 Oct</th>
+<th style="text-align: right;">2015 Sep</th>
+<th style="text-align: right;">2015 Aug</th>
+<th style="text-align: right;">2015 Jul</th>
+<th style="text-align: right;">2015 Jun</th>
+<th style="text-align: right;">2015 May</th>
+<th style="text-align: right;">2015 Apr</th>
+<th style="text-align: right;">2015 Mar</th>
+<th style="text-align: right;">2015 Feb</th>
+<th style="text-align: right;">2015 Jan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Total Merchandise Trade, (At Current Prices)</td>
+<td style="text-align: right;">114153980</td>
+<td style="text-align: right;">116278793</td>
+<td style="text-align: right;">110132325</td>
+<td style="text-align: right;">107525960</td>
+<td style="text-align: right;">103512460</td>
+<td style="text-align: right;">105709528</td>
+<td style="text-align: right;">112193161</td>
+<td style="text-align: right;">100854309</td>
+<td style="text-align: right;">109494400</td>
+<td style="text-align: right;">108724423</td>
+<td style="text-align: right;">108379074</td>
+<td style="text-align: right;">96121143</td>
+<td style="text-align: right;">106938893</td>
+<td style="text-align: right;">97730166</td>
+<td style="text-align: right;">104964764</td>
+<td style="text-align: right;">109959513</td>
+<td style="text-align: right;">103395783</td>
+<td style="text-align: right;">102822762</td>
+<td style="text-align: right;">98876160</td>
+<td style="text-align: right;">99800672</td>
+<td style="text-align: right;">96292627</td>
+<td style="text-align: right;">94275865</td>
+<td style="text-align: right;">110665037</td>
+<td style="text-align: right;">93025120</td>
+<td style="text-align: right;">93914082</td>
+<td style="text-align: right;">104869854</td>
+<td style="text-align: right;">104816687</td>
+<td style="text-align: right;">109759291</td>
+<td style="text-align: right;">118306444</td>
+<td style="text-align: right;">121829757</td>
+<td style="text-align: right;">125154365</td>
+<td style="text-align: right;">123826212</td>
+<td style="text-align: right;">117451687</td>
+<td style="text-align: right;">116353345</td>
+<td style="text-align: right;">121212561</td>
+<td style="text-align: right;">96949830</td>
+<td style="text-align: right;">104872485</td>
+<td style="text-align: right;">113563151</td>
+<td style="text-align: right;">107395039</td>
+<td style="text-align: right;">101584555</td>
+<td style="text-align: right;">98014412</td>
+<td style="text-align: right;">96753013</td>
+<td style="text-align: right;">95941798</td>
+<td style="text-align: right;">94658839</td>
+<td style="text-align: right;">88914922</td>
+<td style="text-align: right;">95761443</td>
+<td style="text-align: right;">103112519</td>
+<td style="text-align: right;">80245891</td>
+<td style="text-align: right;">84017449</td>
+<td style="text-align: right;">86401426</td>
+<td style="text-align: right;">81769816</td>
+<td style="text-align: right;">82262179</td>
+<td style="text-align: right;">82708848</td>
+<td style="text-align: right;">80805919</td>
+<td style="text-align: right;">80736330</td>
+<td style="text-align: right;">75761658</td>
+<td style="text-align: right;">67940497</td>
+<td style="text-align: right;">75825424</td>
+<td style="text-align: right;">86233048</td>
+<td style="text-align: right;">82984957</td>
+<td style="text-align: right;">85681881</td>
+<td style="text-align: right;">86644319</td>
+<td style="text-align: right;">88248629</td>
+<td style="text-align: right;">89111011</td>
+<td style="text-align: right;">82944945</td>
+<td style="text-align: right;">86156105</td>
+<td style="text-align: right;">87420996</td>
+<td style="text-align: right;">80403918</td>
+<td style="text-align: right;">89269126</td>
+<td style="text-align: right;">85433687</td>
+<td style="text-align: right;">84572200</td>
+<td style="text-align: right;">75937043</td>
+<td style="text-align: right;">86084505</td>
+<td style="text-align: right;">86058910</td>
+<td style="text-align: right;">93814550</td>
+<td style="text-align: right;">98783433</td>
+<td style="text-align: right;">87289930</td>
+<td style="text-align: right;">94250764</td>
+<td style="text-align: right;">93279294</td>
+<td style="text-align: right;">86748324</td>
+<td style="text-align: right;">91247498</td>
+<td style="text-align: right;">82874847</td>
+<td style="text-align: right;">85347639</td>
+<td style="text-align: right;">73545913</td>
+<td style="text-align: right;">82618004</td>
+<td style="text-align: right;">84697495</td>
+<td style="text-align: right;">87363140</td>
+<td style="text-align: right;">83086700</td>
+<td style="text-align: right;">76911015</td>
+<td style="text-align: right;">83167699</td>
+<td style="text-align: right;">79504111</td>
+<td style="text-align: right;">78740859</td>
+<td style="text-align: right;">83094747</td>
+<td style="text-align: right;">74973092</td>
+<td style="text-align: right;">86060240</td>
+<td style="text-align: right;">72372936</td>
+<td style="text-align: right;">77130382</td>
+<td style="text-align: right;">83794771</td>
+<td style="text-align: right;">79372050</td>
+<td style="text-align: right;">73575640</td>
+<td style="text-align: right;">72450495</td>
+<td style="text-align: right;">72155962</td>
+<td style="text-align: right;">70069579</td>
+<td style="text-align: right;">73370914</td>
+<td style="text-align: right;">71830064</td>
+<td style="text-align: right;">71014961</td>
+<td style="text-align: right;">72481977</td>
+<td style="text-align: right;">63342636</td>
+<td style="text-align: right;">66757163</td>
+<td style="text-align: right;">75472971</td>
+<td style="text-align: right;">72782688</td>
+<td style="text-align: right;">79471169</td>
+<td style="text-align: right;">75845721</td>
+<td style="text-align: right;">73760090</td>
+<td style="text-align: right;">80314625</td>
+<td style="text-align: right;">77939565</td>
+<td style="text-align: right;">72991940</td>
+<td style="text-align: right;">79096446</td>
+<td style="text-align: right;">85166186</td>
+<td style="text-align: right;">64476544</td>
+<td style="text-align: right;">77900845</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total Merchandise Imports, (At Current Prices)</td>
+<td style="text-align: right;">54746366</td>
+<td style="text-align: right;">56135912</td>
+<td style="text-align: right;">51802132</td>
+<td style="text-align: right;">51415560</td>
+<td style="text-align: right;">49068356</td>
+<td style="text-align: right;">49948953</td>
+<td style="text-align: right;">52965176</td>
+<td style="text-align: right;">48845924</td>
+<td style="text-align: right;">52681450</td>
+<td style="text-align: right;">52900958</td>
+<td style="text-align: right;">51339878</td>
+<td style="text-align: right;">45008515</td>
+<td style="text-align: right;">49246627</td>
+<td style="text-align: right;">45253865</td>
+<td style="text-align: right;">49402365</td>
+<td style="text-align: right;">51889502</td>
+<td style="text-align: right;">48959187</td>
+<td style="text-align: right;">49259954</td>
+<td style="text-align: right;">46574586</td>
+<td style="text-align: right;">46726290</td>
+<td style="text-align: right;">45561963</td>
+<td style="text-align: right;">44966738</td>
+<td style="text-align: right;">51593268</td>
+<td style="text-align: right;">42748424</td>
+<td style="text-align: right;">44382920</td>
+<td style="text-align: right;">49869770</td>
+<td style="text-align: right;">50653907</td>
+<td style="text-align: right;">53182943</td>
+<td style="text-align: right;">55799312</td>
+<td style="text-align: right;">58466009</td>
+<td style="text-align: right;">61029374</td>
+<td style="text-align: right;">59649162</td>
+<td style="text-align: right;">57604263</td>
+<td style="text-align: right;">56116002</td>
+<td style="text-align: right;">58079982</td>
+<td style="text-align: right;">44958373</td>
+<td style="text-align: right;">50026788</td>
+<td style="text-align: right;">54349357</td>
+<td style="text-align: right;">50674909</td>
+<td style="text-align: right;">47945213</td>
+<td style="text-align: right;">45980374</td>
+<td style="text-align: right;">44714491</td>
+<td style="text-align: right;">46107788</td>
+<td style="text-align: right;">45039845</td>
+<td style="text-align: right;">41559697</td>
+<td style="text-align: right;">45169548</td>
+<td style="text-align: right;">47668437</td>
+<td style="text-align: right;">37643664</td>
+<td style="text-align: right;">39028616</td>
+<td style="text-align: right;">40154550</td>
+<td style="text-align: right;">38477878</td>
+<td style="text-align: right;">38173829</td>
+<td style="text-align: right;">38801413</td>
+<td style="text-align: right;">36472279</td>
+<td style="text-align: right;">37843647</td>
+<td style="text-align: right;">35120892</td>
+<td style="text-align: right;">31458238</td>
+<td style="text-align: right;">35878828</td>
+<td style="text-align: right;">40433029</td>
+<td style="text-align: right;">39472637</td>
+<td style="text-align: right;">41180224</td>
+<td style="text-align: right;">41580603</td>
+<td style="text-align: right;">42489886</td>
+<td style="text-align: right;">42282537</td>
+<td style="text-align: right;">39450625</td>
+<td style="text-align: right;">40998179</td>
+<td style="text-align: right;">42030046</td>
+<td style="text-align: right;">38979868</td>
+<td style="text-align: right;">42637579</td>
+<td style="text-align: right;">41294888</td>
+<td style="text-align: right;">40340098</td>
+<td style="text-align: right;">36074448</td>
+<td style="text-align: right;">41553606</td>
+<td style="text-align: right;">42566514</td>
+<td style="text-align: right;">45114564</td>
+<td style="text-align: right;">47127052</td>
+<td style="text-align: right;">41439605</td>
+<td style="text-align: right;">43802120</td>
+<td style="text-align: right;">44972517</td>
+<td style="text-align: right;">41054575</td>
+<td style="text-align: right;">42887787</td>
+<td style="text-align: right;">38382736</td>
+<td style="text-align: right;">39745452</td>
+<td style="text-align: right;">34609597</td>
+<td style="text-align: right;">38491510</td>
+<td style="text-align: right;">40104280</td>
+<td style="text-align: right;">41476983</td>
+<td style="text-align: right;">39347126</td>
+<td style="text-align: right;">35732238</td>
+<td style="text-align: right;">38702898</td>
+<td style="text-align: right;">36874744</td>
+<td style="text-align: right;">36416610</td>
+<td style="text-align: right;">39149517</td>
+<td style="text-align: right;">34542072</td>
+<td style="text-align: right;">39987555</td>
+<td style="text-align: right;">33032643</td>
+<td style="text-align: right;">36734901</td>
+<td style="text-align: right;">39473258</td>
+<td style="text-align: right;">37482999</td>
+<td style="text-align: right;">33929792</td>
+<td style="text-align: right;">32761041</td>
+<td style="text-align: right;">33527949</td>
+<td style="text-align: right;">31906437</td>
+<td style="text-align: right;">34067889</td>
+<td style="text-align: right;">32922385</td>
+<td style="text-align: right;">32237957</td>
+<td style="text-align: right;">33661999</td>
+<td style="text-align: right;">30949946</td>
+<td style="text-align: right;">30382944</td>
+<td style="text-align: right;">34868755</td>
+<td style="text-align: right;">33630636</td>
+<td style="text-align: right;">35998057</td>
+<td style="text-align: right;">35278954</td>
+<td style="text-align: right;">35260544</td>
+<td style="text-align: right;">37430942</td>
+<td style="text-align: right;">36614847</td>
+<td style="text-align: right;">33572417</td>
+<td style="text-align: right;">36970386</td>
+<td style="text-align: right;">38824707</td>
+<td style="text-align: right;">29731205</td>
+<td style="text-align: right;">35221197</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total Merchandise Exports, (At Current Prices)</td>
+<td style="text-align: right;">59407614</td>
+<td style="text-align: right;">60142882</td>
+<td style="text-align: right;">58330193</td>
+<td style="text-align: right;">56110400</td>
+<td style="text-align: right;">54444104</td>
+<td style="text-align: right;">55760575</td>
+<td style="text-align: right;">59227986</td>
+<td style="text-align: right;">52008385</td>
+<td style="text-align: right;">56812950</td>
+<td style="text-align: right;">55823465</td>
+<td style="text-align: right;">57039195</td>
+<td style="text-align: right;">51112628</td>
+<td style="text-align: right;">57692265</td>
+<td style="text-align: right;">52476302</td>
+<td style="text-align: right;">55562400</td>
+<td style="text-align: right;">58070011</td>
+<td style="text-align: right;">54436596</td>
+<td style="text-align: right;">53562807</td>
+<td style="text-align: right;">52301574</td>
+<td style="text-align: right;">53074382</td>
+<td style="text-align: right;">50730664</td>
+<td style="text-align: right;">49309126</td>
+<td style="text-align: right;">59071769</td>
+<td style="text-align: right;">50276697</td>
+<td style="text-align: right;">49531162</td>
+<td style="text-align: right;">55000084</td>
+<td style="text-align: right;">54162780</td>
+<td style="text-align: right;">56576348</td>
+<td style="text-align: right;">62507132</td>
+<td style="text-align: right;">63363749</td>
+<td style="text-align: right;">64124991</td>
+<td style="text-align: right;">64177050</td>
+<td style="text-align: right;">59847424</td>
+<td style="text-align: right;">60237343</td>
+<td style="text-align: right;">63132579</td>
+<td style="text-align: right;">51991457</td>
+<td style="text-align: right;">54845697</td>
+<td style="text-align: right;">59213794</td>
+<td style="text-align: right;">56720130</td>
+<td style="text-align: right;">53639342</td>
+<td style="text-align: right;">52034038</td>
+<td style="text-align: right;">52038522</td>
+<td style="text-align: right;">49834010</td>
+<td style="text-align: right;">49618994</td>
+<td style="text-align: right;">47355225</td>
+<td style="text-align: right;">50591895</td>
+<td style="text-align: right;">55444082</td>
+<td style="text-align: right;">42602227</td>
+<td style="text-align: right;">44988834</td>
+<td style="text-align: right;">46246876</td>
+<td style="text-align: right;">43291938</td>
+<td style="text-align: right;">44088350</td>
+<td style="text-align: right;">43907435</td>
+<td style="text-align: right;">44333640</td>
+<td style="text-align: right;">42892684</td>
+<td style="text-align: right;">40640766</td>
+<td style="text-align: right;">36482259</td>
+<td style="text-align: right;">39946596</td>
+<td style="text-align: right;">45800019</td>
+<td style="text-align: right;">43512320</td>
+<td style="text-align: right;">44501656</td>
+<td style="text-align: right;">45063716</td>
+<td style="text-align: right;">45758743</td>
+<td style="text-align: right;">46828474</td>
+<td style="text-align: right;">43494320</td>
+<td style="text-align: right;">45157926</td>
+<td style="text-align: right;">45390949</td>
+<td style="text-align: right;">41424050</td>
+<td style="text-align: right;">46631547</td>
+<td style="text-align: right;">44138798</td>
+<td style="text-align: right;">44232102</td>
+<td style="text-align: right;">39862596</td>
+<td style="text-align: right;">44530899</td>
+<td style="text-align: right;">43492397</td>
+<td style="text-align: right;">48699986</td>
+<td style="text-align: right;">51656381</td>
+<td style="text-align: right;">45850324</td>
+<td style="text-align: right;">50448644</td>
+<td style="text-align: right;">48306776</td>
+<td style="text-align: right;">45693748</td>
+<td style="text-align: right;">48359712</td>
+<td style="text-align: right;">44492111</td>
+<td style="text-align: right;">45602187</td>
+<td style="text-align: right;">38936317</td>
+<td style="text-align: right;">44126494</td>
+<td style="text-align: right;">44593215</td>
+<td style="text-align: right;">45886157</td>
+<td style="text-align: right;">43739574</td>
+<td style="text-align: right;">41178777</td>
+<td style="text-align: right;">44464801</td>
+<td style="text-align: right;">42629367</td>
+<td style="text-align: right;">42324249</td>
+<td style="text-align: right;">43945230</td>
+<td style="text-align: right;">40431020</td>
+<td style="text-align: right;">46072685</td>
+<td style="text-align: right;">39340293</td>
+<td style="text-align: right;">40395481</td>
+<td style="text-align: right;">44321513</td>
+<td style="text-align: right;">41889050</td>
+<td style="text-align: right;">39645848</td>
+<td style="text-align: right;">39689453</td>
+<td style="text-align: right;">38628013</td>
+<td style="text-align: right;">38163143</td>
+<td style="text-align: right;">39303025</td>
+<td style="text-align: right;">38907678</td>
+<td style="text-align: right;">38777004</td>
+<td style="text-align: right;">38819978</td>
+<td style="text-align: right;">32392691</td>
+<td style="text-align: right;">36374220</td>
+<td style="text-align: right;">40604216</td>
+<td style="text-align: right;">39152052</td>
+<td style="text-align: right;">43473113</td>
+<td style="text-align: right;">40566767</td>
+<td style="text-align: right;">38499547</td>
+<td style="text-align: right;">42883682</td>
+<td style="text-align: right;">41324718</td>
+<td style="text-align: right;">39419524</td>
+<td style="text-align: right;">42126061</td>
+<td style="text-align: right;">46341479</td>
+<td style="text-align: right;">34745340</td>
+<td style="text-align: right;">42679649</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">24671973</td>
+<td style="text-align: right;">23684686</td>
+<td style="text-align: right;">23438698</td>
+<td style="text-align: right;">22147837</td>
+<td style="text-align: right;">21966728</td>
+<td style="text-align: right;">23984045</td>
+<td style="text-align: right;">26421304</td>
+<td style="text-align: right;">22945653</td>
+<td style="text-align: right;">25555265</td>
+<td style="text-align: right;">24062856</td>
+<td style="text-align: right;">24093876</td>
+<td style="text-align: right;">23159925</td>
+<td style="text-align: right;">25136833</td>
+<td style="text-align: right;">22546049</td>
+<td style="text-align: right;">24833932</td>
+<td style="text-align: right;">26297710</td>
+<td style="text-align: right;">23093295</td>
+<td style="text-align: right;">23134727</td>
+<td style="text-align: right;">22445521</td>
+<td style="text-align: right;">23470044</td>
+<td style="text-align: right;">23026645</td>
+<td style="text-align: right;">24014980</td>
+<td style="text-align: right;">27554869</td>
+<td style="text-align: right;">22273783</td>
+<td style="text-align: right;">22361408</td>
+<td style="text-align: right;">24423567</td>
+<td style="text-align: right;">24976393</td>
+<td style="text-align: right;">25545994</td>
+<td style="text-align: right;">27479097</td>
+<td style="text-align: right;">30220495</td>
+<td style="text-align: right;">30998082</td>
+<td style="text-align: right;">30072122</td>
+<td style="text-align: right;">29142308</td>
+<td style="text-align: right;">28376085</td>
+<td style="text-align: right;">29495604</td>
+<td style="text-align: right;">24202253</td>
+<td style="text-align: right;">24736832</td>
+<td style="text-align: right;">26075059</td>
+<td style="text-align: right;">26480888</td>
+<td style="text-align: right;">23992950</td>
+<td style="text-align: right;">22928584</td>
+<td style="text-align: right;">23119282</td>
+<td style="text-align: right;">23284627</td>
+<td style="text-align: right;">23737832</td>
+<td style="text-align: right;">21616301</td>
+<td style="text-align: right;">22801896</td>
+<td style="text-align: right;">25218365</td>
+<td style="text-align: right;">19517396</td>
+<td style="text-align: right;">20202185</td>
+<td style="text-align: right;">20137950</td>
+<td style="text-align: right;">18017254</td>
+<td style="text-align: right;">18651552</td>
+<td style="text-align: right;">18815664</td>
+<td style="text-align: right;">20063181</td>
+<td style="text-align: right;">19502853</td>
+<td style="text-align: right;">18021057</td>
+<td style="text-align: right;">16915474</td>
+<td style="text-align: right;">19246404</td>
+<td style="text-align: right;">22373492</td>
+<td style="text-align: right;">21069473</td>
+<td style="text-align: right;">21635015</td>
+<td style="text-align: right;">20385028</td>
+<td style="text-align: right;">21027788</td>
+<td style="text-align: right;">21927331</td>
+<td style="text-align: right;">19545993</td>
+<td style="text-align: right;">20850358</td>
+<td style="text-align: right;">21144203</td>
+<td style="text-align: right;">19932986</td>
+<td style="text-align: right;">23259086</td>
+<td style="text-align: right;">21486621</td>
+<td style="text-align: right;">20723827</td>
+<td style="text-align: right;">19909742</td>
+<td style="text-align: right;">21400651</td>
+<td style="text-align: right;">21093149</td>
+<td style="text-align: right;">24480690</td>
+<td style="text-align: right;">26021795</td>
+<td style="text-align: right;">22549881</td>
+<td style="text-align: right;">24732016</td>
+<td style="text-align: right;">23569543</td>
+<td style="text-align: right;">23385667</td>
+<td style="text-align: right;">25907978</td>
+<td style="text-align: right;">23078757</td>
+<td style="text-align: right;">22997935</td>
+<td style="text-align: right;">20113161</td>
+<td style="text-align: right;">23207276</td>
+<td style="text-align: right;">23287867</td>
+<td style="text-align: right;">23434896</td>
+<td style="text-align: right;">22545465</td>
+<td style="text-align: right;">20428534</td>
+<td style="text-align: right;">21594621</td>
+<td style="text-align: right;">19856102</td>
+<td style="text-align: right;">21088227</td>
+<td style="text-align: right;">22282234</td>
+<td style="text-align: right;">20736510</td>
+<td style="text-align: right;">23098189</td>
+<td style="text-align: right;">20544994</td>
+<td style="text-align: right;">20404312</td>
+<td style="text-align: right;">21516243</td>
+<td style="text-align: right;">20283050</td>
+<td style="text-align: right;">18278521</td>
+<td style="text-align: right;">19014850</td>
+<td style="text-align: right;">18194384</td>
+<td style="text-align: right;">18547781</td>
+<td style="text-align: right;">19591822</td>
+<td style="text-align: right;">20068443</td>
+<td style="text-align: right;">18822024</td>
+<td style="text-align: right;">17947888</td>
+<td style="text-align: right;">15024324</td>
+<td style="text-align: right;">16643928</td>
+<td style="text-align: right;">18332698</td>
+<td style="text-align: right;">17321029</td>
+<td style="text-align: right;">20189514</td>
+<td style="text-align: right;">19701703</td>
+<td style="text-align: right;">18999322</td>
+<td style="text-align: right;">21909452</td>
+<td style="text-align: right;">21109216</td>
+<td style="text-align: right;">19637075</td>
+<td style="text-align: right;">20829457</td>
+<td style="text-align: right;">23159623</td>
+<td style="text-align: right;">16622123</td>
+<td style="text-align: right;">19921674</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total Re-Exports, (At Current Prices)</td>
+<td style="text-align: right;">34735641</td>
+<td style="text-align: right;">36458196</td>
+<td style="text-align: right;">34891495</td>
+<td style="text-align: right;">33962563</td>
+<td style="text-align: right;">32477377</td>
+<td style="text-align: right;">31776530</td>
+<td style="text-align: right;">32806682</td>
+<td style="text-align: right;">29062732</td>
+<td style="text-align: right;">31257685</td>
+<td style="text-align: right;">31760609</td>
+<td style="text-align: right;">32945319</td>
+<td style="text-align: right;">27952703</td>
+<td style="text-align: right;">32555433</td>
+<td style="text-align: right;">29930252</td>
+<td style="text-align: right;">30728467</td>
+<td style="text-align: right;">31772301</td>
+<td style="text-align: right;">31343301</td>
+<td style="text-align: right;">30428081</td>
+<td style="text-align: right;">29856053</td>
+<td style="text-align: right;">29604338</td>
+<td style="text-align: right;">27704018</td>
+<td style="text-align: right;">25294146</td>
+<td style="text-align: right;">31516900</td>
+<td style="text-align: right;">28002914</td>
+<td style="text-align: right;">27169754</td>
+<td style="text-align: right;">30576517</td>
+<td style="text-align: right;">29186388</td>
+<td style="text-align: right;">31030354</td>
+<td style="text-align: right;">35028035</td>
+<td style="text-align: right;">33143253</td>
+<td style="text-align: right;">33126909</td>
+<td style="text-align: right;">34104929</td>
+<td style="text-align: right;">30705116</td>
+<td style="text-align: right;">31861258</td>
+<td style="text-align: right;">33636976</td>
+<td style="text-align: right;">27789205</td>
+<td style="text-align: right;">30108865</td>
+<td style="text-align: right;">33138735</td>
+<td style="text-align: right;">30239243</td>
+<td style="text-align: right;">29646392</td>
+<td style="text-align: right;">29105454</td>
+<td style="text-align: right;">28919240</td>
+<td style="text-align: right;">26549383</td>
+<td style="text-align: right;">25881163</td>
+<td style="text-align: right;">25738924</td>
+<td style="text-align: right;">27789999</td>
+<td style="text-align: right;">30225718</td>
+<td style="text-align: right;">23084831</td>
+<td style="text-align: right;">24786648</td>
+<td style="text-align: right;">26108927</td>
+<td style="text-align: right;">25274684</td>
+<td style="text-align: right;">25436798</td>
+<td style="text-align: right;">25091771</td>
+<td style="text-align: right;">24270460</td>
+<td style="text-align: right;">23389831</td>
+<td style="text-align: right;">22619709</td>
+<td style="text-align: right;">19566785</td>
+<td style="text-align: right;">20700192</td>
+<td style="text-align: right;">23426527</td>
+<td style="text-align: right;">22442847</td>
+<td style="text-align: right;">22866641</td>
+<td style="text-align: right;">24678688</td>
+<td style="text-align: right;">24730956</td>
+<td style="text-align: right;">24901143</td>
+<td style="text-align: right;">23948326</td>
+<td style="text-align: right;">24307568</td>
+<td style="text-align: right;">24246746</td>
+<td style="text-align: right;">21491064</td>
+<td style="text-align: right;">23372461</td>
+<td style="text-align: right;">22652178</td>
+<td style="text-align: right;">23508275</td>
+<td style="text-align: right;">19952854</td>
+<td style="text-align: right;">23130248</td>
+<td style="text-align: right;">22399248</td>
+<td style="text-align: right;">24219297</td>
+<td style="text-align: right;">25634586</td>
+<td style="text-align: right;">23300443</td>
+<td style="text-align: right;">25716629</td>
+<td style="text-align: right;">24737233</td>
+<td style="text-align: right;">22308082</td>
+<td style="text-align: right;">22451734</td>
+<td style="text-align: right;">21413353</td>
+<td style="text-align: right;">22604252</td>
+<td style="text-align: right;">18823156</td>
+<td style="text-align: right;">20919218</td>
+<td style="text-align: right;">21305348</td>
+<td style="text-align: right;">22451261</td>
+<td style="text-align: right;">21194109</td>
+<td style="text-align: right;">20750243</td>
+<td style="text-align: right;">22870180</td>
+<td style="text-align: right;">22773265</td>
+<td style="text-align: right;">21236022</td>
+<td style="text-align: right;">21662996</td>
+<td style="text-align: right;">19694510</td>
+<td style="text-align: right;">22974497</td>
+<td style="text-align: right;">18795299</td>
+<td style="text-align: right;">19991170</td>
+<td style="text-align: right;">22805271</td>
+<td style="text-align: right;">21606000</td>
+<td style="text-align: right;">21367328</td>
+<td style="text-align: right;">20674603</td>
+<td style="text-align: right;">20433630</td>
+<td style="text-align: right;">19615362</td>
+<td style="text-align: right;">19711203</td>
+<td style="text-align: right;">18839236</td>
+<td style="text-align: right;">19954980</td>
+<td style="text-align: right;">20872090</td>
+<td style="text-align: right;">17368367</td>
+<td style="text-align: right;">19730292</td>
+<td style="text-align: right;">22271518</td>
+<td style="text-align: right;">21831023</td>
+<td style="text-align: right;">23283599</td>
+<td style="text-align: right;">20865064</td>
+<td style="text-align: right;">19500225</td>
+<td style="text-align: right;">20974231</td>
+<td style="text-align: right;">20215502</td>
+<td style="text-align: right;">19782448</td>
+<td style="text-align: right;">21296604</td>
+<td style="text-align: right;">23181857</td>
+<td style="text-align: right;">18123216</td>
+<td style="text-align: right;">22757975</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(servicetrade))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 39%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Data Series</th>
+<th style="text-align: right;">2024</th>
+<th style="text-align: right;">2023</th>
+<th style="text-align: right;">2022</th>
+<th style="text-align: right;">2021</th>
+<th style="text-align: right;">2020</th>
+<th style="text-align: right;">2019</th>
+<th style="text-align: right;">2018</th>
+<th style="text-align: right;">2017</th>
+<th style="text-align: right;">2016</th>
+<th style="text-align: right;">2015</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Total Trade In Services</td>
+<td style="text-align: right;">997749.8</td>
+<td style="text-align: right;">919117.0</td>
+<td style="text-align: right;">877252.5</td>
+<td style="text-align: right;">715093.5</td>
+<td style="text-align: right;">590035.1</td>
+<td style="text-align: right;">592824.3</td>
+<td style="text-align: right;">561271.0</td>
+<td style="text-align: right;">493353.8</td>
+<td style="text-align: right;">431109.3</td>
+<td style="text-align: right;">432922.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Exports Of Services</td>
+<td style="text-align: right;">528568.3</td>
+<td style="text-align: right;">481009.2</td>
+<td style="text-align: right;">468190.5</td>
+<td style="text-align: right;">382492.4</td>
+<td style="text-align: right;">300004.6</td>
+<td style="text-align: right;">307215.9</td>
+<td style="text-align: right;">287141.4</td>
+<td style="text-align: right;">241568.0</td>
+<td style="text-align: right;">211835.8</td>
+<td style="text-align: right;">210622.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Manufacturing Services On Physical Inputs Owned By Others</td>
+<td style="text-align: right;">471.0</td>
+<td style="text-align: right;">490.7</td>
+<td style="text-align: right;">685.5</td>
+<td style="text-align: right;">489.9</td>
+<td style="text-align: right;">236.8</td>
+<td style="text-align: right;">266.9</td>
+<td style="text-align: right;">370.3</td>
+<td style="text-align: right;">247.1</td>
+<td style="text-align: right;">284.8</td>
+<td style="text-align: right;">346.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maintenance And Repair Services</td>
+<td style="text-align: right;">10820.1</td>
+<td style="text-align: right;">10981.0</td>
+<td style="text-align: right;">10117.9</td>
+<td style="text-align: right;">8833.5</td>
+<td style="text-align: right;">8172.9</td>
+<td style="text-align: right;">9663.3</td>
+<td style="text-align: right;">9410.0</td>
+<td style="text-align: right;">7712.0</td>
+<td style="text-align: right;">8418.5</td>
+<td style="text-align: right;">9315.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Transport</td>
+<td style="text-align: right;">172971.1</td>
+<td style="text-align: right;">149537.4</td>
+<td style="text-align: right;">189649.0</td>
+<td style="text-align: right;">144220.0</td>
+<td style="text-align: right;">93560.0</td>
+<td style="text-align: right;">94272.1</td>
+<td style="text-align: right;">88888.8</td>
+<td style="text-align: right;">69993.5</td>
+<td style="text-align: right;">59213.4</td>
+<td style="text-align: right;">64097.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Travel</td>
+<td style="text-align: right;">31867.3</td>
+<td style="text-align: right;">27886.1</td>
+<td style="text-align: right;">15719.6</td>
+<td style="text-align: right;">5399.1</td>
+<td style="text-align: right;">7527.2</td>
+<td style="text-align: right;">27754.7</td>
+<td style="text-align: right;">27366.8</td>
+<td style="text-align: right;">27477.5</td>
+<td style="text-align: right;">26190.7</td>
+<td style="text-align: right;">22845.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>1.4 Data Preparation</p>
+<p>deriving the colum</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>month_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"Jul"</span>, <span class="st">"Aug"</span>, <span class="st">"Sep"</span>, <span class="st">"Oct"</span>, <span class="st">"Nov"</span>, <span class="st">"Dec"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Year_merchandise <span class="ot">&lt;-</span> merchandisetrade <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">matches</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d{4}</span><span class="sc">\\</span><span class="st">s[A-Za-z]{3}"</span>), </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"date_col"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(date_col, <span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>)),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">month =</span> <span class="fu">str_extract</span>(date_col, <span class="st">"[A-Za-z]{3}"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>date_col) <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year, <span class="fu">match</span>(month, month_levels)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">month =</span> <span class="fu">factor</span>(month, <span class="at">levels =</span> month_levels))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Year_merchandise <span class="ot">&lt;-</span> Year_merchandise <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span>, year) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">yearly_total =</span> <span class="fu">sum</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Year_merchandise))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Data Series</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">yearly_total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">237732885</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">223933256</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">259301950</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">281137848</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">251593614</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total Domestic Exports, (At Current Prices)</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">234449369</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ol type="1">
+<li>TOTAL MERCHANDISE TRADE AT CURRENT PRICES, 2020 - 2024 pros: cons:</li>
+</ol>
+<p>sketches:</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
