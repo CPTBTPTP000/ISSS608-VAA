@@ -8,25 +8,20 @@ date-modified: "last-modified"
 
 1.1 Installing R pacakges
 ```{r}
-pacman::p_load(readxl, gifski, gapminder,
+pacman::p_load(tidyverse,readxl, gifski, gapminder,
                plotly, gganimate, lubridate,
                scales, viridis, lubridate, ggthemes,
                gridExtra, readxl, knitr, data.table,
-               CGPfunctions, ggHoriPlot, gtsummary,easystats,
-               tidyverse, GGally,
-              SmartEDA, 
-              ggExtra,parallelPlot)
+               CGPfunctions, ggHoriPlot, gtsummary,
+               easystats,tidyverse, GGally,SmartEDA,
+               treemapify,treemap,d3treeR,
+               ggExtra,parallelPlot)
 ```
 
 1.2 Importing the data
 
 ```{r}
 merchandisetrade <- read_xlsx("Total_Merchandise_Trade_201525.xlsx")
-```
-
-```{r}
-
-servicetrade <- read_xlsx("Trade_Exp_Imp_by_Services_201525.xlsx")
 ```
 
 手动去掉了文字解释后
@@ -38,14 +33,9 @@ kable(head(merchandisetrade))
 ```
 
 
-```{r}
-kable(head(servicetrade))
-```
-
 1.4 Data Preparation
 
-deriving the colum
-
+For merchandise 
 
 ```{r}
 month_levels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
@@ -83,72 +73,80 @@ Year_merchandise %>%
 
 visulization
 
-
-
-
-
-
-
-
-
-
-
 ```{r}
-# Filter for the relevant data series
 Year_merchandise <- Year_merchandise %>%
-  filter(grepl("Total Merchandise (Exports|Imports|Trade)", `Data Series`)) %>%
-  filter(year >= 2020 & year <= 2024)  # Focus on same years as the original viz
+  filter(year >= 2018 & year <= 2024, 
+         grepl("Total Merchandise (Trade|Exports|Imports)", `Data Series`))
 
-# Create a more informative and aesthetically pleasing visualization
-ggplot(Year_merchandise, aes(x = year, y = yearly_total/1e9, fill = `Data Series`)) +
-  geom_col(position = "dodge", width = 0.7) +
-  geom_text(aes(label = paste0("$", round(yearly_total/1e9, 1), " Bil")), 
-            position = position_dodge(width = 0.7), vjust = -0.5, size = 3.5) +
-  # Calculate and display yearly growth for Total Trade
-  geom_line(data = Year_merchandise %>% 
-              filter(`Data Series` == "Total Merchandise Trade, (At Current Prices)") %>%
-              arrange(year) %>%
-              mutate(growth = (yearly_total/lag(yearly_total) - 1) * 100),
-            aes(y = 300, group = 1), linetype = "dashed", color = "darkgrey") +
-  # Add labels for total by year
-  geom_text(data = Year_merchandise %>% 
-              filter(`Data Series` == "Total Merchandise Trade, (At Current Prices)"),
-            aes(y = yearly_total/1e9 + 50, 
-                label = paste0("Total in ", year, "\n$", round(yearly_total/1e9, 1), " Bil")),
-            hjust = 0, vjust = 0, size = 3.5) +
-  # Add annual growth percentage
-  geom_label(data = Year_merchandise %>% 
-               filter(`Data Series` == "Total Merchandise Trade, (At Current Prices)") %>%
-               arrange(year) %>%
-               mutate(growth = (yearly_total/lag(yearly_total) - 1) * 100) %>%
-               filter(year == 2024),
-             aes(x = 2024, y = 300, 
-                 label = paste0("Merchandise Trade\nIncreased\n", round(growth, 1), "%\nIn 2024")),
-             fill = "steelblue", color = "white", size = 3.5) +
-  # Improve aesthetics
-  scale_fill_manual(values = c("Total Merchandise Exports, (At Current Prices)" = "lightgreen",
-                              "Total Merchandise Imports, (At Current Prices)" = "lightblue",
-                              "Total Merchandise Trade, (At Current Prices)" = "grey90")) +
-  scale_x_continuous(breaks = 2020:2024) +
-  scale_y_continuous(labels = function(x) paste0("$", x, " Bil")) +
-  labs(title = "TOTAL MERCHANDISE TRADE",
-       subtitle = "AT CURRENT PRICES, 2020 - 2024",
-       y = "Billion Dollars (SGD)",
-       x = NULL) +
+Year_merchandise <- Year_merchandise %>%
+  mutate(Category = case_when(
+    grepl("Total Merchandise Trade", `Data Series`) ~ "Total Trade",
+    grepl("Total Merchandise Exports", `Data Series`) ~ "Exports",
+    grepl("Total Merchandise Imports", `Data Series`) ~ "Imports"
+  )) %>%
+  select(year, yearly_total, Category, `Data Series`)
+
+trade_growth <- Year_merchandise %>%
+  filter(Category == "Total Trade") %>%
+  arrange(year) %>%
+  mutate(growth_pct = (yearly_total / lag(yearly_total) - 1) )
+
+Year_merchandise <- Year_merchandise %>%
+  mutate(value_billions = yearly_total / 1e9)
+
+plot_data <- Year_merchandise %>%
+  filter(Category != "Total Trade") 
+
+ggplot() +
+  geom_bar(data = plot_data, 
+           aes(x = factor(year), y = value_billions, fill = Category),
+           stat = "identity", position = position_dodge(width = 0.7), width = 0.6) +
+  
+  geom_line(data = Year_merchandise %>% filter(Category == "Total Trade"),
+            aes(x = factor(year), y = value_billions, group = 1),
+            color = "darkred", size = 1.2) +
+  geom_point(data = Year_merchandise %>% filter(Category == "Total Trade"),
+             aes(x = factor(year), y = value_billions),
+             color = "darkred", size = 3) +
+  
+geom_text(data = plot_data,
+            aes(x = factor(year), y = value_billions, label = paste0("$", round(value_billions, 1), "B"), 
+                group = Category),
+            position = position_dodge(width = 0.7), vjust = -0.5, size = 2.5) +
+  
+  geom_text(data = Year_merchandise %>% filter(Category == "Total Trade"),
+            aes(x = factor(year), y = value_billions, 
+            label = paste0("S$ ", round(value_billions, 1), " Bil")),
+            vjust = -0.8, color = "darkred", fontface = "bold", size = 2.8) +
+  
+  geom_text(data = trade_growth %>% filter(!is.na(growth_pct)),
+            aes(x = factor(year), y = 0, 
+                label = paste0(ifelse(growth_pct > 0, "+", ""), round(growth_pct, 1), "%")),
+            vjust = 1.5, color = "gray30", fontface = "italic", size = 2.2) +
+  
+  scale_fill_manual(values = c("Exports" = "#1f77b4", "Imports" = "#ff7f0e")) +
+  
+  scale_y_continuous(labels = function(x) paste0("$", x, "B"), 
+                     expand = expansion(mult = c(0, 0.15))) +
+  
+  labs(
+    title = "TOTAL MERCHANDISE TRADE 2018 - 2024",
+    x = NULL,
+    y = "Billions SGD",
+    fill = "Category"
+  ) +
+  
   theme_minimal() +
-  theme(legend.position = "bottom",
-        legend.title = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.grid.major.x = element_blank(),
-        plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
-        plot.subtitle = element_text(hjust = 0.5, size = 12),
-        plot.background = element_rect(fill = "aliceblue", color = NA))
+    theme(
+    legend.position = "top",
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10),
+    plot.title = element_text(size = 14, face = "bold",hjust = 0.5)
+ 
+  )
+ 
+
 ```
-
-
-
-
-
 
 
 1. 
@@ -157,3 +155,182 @@ pros:
 cons:
 
 sketches:
+
+::: info-box
+This analysis utilizes the "Total Merchandise Trade at Current Prices" dataset from the Singapore Department of Statistics (DOS). Data for "Total Merchandise Trade," "Total Merchandise Exports," and "Total Merchandise Imports" were extracted to better analyze recent trends in trade volume and compare fluctuations before and after the COVID-19 pandemic, as well as post-pandemic recovery.
+The dataset originally presents time in a Year + Month format. To make it more suitable for annual analysis, the data was first filtered for the years 2018-2024. The mutate() function was used to extract the month and year components, and the summarize() function aggregate the data at the yearly level, calculating the total trade volume for exports and imports.
+
+批判：
+The original bar chart employed a container-themed design, aligning with the trade context.   While visually engaging, the color scheme lacked functional utility, hindering multi-dimensional comparisons (e.g., year-over-year trends and import/export differences).   Additionally, the 5-year timeframe limited the ability to contextualize pandemic-related impacts.
+
+我的：
+The design combine a line chart and stacked bar charts  This clarifies the relationship between total trade (imports + exports) and individual components. The line chart emphasizes annual trends, while stacked bars breakdown the import and export. A unified color scheme improves cross-year comparisons of imports and exports and increase the space for each year can improve readability.
+
+:::
+
+
+
+
+Import the data
+```{r}
+
+servicetrade <- read_xlsx("Trade_Exp_Imp_by_Services_201525.xlsx")
+```
+
+
+
+```{r}
+kable(head(servicetrade))
+```
+
+
+
+```{r}
+servicetrade <- servicetrade %>%
+  filter(trimws(`Data Series`) %in% c("Exports Of Services", 
+                                      "Manufacturing Services On Physical
+                                      Inputs Owned By Others",
+                                      "Maintenance And Repair Services",
+                                      "Transport", 
+                                      "Travel",
+                                      "Insurance", 
+                                      "Government Goods And Services",
+                                      "Construction",
+                                      "Financial", "Telecommunications,Computer
+                                      & Information",
+                                      "Charges For The Use Of Intellectual
+                                      Property",
+                                      "Personal, Cultural And Recreational",
+                                      "Business Management",
+                                      "Trade-related", "Other Services")) %>%
+  select(`Data Series`, `2024`) %>%
+  mutate(value_billions = as.numeric(gsub(",", "", `2024`))/1e3) %>%
+  filter(`Data Series` != "Exports Of Services") %>%
+  arrange(desc(value_billions))
+
+  ggplot(servicetrade, 
+       aes(area = value_billions, 
+           fill = value_billions,
+           label = paste0(`Data Series`, "\nS$ ", round(value_billions, 1), " Bil"))) +  
+  
+  geom_treemap(color = "white", size = 1) +
+  
+  geom_treemap_text(fontface = "bold", colour = "white",
+                    place = "centre", grow = TRUE, reflow = TRUE, min.size = 1) +
+  
+  scale_fill_gradient(low = "#b3e0f7", high = "#052E73") +
+  
+  labs(title = "2024 Exports of Services by Category",
+       fill = "Value (S$ Billion)") +
+  
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5)
+  )
+
+
+```
+
+
+
+
+好学生样本：
+
+  
+```{r}
+# Filter the dataset for 2020-2024
+Year_merchandise <- Year_merchandise %>%
+  filter(year >= 2018 & year <= 2024, 
+         grepl("Total Merchandise (Trade|Exports|Imports)", `Data Series`))
+
+# Reshape the data for visualization
+Year_merchandise <- Year_merchandise %>%
+  mutate(Category = case_when(
+    grepl("Total Merchandise Trade", `Data Series`) ~ "Total Trade",
+    grepl("Total Merchandise Exports", `Data Series`) ~ "Exports",
+    grepl("Total Merchandise Imports", `Data Series`) ~ "Imports"
+  )) %>%
+  select(year, yearly_total, Category, `Data Series`)
+
+# Calculate year-over-year growth rates for Total Trade
+trade_growth <- Year_merchandise %>%
+  filter(Category == "Total Trade") %>%
+  arrange(year) %>%
+  mutate(growth_pct = (yearly_total / lag(yearly_total) - 1) * 100)
+
+# Convert values to billions for easier reading
+Year_merchandise <- Year_merchandise %>%
+  mutate(value_billions = yearly_total / 1e9)
+
+# Create comparison data - side-by-side bars for imports and exports with trade line
+plot_data <- Year_merchandise %>%
+  filter(Category != "Total Trade") # Remove total trade for the bars
+
+# Create a more informative and aesthetically pleasing visualization
+ggplot() +
+  # Side-by-side bars for imports and exports
+  geom_bar(data = plot_data, 
+           aes(x = factor(year), y = value_billions, fill = Category),
+           stat = "identity", position = position_dodge(width = 0.7), width = 0.6) +
+  
+  # Line for total trade
+  geom_line(data = Year_merchandise %>% filter(Category == "Total Trade"),
+            aes(x = factor(year), y = value_billions, group = 1),
+            color = "darkred", size = 1.2) +
+  geom_point(data = Year_merchandise %>% filter(Category == "Total Trade"),
+             aes(x = factor(year), y = value_billions),
+             color = "darkred", size = 3) +
+  
+  # Value labels for imports and exports
+  geom_text(data = plot_data,
+            aes(x = factor(year), y = value_billions, label = paste0("$", round(value_billions, 1), "B"), 
+                group = Category),
+            position = position_dodge(width = 0.7), vjust = -0.5, size = 3.5) +
+  
+  # Total trade value labels
+  geom_text(data = Year_merchandise %>% filter(Category == "Total Trade"),
+            aes(x = factor(year), y = value_billions, 
+                label = paste0("Total: $", round(value_billions, 1), "B")),
+            vjust = -0.8, color = "darkred", fontface = "bold", size = 3.8) +
+  
+  # Growth rate annotations
+  geom_text(data = trade_growth %>% filter(!is.na(growth_pct)),
+            aes(x = factor(year), y = 0, 
+                label = paste0(ifelse(growth_pct > 0, "+", ""), round(growth_pct, 1), "%")),
+            vjust = 1.5, color = "gray30", fontface = "italic", size = 3.2) +
+  
+  # Custom color palette for better contrast
+  scale_fill_manual(values = c("Exports" = "#1f77b4", "Imports" = "#ff7f0e")) +
+  
+  # Customize scales and labels
+  scale_y_continuous(labels = function(x) paste0("$", x, "B"), 
+                     expand = expansion(mult = c(0, 0.15))) +
+  
+  labs(
+    title = "SINGAPORE MERCHANDISE TRADE (2020-2024)",
+    subtitle = "Exports, Imports and Total Trade Values",
+    caption = "Values in Billions SGD | Percentages show year-over-year growth in Total Trade",
+    x = NULL,
+    y = "Trade Value (Billions SGD)",
+    fill = "Category"
+  ) +
+  
+  # Enhanced theme
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b = 20)),
+    plot.caption = element_text(size = 9, color = "gray30", margin = margin(t = 15)),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(size = 11),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text = element_text(size = 11),
+    axis.title.y = element_text(size = 12, margin = margin(r = 10)),
+    plot.background = element_rect(fill = "ghostwhite", color = NA),
+    panel.background = element_rect(fill = "ghostwhite", color = NA),
+    plot.margin = margin(20, 20, 20, 20)
+  )
+```
+
