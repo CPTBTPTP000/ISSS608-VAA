@@ -151,19 +151,13 @@ geom_text(data = plot_data,
 
 1. 
 TOTAL MERCHANDISE TRADE AT CURRENT PRICES, 2020 - 2024
-pros: 
-cons:
-
-sketches:
 
 ::: info-box
 This analysis utilizes the "Total Merchandise Trade at Current Prices" dataset from the Singapore Department of Statistics (DOS). Data for "Total Merchandise Trade," "Total Merchandise Exports," and "Total Merchandise Imports" were extracted to better analyze recent trends in trade volume and compare fluctuations before and after the COVID-19 pandemic, as well as post-pandemic recovery.
 The dataset originally presents time in a Year + Month format. To make it more suitable for annual analysis, the data was first filtered for the years 2018-2024. The mutate() function was used to extract the month and year components, and the summarize() function aggregate the data at the yearly level, calculating the total trade volume for exports and imports.
 
-批判：
 The original bar chart employed a container-themed design, aligning with the trade context.   While visually engaging, the color scheme lacked functional utility, hindering multi-dimensional comparisons (e.g., year-over-year trends and import/export differences).   Additionally, the 5-year timeframe limited the ability to contextualize pandemic-related impacts.
 
-我的：
 The design combine a line chart and stacked bar charts  This clarifies the relationship between total trade (imports + exports) and individual components. The line chart emphasizes annual trends, while stacked bars breakdown the import and export. A unified color scheme improves cross-year comparisons of imports and exports and increase the space for each year can improve readability.
 
 :::
@@ -177,12 +171,9 @@ Import the data
 servicetrade <- read_xlsx("Trade_Exp_Imp_by_Services_201525.xlsx")
 ```
 
-
-
 ```{r}
 kable(head(servicetrade))
 ```
-
 
 
 ```{r}
@@ -231,7 +222,10 @@ servicetrade <- servicetrade %>%
 
 ```
 
-
+::: info-box
+The graph uses a tree chart instead of a pie chart. Although the pattern of the previous pie chart was beautiful, different data were classified in different colors and the data part was displayed in larger font, it was difficult to capture useful information at first glance due to the wide variety of types. 
+Using the same color tree chart can clearly distinguish which type of service accounts for more in the export proportion, which is more clear and intuitive。
+:::
 
 
 
@@ -241,11 +235,9 @@ servicetrade <- servicetrade %>%
 
 ```{r}
 DExport_Region <- read_xlsx("Merchandise_Trade_DExport_by Region_201825.xlsx")
-```
-```{r}
+
 Import_Region <- read_xlsx("Merchandise_Trade_Import_by Region.xlsx")
-```
-```{r}
+
 ReExport_Region <- read_xlsx("Merchandise_Trade_ReExport_by Region_201825.xlsx")
 ```
 
@@ -391,7 +383,6 @@ test_data <- import_ts %>%
 
 ```
 
-EDA!!!!!!!!
 
 ```{r}
 for (country in c("Total All Markets", "Asia", "America", "Europe", "Oceania", "Africa")) {
@@ -407,8 +398,8 @@ for (country in c("Total All Markets", "Asia", "America", "Europe", "Oceania", "
 
 ```
 
-2. Fitting forecasting models
-2.1 Fit Simple Exponential Smoothing (SES)
+Fitting forecasting models
+Fit Simple Exponential Smoothing (SES)
 ```{r}
 fit_ses <- train_data %>%
   filter(`Data Series` %in% c("Total All Markets", "Asia", "America", "Europe",
@@ -527,6 +518,15 @@ fit_autoETS %>%
   forecast(h = "12 months") %>%
   autoplot(train_data)
 ```
+::: info-box
+This analyzes merchandise import trends across five regions (America, Asia, Europe, Oceania, and Africa) using time series forecasting methods from the tidyverts method.
+The dataset was converted from wide to long format using pivot_longer, enabling time series analysis with tsibble.Missing values and data types were checked using  ExpData to confirm data integrity.
+In general,despite fluctuations such as the 2008 financial crisis and COVID-19 in 2019, imports showed a long-term upward trend. Although imports dropped sharply during COVID-19, rebounded strongly post-pandemic.
+In terms of different areas, Asia dominated global imports, reflecting its economic scale.Africa had the lowest import values but exhibited rapid growth post-2015.
+In terms of the model, SES Produced residuals without significant patterns, indicating adequate fit.
+For the future forecast, although the import value is on the rise, it is also difficult to predict the unexpected situation that the market may face. Different forecasting models also apply to different regions
+
+:::
 
 
 
