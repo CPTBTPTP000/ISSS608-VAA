@@ -1530,7 +1530,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>DExport_Region <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Merchandise_Trade_DExport_by Region_201825.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Import_Region <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Merchandise_Trade_Import_by Region_201825.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Import_Region <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Merchandise_Trade_Import_by Region.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ReExport_Region <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"Merchandise_Trade_ReExport_by Region_201825.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1563,23 +1563,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Import_Region <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ExpData</span>(<span class="at">type =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                                          Descriptions     Value
-1                                   Sample size (nrow)       160
-2                              No. of variables (ncol)        86
-3                    No. of numeric/interger variables        85
-4                              No. of factor variables         0
-5                                No. of text variables         1
-6                             No. of logical variables         0
-7                          No. of identifier variables         1
-8                                No. of date variables         0
-9             No. of zero variance variables (uniform)         0
-10               %. of variables having complete cases 100% (86)
-11   %. of variables having &gt;0% and &lt;50% missing cases    0% (0)
-12 %. of variables having &gt;=50% and &lt;90% missing cases    0% (0)
-13          %. of variables having &gt;=90% missing cases    0% (0)</code></pre>
+<pre><code>                                          Descriptions      Value
+1                                   Sample size (nrow)        160
+2                              No. of variables (ncol)        266
+3                    No. of numeric/interger variables        265
+4                              No. of factor variables          0
+5                                No. of text variables          1
+6                             No. of logical variables          0
+7                          No. of identifier variables          1
+8                                No. of date variables          0
+9             No. of zero variance variables (uniform)          0
+10               %. of variables having complete cases 100% (266)
+11   %. of variables having &gt;0% and &lt;50% missing cases     0% (0)
+12 %. of variables having &gt;=50% and &lt;90% missing cases     0% (0)
+13          %. of variables having &gt;=90% missing cases     0% (0)</code></pre>
 </div>
 </div>
-<p>选择几大洲</p>
+<p>Select the data</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>import_long <span class="ot">&lt;-</span> Import_Region <span class="sc">%&gt;%</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
@@ -1618,8 +1618,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> <span class="st">`</span><span class="at">Data Series</span><span class="st">`</span>, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Import Data by Country"</span>,</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Value"</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Month"</span>) <span class="sc">+</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Month"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1711,17 +1710,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Time Series Data Sampling</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>import_ts_split <span class="ot">&lt;-</span> import_ts <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>import_ts <span class="ot">&lt;-</span> import_ts <span class="sc">%&gt;%</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Type =</span> <span class="fu">if_else</span>(</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    Month <span class="sc">&gt;=</span> <span class="fu">yearmonth</span>(<span class="st">"2024 Nov"</span>), </span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hold-out"</span>,  <span class="st">"Training"</span>))</span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create training data</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> import_ts_split <span class="sc">%&gt;%</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> import_ts <span class="sc">%&gt;%</span></span>
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Type <span class="sc">==</span> <span class="st">"Training"</span>)</span>
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create test data (hold-out)</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> import_ts_split <span class="sc">%&gt;%</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> import_ts <span class="sc">%&gt;%</span></span>
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Type <span class="sc">==</span> <span class="st">"Hold-out"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>EDA!!!!!!!!</p>
@@ -1844,17 +1843,218 @@ models, so a glance will be shown. To see the report for a specific model, use
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 10
-  `Data Series`     .model  sigma2 log_lik   AIC  AICc   BIC    MSE   AMSE   MAE
-  &lt;chr&gt;             &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1 Africa            ses     2.08e4   -587. 1181. 1181. 1188. 2.03e4 2.13e4  110.
-2 America           ses     4.09e5   -709. 1425. 1425. 1432. 3.99e5 5.51e5  495.
-3 Asia              ses     5.77e6   -818. 1642. 1642. 1649. 5.63e6 7.65e6 1891.
-4 Europe            ses     5.07e5   -718. 1443. 1443. 1450. 4.95e5 5.65e5  510.
-5 Oceania           ses     6.99e4   -637. 1280. 1280. 1287. 6.82e4 7.12e4  209.
-6 Total All Markets ses     1.12e7   -845. 1697. 1697. 1704. 1.10e7 1.50e7 2605.</code></pre>
+  `Data Series`     .model sigma2 log_lik   AIC  AICc   BIC    MSE   AMSE    MAE
+  &lt;chr&gt;             &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 Africa            ses    1.00e4  -1935. 3877. 3877. 3888. 9.96e3 1.07e4   72.0
+2 America           ses    2.85e5  -2374. 4754. 4754. 4764. 2.83e5 3.52e5  413. 
+3 Asia              ses    4.05e6  -2722. 5449. 5449. 5460. 4.02e6 5.23e6 1555. 
+4 Europe            ses    4.14e5  -2423. 4852. 4852. 4862. 4.11e5 4.52e5  471. 
+5 Oceania           ses    3.63e4  -2104. 4214. 4214. 4224. 3.60e4 3.76e4  139. 
+6 Total All Markets ses    7.96e6  -2810. 5626. 5626. 5637. 7.90e6 1.01e7 2169. </code></pre>
 </div>
 </div>
 <p>Fitting ETS Methods with Trend: Holt’s Linear</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fit_holt <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Total All Markets"</span>, <span class="st">"Asia"</span>, <span class="st">"America"</span>, <span class="st">"Europe"</span>, <span class="st">"Oceania"</span>, <span class="st">"Africa"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="st">`</span><span class="at">Holt's method</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ETS</span>(Value <span class="sc">~</span> <span class="fu">error</span>(<span class="st">"A"</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">"A"</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="st">"N"</span>)))</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>fit_holt <span class="sc">%&gt;%</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Total All Markets"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: Value 
+Model: ETS(A,A,N) 
+  Smoothing parameters:
+    alpha = 0.5434684 
+    beta  = 0.003895092 
+
+  Initial states:
+     l[0]     b[0]
+ 17686.95 349.7169
+
+  sigma^2:  8054740
+
+     AIC     AICc      BIC 
+5631.139 5631.374 5648.981 </code></pre>
+</div>
+</div>
+<p>check the result</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>fit_holt <span class="sc">%&gt;%</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Total All Markets"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take_home_Ex02_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Fitting ETS Methods with Season: Holt-Winters</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>fit_ets_auto <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Total All Markets"</span>, <span class="st">"Asia"</span>, <span class="st">"America"</span>, <span class="st">"Europe"</span>, <span class="st">"Oceania"</span>, <span class="st">"Africa"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="at">ets_auto =</span> <span class="fu">ETS</span>(Value))</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>fit_ets_auto <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in report.mdl_df(.): Model reporting is only supported for individual
+models, so a glance will be shown. To see the report for a specific model, use
+`select()` and `filter()` to identify a single model.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+  `Data Series`    .model  sigma2 log_lik   AIC  AICc   BIC    MSE   AMSE    MAE
+  &lt;chr&gt;            &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 Africa           ets_a… 0.107    -1886. 3783. 3783. 3801. 9.92e3 1.07e4 0.261 
+2 America          ets_a… 0.00909  -2337. 4707. 4710. 4768. 2.28e5 2.82e5 0.0723
+3 Asia             ets_a… 0.00409  -2652. 5339. 5342. 5403. 2.62e6 3.65e6 0.0492
+4 Europe           ets_a… 0.00920  -2369. 4775. 4777. 4839. 3.23e5 3.70e5 0.0704
+5 Oceania          ets_a… 0.0741   -2077. 4160. 4160. 4170. 3.62e4 3.78e4 0.209 
+6 Total All Marke… ets_a… 0.00358  -2734. 5504. 5507. 5569. 4.91e6 6.80e6 0.0459</code></pre>
+</div>
+</div>
+<p>Fitting multiple ETS Models</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fit_ETS <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Total All Markets"</span>, <span class="st">"Asia"</span>, <span class="st">"America"</span>, <span class="st">"Europe"</span>, <span class="st">"Oceania"</span>, <span class="st">"Africa"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">ses =</span> <span class="fu">ETS</span>(Value <span class="sc">~</span> <span class="fu">error</span>(<span class="st">"A"</span>) <span class="sc">+</span> </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                <span class="fu">trend</span>(<span class="st">"N"</span>) <span class="sc">+</span> </span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">season</span>(<span class="st">"N"</span>)),</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">holt =</span> <span class="fu">ETS</span>(Value <span class="sc">~</span> <span class="fu">error</span>(<span class="st">"A"</span>) <span class="sc">+</span> </span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">trend</span>(<span class="st">"A"</span>) <span class="sc">+</span> </span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">season</span>(<span class="st">"N"</span>)),</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">damped Holt</span><span class="st">`</span> <span class="ot">=</span> </span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>          <span class="fu">ETS</span>(Value <span class="sc">~</span> <span class="fu">error</span>(<span class="st">"A"</span>) <span class="sc">+</span></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>                <span class="fu">trend</span>(<span class="st">"Ad"</span>) <span class="sc">+</span> </span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>                <span class="fu">season</span>(<span class="st">"N"</span>)),</span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">WH_A</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ETS</span>(</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>          Value <span class="sc">~</span> <span class="fu">error</span>(<span class="st">"A"</span>) <span class="sc">+</span> </span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">trend</span>(<span class="st">"A"</span>) <span class="sc">+</span> </span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">season</span>(<span class="st">"A"</span>)),</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">`</span><span class="at">WH_M</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ETS</span>(Value <span class="sc">~</span> <span class="fu">error</span>(<span class="st">"M"</span>) </span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">+</span> <span class="fu">trend</span>(<span class="st">"A"</span>) </span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">+</span> <span class="fu">season</span>(<span class="st">"M"</span>))</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Model Coefficient</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>fit_ETS <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 270 × 4
+   `Data Series` .model      term    estimate
+   &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;
+ 1 Africa        ses         alpha   0.239   
+ 2 Africa        ses         l[0]  112.      
+ 3 Africa        holt        alpha   0.227   
+ 4 Africa        holt        beta    0.000100
+ 5 Africa        holt        l[0]  109.      
+ 6 Africa        holt        b[0]    1.91    
+ 7 Africa        damped Holt alpha   0.238   
+ 8 Africa        damped Holt beta    0.000105
+ 9 Africa        damped Holt phi     0.933   
+10 Africa        damped Holt l[0]  106.      
+# ℹ 260 more rows</code></pre>
+</div>
+</div>
+<p>Model Comparison</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>fit_ETS <span class="sc">%&gt;%</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in report.mdl_df(.): Model reporting is only supported for individual
+models, so a glance will be shown. To see the report for a specific model, use
+`select()` and `filter()` to identify a single model.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 30 × 10
+   `Data Series` .model   sigma2 log_lik   AIC  AICc   BIC    MSE   AMSE     MAE
+   &lt;chr&gt;         &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Africa        ses     1.00e+4  -1935. 3877. 3877. 3888. 9.96e3 1.07e4 7.20e+1
+ 2 Africa        holt    1.00e+4  -1935. 3879. 3879. 3897. 9.89e3 1.06e4 7.22e+1
+ 3 Africa        damped… 1.01e+4  -1935. 3883. 3883. 3904. 9.95e3 1.07e4 7.20e+1
+ 4 Africa        WH_A    9.89e+3  -1926. 3887. 3889. 3947. 9.29e3 9.98e3 6.96e+1
+ 5 Africa        WH_M    1.04e-1  -1878. 3791. 3793. 3851. 9.30e3 1.02e4 2.49e-1
+ 6 America       ses     2.85e+5  -2374. 4754. 4754. 4764. 2.83e5 3.52e5 4.13e+2
+ 7 America       holt    2.85e+5  -2373. 4756. 4756. 4774. 2.81e5 3.47e5 4.14e+2
+ 8 America       damped… 2.87e+5  -2373. 4759. 4759. 4780. 2.82e5 3.49e5 4.13e+2
+ 9 America       WH_A    2.39e+5  -2344. 4721. 4724. 4782. 2.25e5 2.81e5 3.65e+2
+10 America       WH_M    9.09e-3  -2337. 4707. 4710. 4768. 2.28e5 2.82e5 7.23e-2
+# ℹ 20 more rows</code></pre>
+</div>
+</div>
+<p>Forecasting future values</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fit_ETS <span class="sc">%&gt;%</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="st">"12 months"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(import_ts, </span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">level =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take_home_Ex02_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Fitting ETS Automatically</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>fit_autoETS <span class="ot">&lt;-</span> train_data <span class="sc">%&gt;%</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">ETS</span>(Value))</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>fit_autoETS <span class="sc">%&gt;%</span> <span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in report.mdl_df(.): Model reporting is only supported for individual
+models, so a glance will be shown. To see the report for a specific model, use
+`select()` and `filter()` to identify a single model.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 160 × 10
+   `Data Series`    .model  sigma2 log_lik    AIC   AICc     BIC     MSE    AMSE
+   &lt;chr&gt;            &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Afghanistan      ETS(V… 1.23e-1  -454.   915.   915.   925.   1.22e-1 1.56e-1
+ 2 Africa           ETS(V… 1.07e-1 -1886.  3783.  3783.  3801.   9.92e+3 1.07e+4
+ 3 Algeria          ETS(V… 1.40e+3 -1677.  3361.  3361.  3372.   1.39e+3 1.44e+3
+ 4 America          ETS(V… 9.09e-3 -2337.  4707.  4710.  4768.   2.28e+5 2.82e+5
+ 5 Angola           ETS(V… 1.50e+3 -1687.  3380.  3380.  3391.   1.49e+3 1.49e+3
+ 6 Antarctica       ETS(V… 3.54e-3    10.7  -15.4  -15.3   -4.71 3.52e-3 3.53e-3
+ 7 Antigua And Bar… ETS(V… 1.40e+0  -773.  1552.  1552.  1562.   1.39e+0 1.40e+0
+ 8 Argentina        ETS(V… 4.93e-1 -1158.  2345.  2347.  2399.   7.11e+1 7.91e+1
+ 9 Asia             ETS(V… 4.09e-3 -2652.  5339.  5342.  5403.   2.62e+6 3.65e+6
+10 Australia        ETS(V… 9.58e-2 -2069.  4144.  4144.  4155.   3.43e+4 3.57e+4
+# ℹ 150 more rows
+# ℹ 1 more variable: MAE &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>fit_autoETS <span class="sc">%&gt;%</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Total All Markets"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg_tsresiduals</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take_home_Ex02_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Forecast the future values</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>fit_autoETS <span class="sc">%&gt;%</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Data Series</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Total All Markets"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">forecast</span>(<span class="at">h =</span> <span class="st">"12 months"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take_home_Ex02_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 
