@@ -15,7 +15,7 @@ pacman::p_load(tidyverse,readxl, gifski, gapminder,
                CGPfunctions, ggHoriPlot, gtsummary,
                easystats,tidyverse, GGally,SmartEDA,
                treemapify,treemap,d3treeR,
-               ggExtra,parallelPlot)
+               ggExtra,tsibble, feasts,fable, seasonal)
 ```
 
 1.2 Importing the data
@@ -234,103 +234,216 @@ servicetrade <- servicetrade %>%
 
 
 
-好学生样本：
 
-  
+
+
+
+
 ```{r}
-# Filter the dataset for 2020-2024
-Year_merchandise <- Year_merchandise %>%
-  filter(year >= 2018 & year <= 2024, 
-         grepl("Total Merchandise (Trade|Exports|Imports)", `Data Series`))
-
-# Reshape the data for visualization
-Year_merchandise <- Year_merchandise %>%
-  mutate(Category = case_when(
-    grepl("Total Merchandise Trade", `Data Series`) ~ "Total Trade",
-    grepl("Total Merchandise Exports", `Data Series`) ~ "Exports",
-    grepl("Total Merchandise Imports", `Data Series`) ~ "Imports"
-  )) %>%
-  select(year, yearly_total, Category, `Data Series`)
-
-# Calculate year-over-year growth rates for Total Trade
-trade_growth <- Year_merchandise %>%
-  filter(Category == "Total Trade") %>%
-  arrange(year) %>%
-  mutate(growth_pct = (yearly_total / lag(yearly_total) - 1) * 100)
-
-# Convert values to billions for easier reading
-Year_merchandise <- Year_merchandise %>%
-  mutate(value_billions = yearly_total / 1e9)
-
-# Create comparison data - side-by-side bars for imports and exports with trade line
-plot_data <- Year_merchandise %>%
-  filter(Category != "Total Trade") # Remove total trade for the bars
-
-# Create a more informative and aesthetically pleasing visualization
-ggplot() +
-  # Side-by-side bars for imports and exports
-  geom_bar(data = plot_data, 
-           aes(x = factor(year), y = value_billions, fill = Category),
-           stat = "identity", position = position_dodge(width = 0.7), width = 0.6) +
-  
-  # Line for total trade
-  geom_line(data = Year_merchandise %>% filter(Category == "Total Trade"),
-            aes(x = factor(year), y = value_billions, group = 1),
-            color = "darkred", size = 1.2) +
-  geom_point(data = Year_merchandise %>% filter(Category == "Total Trade"),
-             aes(x = factor(year), y = value_billions),
-             color = "darkred", size = 3) +
-  
-  # Value labels for imports and exports
-  geom_text(data = plot_data,
-            aes(x = factor(year), y = value_billions, label = paste0("$", round(value_billions, 1), "B"), 
-                group = Category),
-            position = position_dodge(width = 0.7), vjust = -0.5, size = 3.5) +
-  
-  # Total trade value labels
-  geom_text(data = Year_merchandise %>% filter(Category == "Total Trade"),
-            aes(x = factor(year), y = value_billions, 
-                label = paste0("Total: $", round(value_billions, 1), "B")),
-            vjust = -0.8, color = "darkred", fontface = "bold", size = 3.8) +
-  
-  # Growth rate annotations
-  geom_text(data = trade_growth %>% filter(!is.na(growth_pct)),
-            aes(x = factor(year), y = 0, 
-                label = paste0(ifelse(growth_pct > 0, "+", ""), round(growth_pct, 1), "%")),
-            vjust = 1.5, color = "gray30", fontface = "italic", size = 3.2) +
-  
-  # Custom color palette for better contrast
-  scale_fill_manual(values = c("Exports" = "#1f77b4", "Imports" = "#ff7f0e")) +
-  
-  # Customize scales and labels
-  scale_y_continuous(labels = function(x) paste0("$", x, "B"), 
-                     expand = expansion(mult = c(0, 0.15))) +
-  
-  labs(
-    title = "SINGAPORE MERCHANDISE TRADE (2020-2024)",
-    subtitle = "Exports, Imports and Total Trade Values",
-    caption = "Values in Billions SGD | Percentages show year-over-year growth in Total Trade",
-    x = NULL,
-    y = "Trade Value (Billions SGD)",
-    fill = "Category"
-  ) +
-  
-  # Enhanced theme
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
-    plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b = 20)),
-    plot.caption = element_text(size = 9, color = "gray30", margin = margin(t = 15)),
-    legend.position = "top",
-    legend.title = element_blank(),
-    legend.text = element_text(size = 11),
-    panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank(),
-    axis.text = element_text(size = 11),
-    axis.title.y = element_text(size = 12, margin = margin(r = 10)),
-    plot.background = element_rect(fill = "ghostwhite", color = NA),
-    panel.background = element_rect(fill = "ghostwhite", color = NA),
-    plot.margin = margin(20, 20, 20, 20)
-  )
+DExport_Region <- read_xlsx("Merchandise_Trade_DExport_by Region_201825.xlsx")
+```
+```{r}
+Import_Region <- read_xlsx("Merchandise_Trade_Import_by Region_201825.xlsx")
+```
+```{r}
+ReExport_Region <- read_xlsx("Merchandise_Trade_ReExport_by Region_201825.xlsx")
 ```
 
+```{r}
+
+month_levels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+DExport_Region <- DExport_Region %>%
+  pivot_longer(
+    cols = matches("\\d{4}\\s[A-Za-z]{3}"), 
+    names_to = "date_col",
+    values_to = "value"
+  ) %>%
+  mutate(
+    year = as.numeric(str_extract(date_col, "\\d{4}")),
+    month = str_extract(date_col, "[A-Za-z]{3}")
+  ) %>%
+  select(-date_col) %>%
+  arrange(year, match(month, month_levels)) %>%
+  mutate(month = factor(month, levels = month_levels))
+
+```
+
+```{r}
+DExport_Region <- DExport_Region %>%
+  group_by(`Data Series`, year) %>% 
+  summarize(yearly_total = sum(value, na.rm = TRUE), .groups = "drop")
+```
+
+Check the data
+```{r}
+Import_Region %>%
+  ExpData(type = 1)
+```
+
+选择几大洲
+
+
+```{r}
+import_long <- Import_Region %>%
+  pivot_longer(
+    cols = -c(`Data Series`),
+    names_to = "Month",
+    values_to = "Value"
+  ) %>%
+
+  mutate(Month = yearmonth(as.Date(paste0("01 ", Month), format = "%d %Y %b")))
+
+
+import_ts <- import_long %>%
+  as_tsibble(index = Month, key = `Data Series`)
+
+# Visualize the time series data
+import_ts %>%
+  filter(`Data Series` %in% c("Total All Markets","Asia", "America",
+                              "Europe","Oceania", "Africa")) %>%
+  ggplot(aes(x = Month, y = Value, color =`Data Series`)) +
+  geom_line() +
+  labs(title = "Import Data Time Series",
+       y = "Value",
+       x = "Month") 
+
+# Create individual time series plots for each country
+import_ts %>%
+  filter(!`Data Series` %in% c("Total All Markets", "America")) %>%
+  ggplot(aes(x = Month, y = Value)) +
+  geom_line() +
+  facet_wrap(~ `Data Series`, scales = "free_y") +
+  labs(title = "Import Data by Country",
+       y = "Value",
+       x = "Month") +
+  theme_minimal()
+```
+
+
+
+
+Visual Analysis of Seasonality with Seasonal Plot
+```{r}
+import_ts %>%
+  filter(`Data Series` %in% c("Total All Markets","Asia", "America",
+                              "Europe","Oceania", "Africa")) %>%
+  gg_season(Value) 
+```
+
+
+Visual Analysis of Seasonality with Cycle Plot
+```{r}
+# Subseries plot
+import_ts %>%
+  filter(`Data Series` %in% c("Total All Markets","Asia", "America",
+                              "Europe","Oceania", "Africa")) %>%
+  gg_subseries(Value)
+```
+
+
+Time series decomposition
+```{r}
+
+# Define the categories you want to analyze
+selected_countries <- c("Total All Markets", "Asia", "America", "Europe", "Oceania", "Africa")
+
+# Compute PACF and plot all categories in one faceted plot
+import_ts %>%
+  filter(`Data Series` %in% selected_countries) %>%  # Filter all selected categories
+  PACF(Value) %>%  # Compute PACF
+  autoplot() +  # Facet by 'Data Series'
+  labs(title = "PACF Analysis Across Selected Categories")
+
+```
+
+```{r}
+import_ts %>%
+  filter(`Data Series` == "Total All Markets") %>%
+  gg_tsdisplay(Value)
+```
+
+
+Classical Decomposition with feasts
+```{r}
+import_ts %>%
+  filter(`Data Series` == "Total All Markets") %>%
+  model(
+    classical_decomposition(
+      Value, type = "additive")) %>%
+  components() %>%
+  autoplot()
+```
+
+Time Series Data Sampling
+```{r}
+import_ts_split <- import_ts %>%
+  mutate(Type = if_else(
+    Month >= yearmonth("2024 Nov"), 
+    "Hold-out",  "Training"))
+
+# Create training data
+train_data <- import_ts_split %>%
+  filter(Type == "Training")
+
+# Create test data (hold-out)
+test_data <- import_ts_split %>%
+  filter(Type == "Hold-out")
+
+
+```
+
+EDA!!!!!!!!
+
+```{r}
+for (country in c("Total All Markets", "Asia", "America", "Europe", "Oceania", "Africa")) {
+  print(paste("STL Decomposition for:", country))
+  
+  train_data %>%
+    filter(`Data Series` == country) %>%
+    model(stl = STL(Value)) %>%
+    components() %>%
+    autoplot() %>%
+    print()
+}
+
+```
+
+2. Fitting forecasting models
+2.1 Fit Simple Exponential Smoothing (SES)
+```{r}
+fit_ses <- train_data %>%
+  filter(`Data Series` %in% c("Total All Markets", "Asia", "America", "Europe",
+                              "Oceania", "Africa")) %>%
+  model(ses = ETS(Value ~ error("A") + trend("N") + season("N")))
+
+fit_ses
+
+```
+Examine Model Assumptions
+```{r}
+fit_ses %>%
+  filter(`Data Series` == "Total All Markets") %>%
+  gg_tsresiduals()
+```
+
+The model details
+
+```{r}
+fit_ses %>%
+  report()
+```
+
+Fitting ETS Methods with Trend: Holt’s Linear
+
+
+
+
+
+
+
+
+
+
+ 
