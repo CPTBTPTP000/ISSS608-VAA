@@ -24,7 +24,7 @@ pacman::p_load(tidyverse,readxl, gifski, gapminder,
 merchandisetrade <- read_xlsx("Total_Merchandise_Trade_201525.xlsx")
 ```
 
-手动去掉了文字解释后
+
 
 1.3 Examining the data structure
 
