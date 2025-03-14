@@ -5,7 +5,9 @@ format: html
 editor: visual
 ---
 
-1.  Prepare the data 1.1 Instal and load the packages
+1.  Prepare the data
+
+    1.1 Install and load the packages
 
 ```{r}
 pacman::p_load(sf, tmap, tidyverse)
