@@ -54,6 +54,8 @@ website:
           href: "Take-Home_Ex/Take_home_Ex01.html"
         - text: "Take-home Exercise 2"
           href: "Take-Home_Ex/Take_home_Ex02/Take_home_Ex02.html"
+        - text: "Take-home Exercise 3"
+          href: "Take-Home_Ex/Take_home_Ex03/Take_home_Ex03.html"
           
      
     - text: "In-Class Exercises"
