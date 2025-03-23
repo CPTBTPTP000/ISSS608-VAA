@@ -21,12 +21,14 @@ disease <- read_excel("Waterand Disease by WHO Region.xlsx")
 ```
 
 1.3 Check the data
+
 ```{r}
 water_indicators %>%
   ExpData(type = 2)
 ```
 
 1.4 remove the missing value
+
 ```{r}
 water_indicators[water_indicators == ".."] <- NA
 water_indicators[water_indicators == "#N/A"] <- NA
@@ -38,17 +40,17 @@ water_indicators[water_indicators == ""] <- NA
 water_indicators <- water_indicators[complete.cases(water_indicators[, 5:27]), ]
 ```
 
-1.5 change the data type 
+1.5 change the data type
+
 ```{r}
 water_indicators[6:27] <- lapply(water_indicators[6:27], function(x) as.numeric(as.character(x)))
 ```
 
 1.6 data summary
+
 ```{r}
 water_indicators %>%
   ExpData(type = 2)
 ```
 
 1.7
-
-
