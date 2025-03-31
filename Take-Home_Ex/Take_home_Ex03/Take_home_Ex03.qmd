@@ -517,3 +517,27 @@ disease_summary_all_regions %>%
 ::: info-box
 **The dashboard shows current value, target, historical trend, and min,max values all in one view - For sanitation access, we can see which regions are close to 100% target and which ones need more improvement.The sparkline shows if region is getting better over time. - For diarrhea rate, we want to reach 0% target. The bullet chart shows how far each region is from this goal, and sparkline shows if disease rate is decreasing over time.**
 :::
+
+# **7. UI Design**
+
+**7.1 For Correlation Analysis**
+
+![The correlation analysis section allow users to dynamically explore relationships between water indicators and disease rates. Users can select specific diseases, water indicators and regions as well as the time periods through intuitive dropdown menus and sliders.](images/clipboard-3529100317.png)
+
+![](images/clipboard-2937418237.png)
+
+**7.2 ANOVA Analysis**
+
+![](images/clipboard-3849518873.png)
+
+The ANOVA analysis tab allows users to conduct statistical comparisons across multiple dimensions of water and disease data.
+
+![](images/clipboard-1093960067.png)
+
+**7.3 Bullet Chart**
+
+![](images/clipboard-239874055.png)
+
+The bullet charts section will provide an intuitive visual comparison view which can highlight specific regions for comparison, and trend data
+
+![](images/clipboard-1984033805.png)

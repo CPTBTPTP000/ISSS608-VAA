@@ -457,7 +457,7 @@ ui <- fluidPage(
                  mainPanel(
                    width = 9,
                    gt::gt_output("bullet_table_auto"),  # Make sure to use gt::gt_output
-                   h4("Insights"),
+                  
                    verbatimTextOutput("data_insights")
                  )
                )
@@ -1205,41 +1205,13 @@ server <- function(input, output, session) {
       Target = "Target"
     )
     
-    # Add header
-    chart <- chart %>% tab_header(
-      title = if(input$indicator_type_auto == "Water") {
-        md(paste("**Top Regions by", input$selected_indicator_auto, "in", input$auto_year, "**"))
-      } else {
-        md(paste("**Top Regions by", gsub("Rate", "", input$selected_disease_auto), "Rate in", input$auto_year, "**"))
-      }
-    )
+   
     
     # Apply theme
     chart %>% gtExtras::gt_theme_espn()
   })
   
-  # Additional insights output
-  output$data_insights <- renderPrint({
-    req(bullet_data())
-    
-    insights <- bullet_data() %>%
-      summarise(
-        total_regions = n(),
-        overall_min = min(Min, na.rm = TRUE),
-        overall_max = max(Max, na.rm = TRUE),
-        overall_avg = mean(Average, na.rm = TRUE),
-        highest_actual = max(Actual, na.rm = TRUE),
-        lowest_actual = min(Actual, na.rm = TRUE)
-      )
-    
-    cat("Data Insights:\n")
-    cat("Total Regions:", insights$total_regions, "\n")
-    cat("Overall Minimum Value:", round(insights$overall_min, 2), "\n")
-    cat("Overall Maximum Value:", round(insights$overall_max, 2), "\n")
-    cat("Overall Average:", round(insights$overall_avg, 2), "\n")
-    cat("Highest Actual Value:", round(insights$highest_actual, 2), "\n")
-    cat("Lowest Actual Value:", round(insights$lowest_actual, 2), "\n")
-  })
+  
   
   
   

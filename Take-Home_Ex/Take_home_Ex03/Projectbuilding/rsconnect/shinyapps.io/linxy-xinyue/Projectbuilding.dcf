@@ -1,0 +1,13 @@
+name: Projectbuilding
+title: Projectbuilding
+username: linxy-xinyue
+account: linxy-xinyue
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14382752
+bundleId: 10031294
+url: https://linxy-xinyue.shinyapps.io/Projectbuilding/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Bullet/app.R
