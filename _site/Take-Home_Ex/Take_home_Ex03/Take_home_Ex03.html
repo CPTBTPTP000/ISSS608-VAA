@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Lin Xinyue">
+<meta name="dcterms.date" content="2025-03-25">
 
 <title>Take-home Exercise 03 – ISSS608-VAA</title>
 <style>
@@ -262,8 +263,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><strong>1. Overview</strong></a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation"><strong>2. Data Preparation</strong></a></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration"><strong>3. Data Exploration</strong></a>
+  <ul class="collapse">
+  <li><a href="#distribution-of-disease-rates-by-region" id="toc-distribution-of-disease-rates-by-region" class="nav-link" data-scroll-target="#distribution-of-disease-rates-by-region"><strong>3.1 Distribution of Disease Rates by Region</strong></a></li>
+  <li><a href="#time-trend-analysis" id="toc-time-trend-analysis" class="nav-link" data-scroll-target="#time-trend-analysis"><strong>3.2 Time Trend Analysis</strong></a></li>
+  </ul></li>
+  <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis"><strong>4. Correlation Analysis</strong></a></li>
+  <li><a href="#anova-analysis" id="toc-anova-analysis" class="nav-link" data-scroll-target="#anova-analysis"><strong>5. ANOVA Analysis</strong></a></li>
+  <li><a href="#bullet-dashboard" id="toc-bullet-dashboard" class="nav-link" data-scroll-target="#bullet-dashboard"><strong>6. Bullet Dashboard</strong></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -284,7 +300,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 25, 2025</p>
+    </div>
+  </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">March 31, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -293,10 +321,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<ol type="1">
-<li>Prepare the data</li>
-</ol>
-<p>1.1 Install and load the packages</p>
+<section id="overview" class="level1">
+<h1><strong>1. Overview</strong></h1>
+<p>The purpose of this analysis is to explore the relationship between water quality indicators and disease rates across different WHO regions. This study examines how access to basic water services, sanitation facilities, and other water-related indicators correlate with the prevalence of waterborne diseases such as typhoid, diarrhea, and hepatitis A. By understanding these relationships, we can identify potential interventions to reduce disease burden in affected regions.</p>
+</section>
+<section id="data-preparation" class="level1">
+<h1><strong>2. Data Preparation</strong></h1>
+<p><strong>2.1 Install and launch R packages</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse,dplyr,tidyr, readxl,writexl,ggplot2, ggcorrplot, ggstatsplot, GGally,</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>              SmartEDA, easystats, gtsummary,</span>
@@ -304,12 +335,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               colorspace,lubridate, ggthemes, reactable,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              reactablefmtr, gt, gtExtras)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>1.2 Import the data</p>
+<p><strong>2.2 Import Data</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"WDI Country Data.csv"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"Waterand Disease by WHO Region.xlsx"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><strong>2.3 Extract Data</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>all_sheets <span class="ot">&lt;-</span> <span class="fu">setNames</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(<span class="fu">excel_sheets</span>(file_path), <span class="cf">function</span>(sheet) <span class="fu">read_excel</span>(file_path, <span class="at">sheet =</span> sheet)),</span>
@@ -328,7 +360,7 @@ New names:
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>hepatitiesA <span class="ot">&lt;-</span> all_sheets[[ <span class="st">"acute hepatitis A 2000 -2021"</span> ]]</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> all_sheets[[ <span class="st">"Risk factor"</span> ]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>1.3 Check the data</p>
+<p><strong>2.4 Overview raw data</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="sc">%&gt;%</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ExpData</span>(<span class="at">type =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -513,320 +545,253 @@ New names:
 15                     6</code></pre>
 </div>
 </div>
-<p>1.4 remove the missing value</p>
+<p><strong>2.5 Data Transformation</strong></p>
+<p><em>Remove the missing value</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>water_indicators[water_indicators <span class="sc">==</span> <span class="st">".."</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>water_indicators[water_indicators <span class="sc">==</span> <span class="st">"#N/A"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>water_indicators[water_indicators <span class="sc">==</span> <span class="st">""</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ExpData</span>(<span class="at">type =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> water_indicators[<span class="fu">complete.cases</span>(water_indicators[, <span class="dv">5</span><span class="sc">:</span><span class="dv">27</span>]), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>riskfactor[riskfactor <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>riskfactor[riskfactor <span class="sc">==</span> <span class="st">"#N/A"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> riskfactor[<span class="fu">rowSums</span>(<span class="fu">is.na</span>(riskfactor)) <span class="sc">!=</span> <span class="fu">ncol</span>(riskfactor), ]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>hepatitiesA[hepatitiesA <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>diarrhea[diarrhea <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>typhoid[typhoid <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> riskfactor[, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>hepatitiesA <span class="ot">&lt;-</span> hepatitiesA[<span class="fu">complete.cases</span>(hepatitiesA), ]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>diarrhea <span class="ot">&lt;-</span> diarrhea[<span class="fu">complete.cases</span>(diarrhea), ]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>typhoid <span class="ot">&lt;-</span> typhoid[<span class="fu">complete.cases</span>(typhoid), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Convert data type</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>water_indicators[<span class="dv">6</span><span class="sc">:</span><span class="dv">27</span>] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(water_indicators[<span class="dv">6</span><span class="sc">:</span><span class="dv">27</span>], <span class="cf">function</span>(x) <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Reshape Data</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> water_indicators <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"X"</span>),             </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Year"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Value"</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> water_indicators <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">gsub</span>(<span class="st">"X(</span><span class="sc">\\</span><span class="st">d{4})</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, Year),</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">as.numeric</span>(Year),</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Value =</span> <span class="fu">as.numeric</span>(Value))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Keep consistent column names</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>typhoid <span class="ot">&lt;-</span> typhoid <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>diarrhea <span class="ot">&lt;-</span> diarrhea <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>hepatitiesA <span class="ot">&lt;-</span> hepatitiesA <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> riskfactor <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>2.6 Data Integration</strong></p>
+<p><em>Group by regions</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>water_region <span class="ot">&lt;-</span> water_indicators <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Year, Series.Name) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">AvgValue =</span> <span class="fu">mean</span>(Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Typhoid <span class="ot">&lt;-</span> typhoid <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">TyphoidRate =</span> Value)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>Diarrhea <span class="ot">&lt;-</span> diarrhea <span class="sc">%&gt;%</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">DiarrheaRate =</span> Value)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>HepatitisA <span class="ot">&lt;-</span> hepatitiesA <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">HepatitisRate =</span> Value)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>Risk <span class="ot">&lt;-</span> riskfactor <span class="sc">%&gt;%</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">UnsafeRisk =</span> Value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Merge disease data set</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>disease_combined <span class="ot">&lt;-</span> <span class="fu">reduce</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(Typhoid, Diarrhea, HepatitisA, Risk),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">full_join</span>(.x, .y, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Region"</span>, <span class="st">"Year"</span>))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Final data set assembly</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(disease_combined, water_region, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Region"</span>, <span class="st">"Year"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data[, <span class="sc">!</span><span class="fu">names</span>(merged_data) <span class="sc">%in%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"People with basic handwashing facilities including soap and water (% of population)"</span>]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data[merged_data<span class="sc">$</span>Region <span class="sc">!=</span> <span class="st">"WHO region"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Year)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">as.numeric</span>(Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>2.7 Overview final data set</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(merged_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   Index  Variable_Name Variable_Type Sample_n Missing_Count Per_of_Missing
-1      1    Series.Name     character     2662             3          0.001
-2      2    Series.Code     character     2660             5          0.002
-3      3   Country.Name     character     2660             5          0.002
-4      4   Country.Code     character     2660             5          0.002
-5      5         Region     character     1940           725          0.272
-6      6 X2000..YR2000.     character     1969           696          0.261
-7      7 X2001..YR2001.     character     1984           681          0.256
-8      8 X2002..YR2002.     character     1998           667          0.250
-9      9 X2003..YR2003.     character     2001           664          0.249
-10    10 X2004..YR2004.     character     2012           653          0.245
-11    11 X2005..YR2005.     character     2033           632          0.237
-12    12 X2006..YR2006.     character     2057           608          0.228
-13    13 X2007..YR2007.     character     2069           596          0.224
-14    14 X2008..YR2008.     character     2087           578          0.217
-15    15 X2009..YR2009.     character     2099           566          0.212
-16    16 X2010..YR2010.     character     2117           548          0.206
-17    17 X2011..YR2011.     character     2141           524          0.197
-18    18 X2012..YR2012.     character     2157           508          0.191
-19    19 X2013..YR2013.     character     2164           501          0.188
-20    20 X2014..YR2014.     character     2175           490          0.184
-21    21 X2015..YR2015.     character     2178           487          0.183
-22    22 X2016..YR2016.     character     2177           488          0.183
-23    23 X2017..YR2017.     character     2172           493          0.185
-24    24 X2018..YR2018.     character     2149           516          0.194
-25    25 X2019..YR2019.     character     2140           525          0.197
-26    26 X2020..YR2020.     character     2125           540          0.203
-27    27 X2021..YR2021.     character     2108           557          0.209
-   No_of_distinct_values
-1                     13
-2                     11
-3                    267
-4                    267
-5                      7
-6                   1855
-7                   1869
-8                   1885
-9                   1885
-10                  1893
-11                  1914
-12                  1939
-13                  1947
-14                  1972
-15                  1979
-16                  2003
-17                  2022
-18                  2040
-19                  2049
-20                  2053
-21                  2046
-22                  2043
-23                  2031
-24                  2007
-25                  1992
-26                  1964
-27                  1944</code></pre>
+<pre><code>Rows: 1,232
+Columns: 8
+$ Region        &lt;chr&gt; "Region of the Americas", "Region of the Americas", "Reg…
+$ Year          &lt;dbl&gt; 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 2000, 20…
+$ TyphoidRate   &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ DiarrheaRate  &lt;dbl&gt; 5.88, 5.88, 5.88, 5.88, 5.88, 5.88, 5.88, 5.88, 5.88, 5.…
+$ HepatitisRate &lt;dbl&gt; 0.38, 0.38, 0.38, 0.38, 0.38, 0.38, 0.38, 0.38, 0.38, 0.…
+$ UnsafeRisk    &lt;dbl&gt; 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.…
+$ Series.Name   &lt;chr&gt; "Level of water stress: freshwater withdrawal as a propo…
+$ AvgValue      &lt;dbl&gt; 1.308801e+01, 8.252346e+00, 8.867545e+01, 7.710693e+01, …</code></pre>
 </div>
 </div>
+</section>
+<section id="data-exploration" class="level1">
+<h1><strong>3. Data Exploration</strong></h1>
+<p>This section will explore the distribution patterns of disease rates across WHO regions to gain initial insights into regional variations</p>
+<section id="distribution-of-disease-rates-by-region" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-of-disease-rates-by-region"><strong>3.1 Distribution of Disease Rates by Region</strong></h2>
+<p><em>Distribution of Typhoid Rates by WHO Region</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> water_indicators[<span class="fu">complete.cases</span>(water_indicators[, <span class="dv">5</span><span class="sc">:</span><span class="dv">27</span>]), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>riskfactor[riskfactor <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>riskfactor[riskfactor <span class="sc">==</span> <span class="st">"#N/A"</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> riskfactor[<span class="fu">rowSums</span>(<span class="fu">is.na</span>(riskfactor)) <span class="sc">!=</span> <span class="fu">ncol</span>(riskfactor), ]</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>hepatitiesA[hepatitiesA <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>diarrhea[diarrhea <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>typhoid[typhoid <span class="sc">==</span> <span class="st">" "</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> riskfactor[, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>hepatitiesA <span class="ot">&lt;-</span> hepatitiesA[<span class="fu">complete.cases</span>(hepatitiesA), ]</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>diarrhea <span class="ot">&lt;-</span> diarrhea[<span class="fu">complete.cases</span>(diarrhea), ]</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>typhoid <span class="ot">&lt;-</span> typhoid[<span class="fu">complete.cases</span>(typhoid), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>1.5 change the data type</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>water_indicators[<span class="dv">6</span><span class="sc">:</span><span class="dv">27</span>] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(water_indicators[<span class="dv">6</span><span class="sc">:</span><span class="dv">27</span>], <span class="cf">function</span>(x) <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>1.6 data summary</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="sc">%&gt;%</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ExpData</span>(<span class="at">type =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   Index  Variable_Name Variable_Type Sample_n Missing_Count Per_of_Missing
-1      1    Series.Name     character     1453             0              0
-2      2    Series.Code     character     1453             0              0
-3      3   Country.Name     character     1453             0              0
-4      4   Country.Code     character     1453             0              0
-5      5         Region     character     1453             0              0
-6      6 X2000..YR2000.       numeric     1453             0              0
-7      7 X2001..YR2001.       numeric     1453             0              0
-8      8 X2002..YR2002.       numeric     1453             0              0
-9      9 X2003..YR2003.       numeric     1453             0              0
-10    10 X2004..YR2004.       numeric     1453             0              0
-11    11 X2005..YR2005.       numeric     1453             0              0
-12    12 X2006..YR2006.       numeric     1453             0              0
-13    13 X2007..YR2007.       numeric     1453             0              0
-14    14 X2008..YR2008.       numeric     1453             0              0
-15    15 X2009..YR2009.       numeric     1453             0              0
-16    16 X2010..YR2010.       numeric     1453             0              0
-17    17 X2011..YR2011.       numeric     1453             0              0
-18    18 X2012..YR2012.       numeric     1453             0              0
-19    19 X2013..YR2013.       numeric     1453             0              0
-20    20 X2014..YR2014.       numeric     1453             0              0
-21    21 X2015..YR2015.       numeric     1453             0              0
-22    22 X2016..YR2016.       numeric     1453             0              0
-23    23 X2017..YR2017.       numeric     1453             0              0
-24    24 X2018..YR2018.       numeric     1453             0              0
-25    25 X2019..YR2019.       numeric     1453             0              0
-26    26 X2020..YR2020.       numeric     1453             0              0
-27    27 X2021..YR2021.       numeric     1453             0              0
-   No_of_distinct_values
-1                     10
-2                     10
-3                    194
-4                    194
-5                      6
-6                   1378
-7                   1378
-8                   1381
-9                   1378
-10                  1376
-11                  1376
-12                  1377
-13                  1374
-14                  1381
-15                  1376
-16                  1382
-17                  1381
-18                  1383
-19                  1385
-20                  1381
-21                  1375
-22                  1374
-23                  1369
-24                  1368
-25                  1362
-26                  1349
-27                  1347</code></pre>
-</div>
-</div>
-<p>check how many countries in data</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(water_indicators<span class="sc">$</span>Country.Name))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 194</code></pre>
-</div>
-</div>
-<p>1.7 reshape the data format</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> water_indicators <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"X"</span>),             </span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Year"</span>,</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Value"</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>water_indicators <span class="ot">&lt;-</span> water_indicators <span class="sc">%&gt;%</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">gsub</span>(<span class="st">"X(</span><span class="sc">\\</span><span class="st">d{4})</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">..*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, Year),</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Year =</span> <span class="fu">as.numeric</span>(Year),</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Value =</span> <span class="fu">as.numeric</span>(Value))  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>1.8 change the colunm name</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>typhoid <span class="ot">&lt;-</span> typhoid <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>diarrhea <span class="ot">&lt;-</span> diarrhea <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>hepatitiesA <span class="ot">&lt;-</span> hepatitiesA <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>riskfactor <span class="ot">&lt;-</span> riskfactor <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Region =</span> Location)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<ol start="2" type="1">
-<li>Data Explore</li>
-</ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(typhoid, </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Value, </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Region)) <span class="sc">+</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">3</span>,</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel_min_height =</span> <span class="fl">0.01</span>,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">bandwidth =</span> <span class="fl">0.01</span>,  <span class="co"># Adjust depending on your rate scale</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">lighten</span>(<span class="st">"#7097BB"</span>, <span class="fl">0.3</span>),</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Typhoid Rate"</span>,</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(</span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="cn">NULL</span>,</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">2.6</span>))</span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Typhoid Rates by WHO Region"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(typhoid, </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Value, </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Region)) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges</span>(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">3</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel_min_height =</span> <span class="fl">0.01</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">bandwidth =</span> <span class="fl">0.01</span>,  </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">lighten</span>(<span class="st">"#7097BB"</span>, <span class="fl">0.3</span>),</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"white"</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Typhoid Rate"</span>,</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">add =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">2.6</span>))</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>() <span class="sc">+</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Typhoid Rates by WHO Region"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p><em>Distribution of Typhoid Rates by WHO Region-Raincloud Plot</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diarrhea, </span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Region, </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Value)) <span class="sc">+</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">adjust =</span> <span class="fl">0.9</span>,              </span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.25</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="dv">0</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_colour =</span> <span class="cn">NA</span>,</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#7097BB"</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.15</span>,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">outlier.shape =</span> <span class="cn">NA</span>,</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.6</span></span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dots</span>(</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">side =</span> <span class="st">"left"</span>,</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">justification =</span> <span class="fl">2.2</span>,</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="fl">0.08</span>,          </span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">dotsize =</span> <span class="fl">2.2</span>,</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#7097BB"</span>,</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.9</span></span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Typhoid Rates by WHO Region"</span></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diarrhea, </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Region, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Value)) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">adjust =</span> <span class="fl">0.9</span>,              </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">justification =</span> <span class="sc">-</span><span class="fl">0.25</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.width =</span> <span class="dv">0</span>,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">point_colour =</span> <span class="cn">NA</span>,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#7097BB"</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.15</span>,</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">outlier.shape =</span> <span class="cn">NA</span>,</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.6</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_dots</span>(</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">side =</span> <span class="st">"left"</span>,</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">justification =</span> <span class="fl">2.2</span>,</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">binwidth =</span> <span class="fl">0.08</span>,          </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">dotsize =</span> <span class="fl">2.2</span>,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#7097BB"</span>,</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.9</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_economist</span>() <span class="sc">+</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Diarrhea Rates by WHO Region"</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Group by Region 给region group by</p>
+<p><em>Distribution of Hepatitis A by WHO Region-Quantile Distribution</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>water_region <span class="ot">&lt;-</span> water_indicators <span class="sc">%&gt;%</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Year, Series.Name) <span class="sc">%&gt;%</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">AvgValue =</span> <span class="fu">mean</span>(Value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>Typhoid <span class="ot">&lt;-</span> typhoid <span class="sc">%&gt;%</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">TyphoidRate =</span> Value)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>Diarrhea <span class="ot">&lt;-</span> diarrhea <span class="sc">%&gt;%</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">DiarrheaRate =</span> Value)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>HepatitisA <span class="ot">&lt;-</span> hepatitiesA <span class="sc">%&gt;%</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">HepatitisRate =</span> Value)</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>Risk <span class="ot">&lt;-</span> riskfactor <span class="sc">%&gt;%</span></span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">select</span>(Region, Year, <span class="at">UnsafeRisk =</span> Value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>disease_combined <span class="ot">&lt;-</span> <span class="fu">reduce</span>(</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(Typhoid, Diarrhea, HepatitisA, Risk),</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">full_join</span>(.x, .y, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Region"</span>, <span class="st">"Year"</span>))</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>Prepare the whole data</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(disease_combined, water_region, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Region"</span>, <span class="st">"Year"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data[, <span class="sc">!</span><span class="fu">names</span>(merged_data) <span class="sc">%in%</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"People with basic handwashing facilities including soap and water (% of population)"</span>]</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data[merged_data<span class="sc">$</span>Region <span class="sc">!=</span> <span class="st">"WHO region"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Year)) <span class="sc">%&gt;%</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">as.numeric</span>(Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(diarrhea,</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Value, </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Region, </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">factor</span>(<span class="fu">stat</span>(quantile)))) <span class="sc">+</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_ridges</span>(</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>,</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="dv">6</span>,</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantile_lines =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">2</span>,</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.9</span></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Quartiles"</span>) <span class="sc">+</span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Typhoid Rate Distribution by WHO Region"</span></span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hepatitiesA,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> Value, </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> Region, </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> <span class="fu">factor</span>(<span class="fu">stat</span>(quantile)))) <span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_ridges</span>(</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">calc_ecdf =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="dv">6</span>,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantile_lines =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">scale =</span> <span class="dv">2</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.9</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">name =</span> <span class="st">"Quartiles"</span>) <span class="sc">+</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Hepatitis Rate Distribution by WHO Region"</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ridges</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: `stat(quantile)` was deprecated in ggplot2 3.4.0.
 ℹ Please use `after_stat(quantile)` instead.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Picking joint bandwidth of 0.428</code></pre>
+<pre><code>Picking joint bandwidth of 0.0208</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="info-box">
+<ul>
+<li><p><strong>Ridge Density Plots</strong> It Shows disease rates distribution across WHO regions Advantage and is easier to compare regions and see data spread</p></li>
+<li><p><strong>Rain-cloud Plots</strong> It Combines density, boxplot, and points in one plot Advantage which Shows the complete data picture in single view</p></li>
+<li><p><strong>Quantile Distribution Plots</strong> By using colors to show different data levels to makes it easy to see where most values are located</p></li>
+</ul>
+</div>
+</section>
+<section id="time-trend-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="time-trend-analysis"><strong>3.2 Time Trend Analysis</strong></h2>
+<p><em>Trend of Diarrhea Rate Over Time by Region</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>trend_data1 <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(DiarrheaRate)) <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Year) <span class="sc">%&gt;%</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_disease =</span> <span class="fu">mean</span>(DiarrheaRate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trend_data1, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> mean_disease, <span class="at">color =</span> Region)) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Trend of Diarrhea Rate Over Time by Region"</span>,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean Diarrhea Rate (%)"</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>) <span class="sc">+</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -836,19 +801,57 @@ New names:
 </div>
 </div>
 </div>
+<p><em>Trends of Unsafe Water Risk by Region</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>filtered_corr_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series.Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"People using at least basic sanitation services (% of population)"</span>)</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatterstats</span>(</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> filtered_corr_data,</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> AvgValue,        <span class="co"># water indicator</span></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> TyphoidRate,            <span class="co"># disease rate</span></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Basic Sanitation Access (%)"</span>,</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Disease Rate"</span>,</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Correlation between Basic Sanitation and Disease Rate"</span>,</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">marginal =</span> <span class="cn">TRUE</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>trend_data2 <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(UnsafeRisk)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Year) <span class="sc">%&gt;%</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_disease =</span> <span class="fu">mean</span>(UnsafeRisk, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trend_data2, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> mean_disease)) <span class="sc">+</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Region) <span class="sc">+</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Time Trends of Unsafe Water Risk by Region"</span>, </span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Unsafe Water Risk"</span>, </span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>) <span class="sc">+</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="info-box">
+<ul>
+<li><p><strong>Line Plots</strong> with Trend Lines It can easier to see if disease is increasing or decreasing over time</p></li>
+<li><p><strong>Faceted Time Series</strong> Shows separate time trends for each region which may allow to compare different regions’ patterns clearly</p></li>
+</ul>
+</div>
+</section>
+</section>
+<section id="correlation-analysis" class="level1">
+<h1><strong>4. Correlation Analysis</strong></h1>
+<p>In this sector, we will quantify the relationships between water indicators and disease rates.</p>
+<p><em>Basic sanitation access vs Typhoid Rate</em></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>filtered_corr_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series.Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"People using at least basic sanitation services (% of population)"</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatterstats</span>(</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> filtered_corr_data,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> AvgValue,        </span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> TyphoidRate,           </span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Basic Sanitation Access (%)"</span>,</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Disease Rate"</span>,</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Correlation between Basic Sanitation and Typhoid Rate"</span>,</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">marginal =</span> <span class="cn">TRUE</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Registered S3 method overwritten by 'ggside':
   method from  
@@ -861,58 +864,30 @@ New names:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><strong><em>4. CDA-Correlation Analysis</em></strong> <strong>corelationship analysis</strong> <em>Drinking Water Access vs Typhoid Rate</em></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df_plot1 <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Series.Name <span class="sc">==</span> <span class="st">"People using at least basic drinking water services (% of population)"</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"TyphoidRate"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "TyphoidRate"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatterstats</span>(</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df_plot1,</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> AvgValue,</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> TyphoidRate,</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">marginal =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Basic Drinking Water Access (%)"</span>,</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Typhoid Rate"</span>,</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Correlation: Drinking Water Access vs Typhoid Rate"</span>,</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">point.args =</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_xsidebin()` using `bins = 30`. Pick better value with `binwidth`.
-`stat_ysidebin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
 <p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Diarrhea Rate vs.&nbsp;Basic Water Access</p>
+<p><em>Basic drinking Water Access vs Diarrhea Rate</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>df_plot2 <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Series.Name <span class="sc">==</span> <span class="st">"People using at least basic drinking water services (% of population)"</span>)</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>   <span class="st">"DiarrheaRate"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df_plot1 <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Series.Name <span class="sc">==</span> <span class="st">"People using at least basic drinking water services (% of population)"</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"DiarrheaRate"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "DiarrheaRate"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggscatterstats</span>(</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> df_plot2,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> AvgValue,</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> DiarrheaRate,</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Basic Water Access vs. Diarrhea Rate"</span>,</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">marginal =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">point.args =</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggscatterstats</span>(</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> df_plot1,</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> AvgValue,</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> DiarrheaRate,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">marginal =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Basic Drinking Water Access (%)"</span>,</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Diarrhea Rate"</span>,</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Correlation between Drinking Water Access and Diarrhea Rate"</span>,</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">point.args =</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_xsidebin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_ysidebin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
@@ -925,27 +900,50 @@ New names:
 </div>
 </div>
 </div>
-<p><strong>ANOVA</strong> <em>Basic Sanitation Levels Across Diseases</em></p>
+<div class="info-box">
+<p><strong>This analysis examines the relationships between water indicators and disease rates by using a visualization that combines scatter plots, marginal distributions, and statistical tests. The key advantage of this approach is that it provides a comprehensive view of the correlation in a single plot, allowing for both visual interpretation and statistical validation of the relationship between variables.</strong></p>
+</div>
+</section>
+<section id="anova-analysis" class="level1">
+<h1><strong>5. ANOVA Analysis</strong></h1>
+<p>To further understand how disease rates vary across different categories and conditions, we employ Analysis of Variance to the following.</p>
+<p><em>Sanitation Levels Across Different Diseases level</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Pivot disease columns into long format</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>ANOVA1_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk),</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Disease"</span>,</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Rate"</span></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Filter for a specific water indicator</span></span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>basic_sanitation_data <span class="ot">&lt;-</span> ANOVA1_data  <span class="sc">%&gt;%</span></span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Series.Name <span class="sc">==</span> <span class="st">"People using at least basic sanitation services (% of population)"</span>)</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Run ANOVA across disease groups</span></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggbetweenstats</span>(</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> basic_sanitation_data,</span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> Disease,</span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> AvgValue,</span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"parametric"</span>,  <span class="co"># You can try "nonparametric" or "robust"</span></span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"ANOVA: Basic Sanitation Levels Across Diseases"</span>,</span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">messages =</span> <span class="cn">FALSE</span></span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>basic_sanitation_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Series.Name <span class="sc">==</span> <span class="st">"People using at least basic sanitation services (% of population)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Region, Year, AvgValue, TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>basic_sanitation_data <span class="ot">&lt;-</span> basic_sanitation_data <span class="sc">%&gt;%</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">TyphoidCategory =</span> <span class="fu">ifelse</span>(TyphoidRate <span class="sc">&gt;</span> <span class="fu">median</span>(TyphoidRate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">"High Typhoid"</span>, <span class="st">"Low Typhoid"</span>),</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">DiarrheaCategory =</span> <span class="fu">ifelse</span>(DiarrheaRate <span class="sc">&gt;</span> <span class="fu">median</span>(DiarrheaRate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">"High Diarrhea"</span>, <span class="st">"Low Diarrhea"</span>),</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">HepatitisCategory =</span> <span class="fu">ifelse</span>(HepatitisRate <span class="sc">&gt;</span> <span class="fu">median</span>(HepatitisRate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">"High Hepatitis"</span>, <span class="st">"Low Hepatitis"</span>),</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">UnsafeCategory =</span> <span class="fu">ifelse</span>(UnsafeRisk <span class="sc">&gt;</span> <span class="fu">median</span>(UnsafeRisk, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">"High Unsafe Water Risk"</span>, <span class="st">"Low Unsafe Water Risk"</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> basic_sanitation_data <span class="sc">%&gt;%</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(TyphoidCategory, DiarrheaCategory, HepatitisCategory, UnsafeCategory),</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"DiseaseType"</span>,</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"DiseaseLevel"</span></span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(DiseaseLevel), <span class="sc">!</span><span class="fu">is.na</span>(AvgValue))  <span class="co"># Remove NA</span></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a><span class="fu">ggbetweenstats</span>(</span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> long_data,</span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> DiseaseLevel,</span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> AvgValue,</span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">grouping.var =</span> DiseaseType,  <span class="co"># Group by disease type</span></span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"parametric"</span>,</span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Basic Sanitation Levels Across Disease Categories"</span>,</span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Disease Prevalence Level"</span>,</span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">"Sanitation Level (% using basic services)"</span>,</span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">messages =</span> <span class="cn">FALSE</span></span>
+<span id="cb50-31"><a href="#cb50-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Number of labels is greater than default palette color count.
+• Select another color `palette` (and/or `package`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -956,36 +954,32 @@ New names:
 </div>
 <p><em>Diarrhea Rate Across Sanitation Access Levels</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Pivot to long format for diseases</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk),</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Disease"</span>,</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Rate"</span></span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Filter for Diarrhea only and sanitation indicator</span></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>diarrhea_sanitation <span class="ot">&lt;-</span> long_data <span class="sc">%&gt;%</span></span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Disease <span class="sc">==</span> <span class="st">"DiarrheaRate"</span>,</span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Series.Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"People using at least basic sanitation services (% of population)"</span>)</span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Create bins of sanitation level</span></span>
-<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>diarrhea_sanitation <span class="ot">&lt;-</span> diarrhea_sanitation <span class="sc">%&gt;%</span></span>
-<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SanitationLevel =</span> <span class="fu">cut</span>(</span>
-<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>    AvgValue,</span>
-<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">90</span>, <span class="dv">100</span>),</span>
-<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low"</span>, <span class="st">"Moderate"</span>, <span class="st">"High"</span>, <span class="st">"Very High"</span>),</span>
-<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">right =</span> <span class="cn">FALSE</span></span>
-<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Run ANOVA to compare Diarrhea Rate across sanitation groups</span></span>
-<span id="cb53-24"><a href="#cb53-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggbetweenstats</span>(</span>
-<span id="cb53-25"><a href="#cb53-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> diarrhea_sanitation,</span>
-<span id="cb53-26"><a href="#cb53-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> SanitationLevel,</span>
-<span id="cb53-27"><a href="#cb53-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> Rate,</span>
-<span id="cb53-28"><a href="#cb53-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"parametric"</span>,</span>
-<span id="cb53-29"><a href="#cb53-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"ANOVA: Diarrhea Rate Across Sanitation Access Levels"</span></span>
-<span id="cb53-30"><a href="#cb53-30" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(TyphoidRate, DiarrheaRate, HepatitisRate, UnsafeRisk),</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Disease"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Rate"</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>diarrhea_sanitation <span class="ot">&lt;-</span> long_data <span class="sc">%&gt;%</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Disease <span class="sc">==</span> <span class="st">"DiarrheaRate"</span>,</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Series.Name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"People using at least basic sanitation services (% of population)"</span>)</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>diarrhea_sanitation <span class="ot">&lt;-</span> diarrhea_sanitation <span class="sc">%&gt;%</span></span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SanitationLevel =</span> <span class="fu">cut</span>(</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>    AvgValue,</span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">90</span>, <span class="dv">100</span>),</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low"</span>, <span class="st">"Moderate"</span>, <span class="st">"High"</span>, <span class="st">"Very High"</span>),</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">right =</span> <span class="cn">FALSE</span></span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ggbetweenstats</span>(</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> diarrhea_sanitation,</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> SanitationLevel,</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> Rate,</span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"parametric"</span>,</span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"ANOVA: Diarrhea Rate Across Sanitation Access Levels"</span></span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -994,57 +988,56 @@ New names:
 </div>
 </div>
 </div>
-<p><em>Time Trend</em> For water indicators</p>
+<div class="info-box">
+<p><strong>This analysis compares disease rates under different levels of water access to understand how access affects public health. By testing the differences between groups, the plot shows the disparities clearly, while also presenting the data distribution, group means, and confidence intervals. It helps provide both statistical insight and visual summary.</strong></p>
+</div>
+</section>
+<section id="bullet-dashboard" class="level1">
+<h1><strong>6. Bullet Dashboard</strong></h1>
+<p><em>For Water Indicators(Basic Sanitation Access)</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Select indicator</span></span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>selected_indicator <span class="ot">&lt;-</span> <span class="st">"People using at least basic sanitation services (% of population)"</span></span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter and summarize</span></span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>water_summary_all_regions <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series.Name</span><span class="st">`</span> <span class="sc">==</span> selected_indicator) <span class="sc">%&gt;%</span></span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">min</span>(AvgValue, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">max</span>(AvgValue, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Average =</span> <span class="fu">round</span>(<span class="fu">mean</span>(AvgValue, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
-<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Monthly =</span> <span class="fu">list</span>(AvgValue[<span class="fu">order</span>(Year)]),</span>
-<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Actual =</span> <span class="fu">mean</span>(AvgValue[Year <span class="sc">==</span> <span class="dv">2021</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Target =</span> <span class="dv">100</span>,</span>
-<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Display with sparkline + bullet chart</span></span>
-<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>water_summary_all_regions <span class="sc">%&gt;%</span></span>
-<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_sparkline</span>(Monthly, <span class="at">type =</span> <span class="st">"default"</span>) <span class="sc">%&gt;%</span>  <span class="co"># &lt;-- FIXED HERE</span></span>
-<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bullet</span>(<span class="at">column =</span> Actual, </span>
-<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">target =</span> Target, </span>
-<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">28</span>,</span>
-<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"black"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_espn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>selected_indicator <span class="ot">&lt;-</span> <span class="st">"People using at least basic sanitation services (% of population)"</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>water_summary_all_regions <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Series.Name</span><span class="st">`</span> <span class="sc">==</span> selected_indicator) <span class="sc">%&gt;%</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">min</span>(AvgValue, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">max</span>(AvgValue, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Average =</span> <span class="fu">round</span>(<span class="fu">mean</span>(AvgValue, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Monthly =</span> <span class="fu">list</span>(AvgValue[<span class="fu">order</span>(Year)]),</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Actual =</span> <span class="fu">mean</span>(AvgValue[Year <span class="sc">==</span> <span class="dv">2021</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Target =</span> <span class="dv">100</span>,</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>water_summary_all_regions <span class="sc">%&gt;%</span></span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_sparkline</span>(Monthly, <span class="at">type =</span> <span class="st">"default"</span>) <span class="sc">%&gt;%</span>  <span class="co"># &lt;-- FIXED HERE</span></span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bullet</span>(<span class="at">column =</span> Actual, </span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">target =</span> Target, </span>
+<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">28</span>,</span>
+<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"black"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_espn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="ukfqixqheh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dfgbxjetln" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-#ukfqixqheh table {
+#dfgbxjetln table {
   font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ukfqixqheh thead, #ukfqixqheh tbody, #ukfqixqheh tfoot, #ukfqixqheh tr, #ukfqixqheh td, #ukfqixqheh th {
+#dfgbxjetln thead, #dfgbxjetln tbody, #dfgbxjetln tfoot, #dfgbxjetln tr, #dfgbxjetln td, #dfgbxjetln th {
   border-style: none;
 }
 
-#ukfqixqheh p {
+#dfgbxjetln p {
   margin: 0;
   padding: 0;
 }
 
-#ukfqixqheh .gt_table {
+#dfgbxjetln .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1070,12 +1063,12 @@ New names:
   border-left-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_caption {
+#dfgbxjetln .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ukfqixqheh .gt_title {
+#dfgbxjetln .gt_title {
   color: #333333;
   font-size: 24px;
   font-weight: initial;
@@ -1087,7 +1080,7 @@ New names:
   border-bottom-width: 0;
 }
 
-#ukfqixqheh .gt_subtitle {
+#dfgbxjetln .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1099,7 +1092,7 @@ New names:
   border-top-width: 0;
 }
 
-#ukfqixqheh .gt_heading {
+#dfgbxjetln .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -1111,13 +1104,13 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_bottom_border {
+#dfgbxjetln .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_col_headings {
+#dfgbxjetln .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1132,7 +1125,7 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_col_heading {
+#dfgbxjetln .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1152,7 +1145,7 @@ New names:
   overflow-x: hidden;
 }
 
-#ukfqixqheh .gt_column_spanner_outer {
+#dfgbxjetln .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1164,15 +1157,15 @@ New names:
   padding-right: 4px;
 }
 
-#ukfqixqheh .gt_column_spanner_outer:first-child {
+#dfgbxjetln .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ukfqixqheh .gt_column_spanner_outer:last-child {
+#dfgbxjetln .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ukfqixqheh .gt_column_spanner {
+#dfgbxjetln .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1184,11 +1177,11 @@ New names:
   width: 100%;
 }
 
-#ukfqixqheh .gt_spanner_row {
+#dfgbxjetln .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ukfqixqheh .gt_group_heading {
+#dfgbxjetln .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1214,7 +1207,7 @@ New names:
   text-align: left;
 }
 
-#ukfqixqheh .gt_empty_group_heading {
+#dfgbxjetln .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1229,15 +1222,15 @@ New names:
   vertical-align: middle;
 }
 
-#ukfqixqheh .gt_from_md > :first-child {
+#dfgbxjetln .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ukfqixqheh .gt_from_md > :last-child {
+#dfgbxjetln .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ukfqixqheh .gt_row {
+#dfgbxjetln .gt_row {
   padding-top: 7px;
   padding-bottom: 7px;
   padding-left: 5px;
@@ -1256,7 +1249,7 @@ New names:
   overflow-x: hidden;
 }
 
-#ukfqixqheh .gt_stub {
+#dfgbxjetln .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1269,7 +1262,7 @@ New names:
   padding-right: 5px;
 }
 
-#ukfqixqheh .gt_stub_row_group {
+#dfgbxjetln .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1283,15 +1276,15 @@ New names:
   vertical-align: top;
 }
 
-#ukfqixqheh .gt_row_group_first td {
+#dfgbxjetln .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ukfqixqheh .gt_row_group_first th {
+#dfgbxjetln .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ukfqixqheh .gt_summary_row {
+#dfgbxjetln .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1301,16 +1294,16 @@ New names:
   padding-right: 5px;
 }
 
-#ukfqixqheh .gt_first_summary_row {
+#dfgbxjetln .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_first_summary_row.thick {
+#dfgbxjetln .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ukfqixqheh .gt_last_summary_row {
+#dfgbxjetln .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1320,7 +1313,7 @@ New names:
   border-bottom-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_grand_summary_row {
+#dfgbxjetln .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1330,7 +1323,7 @@ New names:
   padding-right: 5px;
 }
 
-#ukfqixqheh .gt_first_grand_summary_row {
+#dfgbxjetln .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1340,7 +1333,7 @@ New names:
   border-top-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_last_grand_summary_row_top {
+#dfgbxjetln .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1350,11 +1343,11 @@ New names:
   border-bottom-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_striped {
+#dfgbxjetln .gt_striped {
   background-color: #FAFAFA;
 }
 
-#ukfqixqheh .gt_table_body {
+#dfgbxjetln .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1363,7 +1356,7 @@ New names:
   border-bottom-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_footnotes {
+#dfgbxjetln .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1377,7 +1370,7 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_footnote {
+#dfgbxjetln .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1386,7 +1379,7 @@ New names:
   padding-right: 5px;
 }
 
-#ukfqixqheh .gt_sourcenotes {
+#dfgbxjetln .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1400,7 +1393,7 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#ukfqixqheh .gt_sourcenote {
+#dfgbxjetln .gt_sourcenote {
   font-size: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1408,72 +1401,72 @@ New names:
   padding-right: 5px;
 }
 
-#ukfqixqheh .gt_left {
+#dfgbxjetln .gt_left {
   text-align: left;
 }
 
-#ukfqixqheh .gt_center {
+#dfgbxjetln .gt_center {
   text-align: center;
 }
 
-#ukfqixqheh .gt_right {
+#dfgbxjetln .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ukfqixqheh .gt_font_normal {
+#dfgbxjetln .gt_font_normal {
   font-weight: normal;
 }
 
-#ukfqixqheh .gt_font_bold {
+#dfgbxjetln .gt_font_bold {
   font-weight: bold;
 }
 
-#ukfqixqheh .gt_font_italic {
+#dfgbxjetln .gt_font_italic {
   font-style: italic;
 }
 
-#ukfqixqheh .gt_super {
+#dfgbxjetln .gt_super {
   font-size: 65%;
 }
 
-#ukfqixqheh .gt_footnote_marks {
+#dfgbxjetln .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ukfqixqheh .gt_asterisk {
+#dfgbxjetln .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ukfqixqheh .gt_indent_1 {
+#dfgbxjetln .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ukfqixqheh .gt_indent_2 {
+#dfgbxjetln .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ukfqixqheh .gt_indent_3 {
+#dfgbxjetln .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ukfqixqheh .gt_indent_4 {
+#dfgbxjetln .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ukfqixqheh .gt_indent_5 {
+#dfgbxjetln .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ukfqixqheh .katex-display {
+#dfgbxjetln .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ukfqixqheh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#dfgbxjetln div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1600,57 +1593,50 @@ New names:
 </div>
 </div>
 </div>
-<p>For disease</p>
+<p><em>For Disease Variable(Diarrhea Rate)</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the column name of the disease</span></span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>selected_disease_column <span class="ot">&lt;-</span> <span class="st">"DiarrheaRate"</span></span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter only rows with non-missing disease values</span></span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>disease_summary_all_regions <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(.data[[selected_disease_column]])) <span class="sc">%&gt;%</span></span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">min</span>(.data[[selected_disease_column]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">max</span>(.data[[selected_disease_column]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Average =</span> <span class="fu">round</span>(<span class="fu">mean</span>(.data[[selected_disease_column]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
-<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Monthly =</span> <span class="fu">list</span>(.data[[selected_disease_column]][<span class="fu">order</span>(Year)]),</span>
-<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">Actual =</span> <span class="fu">mean</span>(.data[[selected_disease_column]][Year <span class="sc">==</span> <span class="dv">2021</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Target =</span> <span class="dv">0</span>,</span>
-<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb55-21"><a href="#cb55-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the table</span></span>
-<span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a>disease_summary_all_regions <span class="sc">%&gt;%</span></span>
-<span id="cb55-24"><a href="#cb55-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_sparkline</span>(Monthly, <span class="at">type =</span> <span class="st">"default"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb55-26"><a href="#cb55-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bullet</span>(<span class="at">column =</span> Actual,</span>
-<span id="cb55-27"><a href="#cb55-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">target =</span> Target,</span>
-<span id="cb55-28"><a href="#cb55-28" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">28</span>,</span>
-<span id="cb55-29"><a href="#cb55-29" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"salmon"</span>, <span class="st">"black"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb55-30"><a href="#cb55-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_espn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>selected_disease_column <span class="ot">&lt;-</span> <span class="st">"DiarrheaRate"</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>disease_summary_all_regions <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(.data[[selected_disease_column]])) <span class="sc">%&gt;%</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region) <span class="sc">%&gt;%</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Min =</span> <span class="fu">min</span>(.data[[selected_disease_column]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Max =</span> <span class="fu">max</span>(.data[[selected_disease_column]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Average =</span> <span class="fu">round</span>(<span class="fu">mean</span>(.data[[selected_disease_column]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">1</span>),</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Monthly =</span> <span class="fu">list</span>(.data[[selected_disease_column]][<span class="fu">order</span>(Year)]),</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Actual =</span> <span class="fu">mean</span>(.data[[selected_disease_column]][Year <span class="sc">==</span> <span class="dv">2021</span>], <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">Target =</span> <span class="dv">0</span>,</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>disease_summary_all_regions <span class="sc">%&gt;%</span></span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_sparkline</span>(Monthly, <span class="at">type =</span> <span class="st">"default"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_plt_bullet</span>(<span class="at">column =</span> Actual,</span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">target =</span> Target,</span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">28</span>,</span>
+<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"salmon"</span>, <span class="st">"black"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_espn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="agchihbqqh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="alsryxhius" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-#agchihbqqh table {
+#alsryxhius table {
   font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#agchihbqqh thead, #agchihbqqh tbody, #agchihbqqh tfoot, #agchihbqqh tr, #agchihbqqh td, #agchihbqqh th {
+#alsryxhius thead, #alsryxhius tbody, #alsryxhius tfoot, #alsryxhius tr, #alsryxhius td, #alsryxhius th {
   border-style: none;
 }
 
-#agchihbqqh p {
+#alsryxhius p {
   margin: 0;
   padding: 0;
 }
 
-#agchihbqqh .gt_table {
+#alsryxhius .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1676,12 +1662,12 @@ New names:
   border-left-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_caption {
+#alsryxhius .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#agchihbqqh .gt_title {
+#alsryxhius .gt_title {
   color: #333333;
   font-size: 24px;
   font-weight: initial;
@@ -1693,7 +1679,7 @@ New names:
   border-bottom-width: 0;
 }
 
-#agchihbqqh .gt_subtitle {
+#alsryxhius .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1705,7 +1691,7 @@ New names:
   border-top-width: 0;
 }
 
-#agchihbqqh .gt_heading {
+#alsryxhius .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -1717,13 +1703,13 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_bottom_border {
+#alsryxhius .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_col_headings {
+#alsryxhius .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1738,7 +1724,7 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_col_heading {
+#alsryxhius .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1758,7 +1744,7 @@ New names:
   overflow-x: hidden;
 }
 
-#agchihbqqh .gt_column_spanner_outer {
+#alsryxhius .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1770,15 +1756,15 @@ New names:
   padding-right: 4px;
 }
 
-#agchihbqqh .gt_column_spanner_outer:first-child {
+#alsryxhius .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#agchihbqqh .gt_column_spanner_outer:last-child {
+#alsryxhius .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#agchihbqqh .gt_column_spanner {
+#alsryxhius .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1790,11 +1776,11 @@ New names:
   width: 100%;
 }
 
-#agchihbqqh .gt_spanner_row {
+#alsryxhius .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#agchihbqqh .gt_group_heading {
+#alsryxhius .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1820,7 +1806,7 @@ New names:
   text-align: left;
 }
 
-#agchihbqqh .gt_empty_group_heading {
+#alsryxhius .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1835,15 +1821,15 @@ New names:
   vertical-align: middle;
 }
 
-#agchihbqqh .gt_from_md > :first-child {
+#alsryxhius .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#agchihbqqh .gt_from_md > :last-child {
+#alsryxhius .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#agchihbqqh .gt_row {
+#alsryxhius .gt_row {
   padding-top: 7px;
   padding-bottom: 7px;
   padding-left: 5px;
@@ -1862,7 +1848,7 @@ New names:
   overflow-x: hidden;
 }
 
-#agchihbqqh .gt_stub {
+#alsryxhius .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -1875,7 +1861,7 @@ New names:
   padding-right: 5px;
 }
 
-#agchihbqqh .gt_stub_row_group {
+#alsryxhius .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1889,15 +1875,15 @@ New names:
   vertical-align: top;
 }
 
-#agchihbqqh .gt_row_group_first td {
+#alsryxhius .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#agchihbqqh .gt_row_group_first th {
+#alsryxhius .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#agchihbqqh .gt_summary_row {
+#alsryxhius .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1907,16 +1893,16 @@ New names:
   padding-right: 5px;
 }
 
-#agchihbqqh .gt_first_summary_row {
+#alsryxhius .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_first_summary_row.thick {
+#alsryxhius .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#agchihbqqh .gt_last_summary_row {
+#alsryxhius .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1926,7 +1912,7 @@ New names:
   border-bottom-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_grand_summary_row {
+#alsryxhius .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1936,7 +1922,7 @@ New names:
   padding-right: 5px;
 }
 
-#agchihbqqh .gt_first_grand_summary_row {
+#alsryxhius .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1946,7 +1932,7 @@ New names:
   border-top-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_last_grand_summary_row_top {
+#alsryxhius .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1956,11 +1942,11 @@ New names:
   border-bottom-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_striped {
+#alsryxhius .gt_striped {
   background-color: #FAFAFA;
 }
 
-#agchihbqqh .gt_table_body {
+#alsryxhius .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1969,7 +1955,7 @@ New names:
   border-bottom-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_footnotes {
+#alsryxhius .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1983,7 +1969,7 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_footnote {
+#alsryxhius .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1992,7 +1978,7 @@ New names:
   padding-right: 5px;
 }
 
-#agchihbqqh .gt_sourcenotes {
+#alsryxhius .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2006,7 +1992,7 @@ New names:
   border-right-color: #D3D3D3;
 }
 
-#agchihbqqh .gt_sourcenote {
+#alsryxhius .gt_sourcenote {
   font-size: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2014,72 +2000,72 @@ New names:
   padding-right: 5px;
 }
 
-#agchihbqqh .gt_left {
+#alsryxhius .gt_left {
   text-align: left;
 }
 
-#agchihbqqh .gt_center {
+#alsryxhius .gt_center {
   text-align: center;
 }
 
-#agchihbqqh .gt_right {
+#alsryxhius .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#agchihbqqh .gt_font_normal {
+#alsryxhius .gt_font_normal {
   font-weight: normal;
 }
 
-#agchihbqqh .gt_font_bold {
+#alsryxhius .gt_font_bold {
   font-weight: bold;
 }
 
-#agchihbqqh .gt_font_italic {
+#alsryxhius .gt_font_italic {
   font-style: italic;
 }
 
-#agchihbqqh .gt_super {
+#alsryxhius .gt_super {
   font-size: 65%;
 }
 
-#agchihbqqh .gt_footnote_marks {
+#alsryxhius .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#agchihbqqh .gt_asterisk {
+#alsryxhius .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#agchihbqqh .gt_indent_1 {
+#alsryxhius .gt_indent_1 {
   text-indent: 5px;
 }
 
-#agchihbqqh .gt_indent_2 {
+#alsryxhius .gt_indent_2 {
   text-indent: 10px;
 }
 
-#agchihbqqh .gt_indent_3 {
+#alsryxhius .gt_indent_3 {
   text-indent: 15px;
 }
 
-#agchihbqqh .gt_indent_4 {
+#alsryxhius .gt_indent_4 {
   text-indent: 20px;
 }
 
-#agchihbqqh .gt_indent_5 {
+#alsryxhius .gt_indent_5 {
   text-indent: 25px;
 }
 
-#agchihbqqh .katex-display {
+#alsryxhius .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#agchihbqqh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#alsryxhius div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -2206,98 +2192,12 @@ New names:
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: Diarrhea Rate over time</span></span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>trend_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(DiarrheaRate)) <span class="sc">%&gt;%</span></span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Year) <span class="sc">%&gt;%</span></span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_disease =</span> <span class="fu">mean</span>(DiarrheaRate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trend_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> mean_disease, <span class="at">color =</span> Region)) <span class="sc">+</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Trend of Diarrhea Rate Over Time by Region"</span>,</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Mean Diarrhea Rate (%)"</span>,</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>) <span class="sc">+</span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(trend_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> mean_disease)) <span class="sc">+</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Region) <span class="sc">+</span></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Time Trends by Region"</span>, <span class="at">y =</span> <span class="st">"Disease Rate"</span>, <span class="at">x =</span> <span class="st">"Year"</span>) <span class="sc">+</span></span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Choose indicator + disease</span></span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>selected_water_indicator <span class="ot">&lt;-</span> <span class="st">"People using at least basic sanitation services (% of population)"</span></span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>selected_disease <span class="ot">&lt;-</span> <span class="st">"DiarrheaRate"</span></span>
-<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Prepare data</span></span>
-<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>combined_trend_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
-<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Series.Name <span class="sc">==</span> selected_water_indicator) <span class="sc">%&gt;%</span></span>
-<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Region, Year, <span class="at">WaterValue =</span> AvgValue, <span class="sc">!!</span>selected_disease) <span class="sc">%&gt;%</span></span>
-<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">DiseaseValue =</span> <span class="sc">!!</span>selected_disease) <span class="sc">%&gt;%</span></span>
-<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(WaterValue) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(DiseaseValue))</span>
-<span id="cb62-15"><a href="#cb62-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-16"><a href="#cb62-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Reshape for plotting</span></span>
-<span id="cb62-17"><a href="#cb62-17" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> combined_trend_data <span class="sc">%&gt;%</span></span>
-<span id="cb62-18"><a href="#cb62-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(WaterValue, DiseaseValue),</span>
-<span id="cb62-19"><a href="#cb62-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Variable"</span>,</span>
-<span id="cb62-20"><a href="#cb62-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Value"</span>)</span>
-<span id="cb62-21"><a href="#cb62-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-22"><a href="#cb62-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Plot</span></span>
-<span id="cb62-23"><a href="#cb62-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value, <span class="at">color =</span> Variable)) <span class="sc">+</span></span>
-<span id="cb62-24"><a href="#cb62-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
-<span id="cb62-25"><a href="#cb62-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Region) <span class="sc">+</span></span>
-<span id="cb62-26"><a href="#cb62-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Combined Trends: Water Access &amp; Disease Burden Over Time"</span>,</span>
-<span id="cb62-27"><a href="#cb62-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Value (%)"</span>,</span>
-<span id="cb62-28"><a href="#cb62-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb62-29"><a href="#cb62-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Metric"</span>) <span class="sc">+</span></span>
-<span id="cb62-30"><a href="#cb62-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take_home_Ex03_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
+<div class="info-box">
+<p><strong>The dashboard shows current value, target, historical trend, and min,max values all in one view - For sanitation access, we can see which regions are close to 100% target and which ones need more improvement.The sparkline shows if region is getting better over time. - For diarrhea rate, we want to reach 0% target. The bullet chart shows how far each region is from this goal, and sparkline shows if disease rate is decreasing over time.</strong></p>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
