@@ -4,9 +4,11 @@ author: "Lin Xinyue"
 date: "March 03, 2025"
 date-modified: "last-modified"
 ---
-1.Data Preparation 
+
+1.Data Preparation
 
 1.1 Installing R pacakges
+
 ```{r}
 pacman::p_load(tidyverse,readxl, gifski, gapminder,
                plotly, gganimate, lubridate,
@@ -24,18 +26,15 @@ pacman::p_load(tidyverse,readxl, gifski, gapminder,
 merchandisetrade <- read_xlsx("Total_Merchandise_Trade_201525.xlsx")
 ```
 
-
-
 1.3 Examining the data structure
 
 ```{r}
 kable(head(merchandisetrade))
 ```
 
-
 1.4 Data Preparation
 
-For merchandise 
+For merchandise
 
 ```{r}
 month_levels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
@@ -66,6 +65,7 @@ Year_merchandise <- Year_merchandise %>%
 ```{r}
 kable(head(Year_merchandise))
 ```
+
 ```{r}
 Year_merchandise %>%
   ExpData(type = 2)
@@ -148,24 +148,18 @@ geom_text(data = plot_data,
 
 ```
 
-
-1. 
-TOTAL MERCHANDISE TRADE AT CURRENT PRICES, 2020 - 2024
+1.  TOTAL MERCHANDISE TRADE AT CURRENT PRICES, 2020 - 2024
 
 ::: info-box
-This analysis utilizes the "Total Merchandise Trade at Current Prices" dataset from the Singapore Department of Statistics (DOS). Data for "Total Merchandise Trade," "Total Merchandise Exports," and "Total Merchandise Imports" were extracted to better analyze recent trends in trade volume and compare fluctuations before and after the COVID-19 pandemic, as well as post-pandemic recovery.
-The dataset originally presents time in a Year + Month format. To make it more suitable for annual analysis, the data was first filtered for the years 2018-2024. The mutate() function was used to extract the month and year components, and the summarize() function aggregate the data at the yearly level, calculating the total trade volume for exports and imports.
+This analysis utilizes the "Total Merchandise Trade at Current Prices" dataset from the Singapore Department of Statistics (DOS). Data for "Total Merchandise Trade," "Total Merchandise Exports," and "Total Merchandise Imports" were extracted to better analyze recent trends in trade volume and compare fluctuations before and after the COVID-19 pandemic, as well as post-pandemic recovery. The dataset originally presents time in a Year + Month format. To make it more suitable for annual analysis, the data was first filtered for the years 2018-2024. The mutate() function was used to extract the month and year components, and the summarize() function aggregate the data at the yearly level, calculating the total trade volume for exports and imports.
 
-The original bar chart employed a container-themed design, aligning with the trade context.   While visually engaging, the color scheme lacked functional utility, hindering multi-dimensional comparisons (e.g., year-over-year trends and import/export differences).   Additionally, the 5-year timeframe limited the ability to contextualize pandemic-related impacts.
+The original bar chart employed a container-themed design, aligning with the trade context. While visually engaging, the color scheme lacked functional utility, hindering multi-dimensional comparisons (e.g., year-over-year trends and import/export differences). Additionally, the 5-year timeframe limited the ability to contextualize pandemic-related impacts.
 
-The design combine a line chart and stacked bar charts  This clarifies the relationship between total trade (imports + exports) and individual components. The line chart emphasizes annual trends, while stacked bars breakdown the import and export. A unified color scheme improves cross-year comparisons of imports and exports and increase the space for each year can improve readability.
-
+The design combine a line chart and stacked bar charts This clarifies the relationship between total trade (imports + exports) and individual components. The line chart emphasizes annual trends, while stacked bars breakdown the import and export. A unified color scheme improves cross-year comparisons of imports and exports and increase the space for each year can improve readability.
 :::
 
-
-
-
 Import the data
+
 ```{r}
 
 servicetrade <- read_xlsx("Trade_Exp_Imp_by_Services_201525.xlsx")
@@ -174,7 +168,6 @@ servicetrade <- read_xlsx("Trade_Exp_Imp_by_Services_201525.xlsx")
 ```{r}
 kable(head(servicetrade))
 ```
-
 
 ```{r}
 servicetrade <- servicetrade %>%
@@ -223,15 +216,8 @@ servicetrade <- servicetrade %>%
 ```
 
 ::: info-box
-The graph uses a tree chart instead of a pie chart. Although the pattern of the previous pie chart was beautiful, different data were classified in different colors and the data part was displayed in larger font, it was difficult to capture useful information at first glance due to the wide variety of types. 
-Using the same color tree chart can clearly distinguish which type of service accounts for more in the export proportion, which is more clear and intuitive。
+The graph uses a tree chart instead of a pie chart. Although the pattern of the previous pie chart was beautiful, different data were classified in different colors and the data part was displayed in larger font, it was difficult to capture useful information at first glance due to the wide variety of types. Using the same color tree chart can clearly distinguish which type of service accounts for more in the export proportion, which is more clear and intuitive。
 :::
-
-
-
-
-
-
 
 ```{r}
 DExport_Region <- read_xlsx("Merchandise_Trade_DExport_by Region_201825.xlsx")
@@ -269,12 +255,14 @@ DExport_Region <- DExport_Region %>%
 ```
 
 Check the data
+
 ```{r}
 Import_Region %>%
   ExpData(type = 1)
 ```
 
 Select the data
+
 ```{r}
 import_long <- Import_Region %>%
   pivot_longer(
@@ -310,10 +298,8 @@ import_ts %>%
        x = "Month") 
 ```
 
-
-
-
 Visual Analysis of Seasonality with Seasonal Plot
+
 ```{r}
 import_ts %>%
   filter(`Data Series` %in% c("Total All Markets","Asia", "America",
@@ -321,8 +307,8 @@ import_ts %>%
   gg_season(Value) 
 ```
 
-
 Visual Analysis of Seasonality with Cycle Plot
+
 ```{r}
 # Subseries plot
 import_ts %>%
@@ -331,8 +317,8 @@ import_ts %>%
   gg_subseries(Value)
 ```
 
-
 Time series decomposition
+
 ```{r}
 
 # Define the categories you want to analyze
@@ -353,8 +339,8 @@ import_ts %>%
   gg_tsdisplay(Value)
 ```
 
-
 Classical Decomposition with feasts
+
 ```{r}
 import_ts %>%
   filter(`Data Series` == "Total All Markets") %>%
@@ -366,6 +352,7 @@ import_ts %>%
 ```
 
 Time Series Data Sampling
+
 ```{r}
 import_ts <- import_ts %>%
   mutate(Type = if_else(
@@ -383,7 +370,6 @@ test_data <- import_ts %>%
 
 ```
 
-
 ```{r}
 for (country in c("Total All Markets", "Asia", "America", "Europe", "Oceania", "Africa")) {
   print(paste("STL Decomposition for:", country))
@@ -398,8 +384,8 @@ for (country in c("Total All Markets", "Asia", "America", "Europe", "Oceania", "
 
 ```
 
-Fitting forecasting models
-Fit Simple Exponential Smoothing (SES)
+Fitting forecasting models Fit Simple Exponential Smoothing (SES)
+
 ```{r}
 fit_ses <- train_data %>%
   filter(`Data Series` %in% c("Total All Markets", "Asia", "America", "Europe",
@@ -409,7 +395,9 @@ fit_ses <- train_data %>%
 fit_ses
 
 ```
+
 Examine Model Assumptions
+
 ```{r}
 fit_ses %>%
   filter(`Data Series` == "Total All Markets") %>%
@@ -424,6 +412,7 @@ fit_ses %>%
 ```
 
 Fitting ETS Methods with Trend: Holt’s Linear
+
 ```{r}
 fit_holt <- train_data %>%
   filter(`Data Series` %in% c("Total All Markets", "Asia", "America", "Europe", "Oceania", "Africa")) %>%
@@ -432,19 +421,24 @@ fit_holt %>%
   filter(`Data Series` == "Total All Markets") %>%
   report()
 ```
+
 check the result
+
 ```{r}
 fit_holt %>%
   filter(`Data Series` == "Total All Markets") %>%
   gg_tsresiduals()
 ```
+
 Fitting ETS Methods with Season: Holt-Winters
+
 ```{r}
 fit_ets_auto <- train_data %>%
   filter(`Data Series` %in% c("Total All Markets", "Asia", "America", "Europe", "Oceania", "Africa")) %>%
   model(ets_auto = ETS(Value))
 fit_ets_auto %>% report()
 ```
+
 Fitting multiple ETS Models
 
 ```{r}
@@ -472,22 +466,21 @@ fit_ETS <- train_data %>%
   )
 ```
 
-
 Model Coefficient
+
 ```{r}
 fit_ETS %>%
   tidy()
 ```
 
 Model Comparison
+
 ```{r}
 fit_ETS %>% 
   report()
 ```
 
 Forecasting future values
-
-
 
 ```{r}
 fit_ETS %>%
@@ -497,12 +490,14 @@ fit_ETS %>%
 ```
 
 Fitting ETS Automatically
+
 ```{r}
 fit_autoETS <- train_data %>%
   model(ETS(Value))
 
 fit_autoETS %>% report()
 ```
+
 ```{r}
 fit_autoETS %>%
   filter(`Data Series` == "Total All Markets") %>% 
@@ -510,54 +505,15 @@ fit_autoETS %>%
 
 ```
 
-
 Forecast the future values
+
 ```{r}
 fit_autoETS %>%
   filter(`Data Series` == "Total All Markets") %>% 
   forecast(h = "12 months") %>%
   autoplot(train_data)
 ```
+
 ::: info-box
-This analyzes merchandise import trends across five regions (America, Asia, Europe, Oceania, and Africa) using time series forecasting methods from the tidyverts method.
-The dataset was converted from wide to long format using pivot_longer, enabling time series analysis with tsibble.Missing values and data types were checked using  ExpData to confirm data integrity.
-In general,despite fluctuations such as the 2008 financial crisis and COVID-19 in 2019, imports showed a long-term upward trend. Although imports dropped sharply during COVID-19, rebounded strongly post-pandemic.
-In terms of different areas, Asia dominated global imports, reflecting its economic scale.Africa had the lowest import values but exhibited rapid growth post-2015.
-In terms of the model, SES Produced residuals without significant patterns, indicating adequate fit.
-For the future forecast, although the import value is on the rise, it is also difficult to predict the unexpected situation that the market may face. Different forecasting models also apply to different regions
-
+This analyzes merchandise import trends across five regions (America, Asia, Europe, Oceania, and Africa) using time series forecasting methods from the tidyverts method. The dataset was converted from wide to long format using pivot_longer, enabling time series analysis with tsibble.Missing values and data types were checked using ExpData to confirm data integrity. In general,despite fluctuations such as the 2008 financial crisis and COVID-19 in 2019, imports showed a long-term upward trend. Although imports dropped sharply during COVID-19, rebounded strongly post-pandemic. In terms of different areas, Asia dominated global imports, reflecting its economic scale.Africa had the lowest import values but exhibited rapid growth post-2015. In terms of the model, SES Produced residuals without significant patterns, indicating adequate fit. For the future forecast, although the import value is on the rise, it is also difficult to predict the unexpected situation that the market may face. Different forecasting models also apply to different regions
 :::
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

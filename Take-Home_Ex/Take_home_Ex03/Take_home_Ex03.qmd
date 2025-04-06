@@ -5,6 +5,8 @@ date: "March 25, 2025"
 date-modified: "last-modified"
 ---
 
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ Old Data \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 # **1. Overview**
 
 The purpose of this analysis is to explore the relationship between water quality indicators and disease rates across different WHO regions. This study examines how access to basic water services, sanitation facilities, and other water-related indicators correlate with the prevalence of waterborne diseases such as typhoid, diarrhea, and hepatitis A. By understanding these relationships, we can identify potential interventions to reduce disease burden in affected regions.
@@ -541,3 +543,6 @@ The ANOVA analysis tab allows users to conduct statistical comparisons across mu
 The bullet charts section will provide an intuitive visual comparison view which can highlight specific regions for comparison, and trend data
 
 ![](images/clipboard-1984033805.png)
+
+```{}
+```

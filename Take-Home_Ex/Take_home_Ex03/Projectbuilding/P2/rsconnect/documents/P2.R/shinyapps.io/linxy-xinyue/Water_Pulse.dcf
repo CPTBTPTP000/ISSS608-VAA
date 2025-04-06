@@ -1,0 +1,13 @@
+name: Water_Pulse
+title: Water_Pulse
+username: linxy-xinyue
+account: linxy-xinyue
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14442061
+bundleId: 10064273
+url: https://linxy-xinyue.shinyapps.io/Water_Pulse/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: final_merged_data.csv|PMLshinyapp.txt
